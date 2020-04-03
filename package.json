@@ -36,6 +36,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
+    "file-loader": "^6.0.0",
     "webpack-md5-hash": "0.0.6",
     "webpack-node-externals": "^1.7.2"
   }
