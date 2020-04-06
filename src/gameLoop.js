@@ -1,15 +1,13 @@
-import { ctx, canvas } from 'shared/canvas'
-import { Character, Scene, Spider, Plant } from './classes'
-import { groundHeight } from 'shared/globalVariables'
-import { getRandomInt } from 'shared/helpers'
-
+import { ctx, canvas, canvasCenter } from 'shared/canvas'
+import { Character, Scene, Spider, Plant, Pot, Lamp } from './classes'
+import { groundHeight, groundY } from 'shared/globalVariables'
+import { getRandomInt, checkCollision } from 'shared/helpers'
 
 export const GameLoop = (assets, plantImages) => {
-    const [spiderImage, characterImage, sceneImage] = assets;
+    const [spiderImage, characterImage, sceneImage, potImage, lampImage] = assets;
     const plantsImages = plantImages;
     const character = new Character(characterImage);
     const scene = new Scene(sceneImage);
-    let groundY = canvas.height - groundHeight;
 
     let characterY = canvas.height - groundHeight - character.height + 5;
 
@@ -21,18 +19,10 @@ export const GameLoop = (assets, plantImages) => {
     let keyPresses = {};
     let isOnGround = true;
     let spiders = [];
-    let plants = [];
+    let pots = [];
+    let lamps = [];
 
-
-    const canvasCenter = { x: canvas.width / 2, y: canvas.height / 2 }
-
-    const resizeCanvas = () => {
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(scene.image, 0, 0, canvas.width, canvas.height);
-    }
-
+    lamps.push(new Lamp(canvasCenter.x, 0, lampImage))
 
     function keyUpListener(event) {
         if (event.keyCode === 32) {
@@ -48,19 +38,22 @@ export const GameLoop = (assets, plantImages) => {
         keyPresses["k" + event.keyCode] = true;
     }
 
-    const removeSpider = (index) => {
-        delete spiders[index]
-    }
-
     for (let i = 0; i < 10; i++) {
         spiders.push(new Spider(getRandomInt(canvas.width), getRandomInt(canvas.height), canvasCenter.x, canvasCenter.y));
     }
 
-    for (let i = 1; i < 5; i++) {
-        plants.push(new Plant((100 * i) + 125 + i * 100, groundY, i));
+    //centering pots
+    const potHeight = 100;
+    const potWidth = 125;
+    const potMargin = 50;
+    const numberOfPots = 4;
+    const widthSum = (potWidth * numberOfPots) + (potMargin * (numberOfPots - 1));
+    const offset = (canvas.width - widthSum) / 2; 
+    console.log(offset)
+    for (let i = 0; i < 4; i++) {
+        pots.push(new Pot(offset + ((potWidth + (i === numberOfPots ? 0 : potMargin)) * i), groundY, 125, 100));
     }
-    console.log(plants);
-
+    
     const gameLoop = () => {
         ctx.drawImage(sceneImage, 0, 0, canvas.width, canvas.height);
         velocityY += gravity;
@@ -81,20 +74,34 @@ export const GameLoop = (assets, plantImages) => {
             }
         })
 
-        plants.forEach((plant, i) => {
-            ctx.drawImage(plantsImages[i], plant.positionX, plant.positionY - plant.height, plant.width, plant.height);
+        pots.forEach((pot, i) => {
+            ctx.drawImage(potImage, pot.x, pot.y - pot.height, pot.width, pot.height);
         })
+        
+        ctx.globalAlpha = 0.3
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
 
+        ctx.globalCompositeOperation = 'lighten';
+        ctx.fillStyle = 'rgba(255, 240, 0, 0.2)';
+        lamps.forEach(lamp => {
+            lamp.draw();
+        })
+        ctx.globalCompositeOperation = 'normal';
+        ctx.globalAlpha = 1
 
         if (positionY > characterY) {
             positionY = characterY;
             isOnGround = true;
             velocityY = 0.0;
         }
+
         if (keyPresses.k65) {
             if (positionX < 0) {
                 //positionX = 0;
-            } else {
+            } 
+            else {
                 positionX -= velocityX;
             }
         } else if (keyPresses.k68) {
@@ -117,7 +124,6 @@ export const GameLoop = (assets, plantImages) => {
 
     window.addEventListener('keydown', keyDownListener);
     window.addEventListener('keyup', keyUpListener);
-    window.addEventListener('resize', resizeCanvas);
 
     return () => { window.requestAnimationFrame(gameLoop) }
 }

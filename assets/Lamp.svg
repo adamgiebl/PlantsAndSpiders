@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="210.198" height="182.5" viewBox="0 0 210.198 182.5">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#707070"/>
+      <stop offset="0.278" stop-color="#555"/>
+      <stop offset="1" stop-color="#383838"/>
+    </linearGradient>
+  </defs>
+  <g id="Lamp" transform="translate(-1154 -0.5)">
+    <line id="Line_13" data-name="Line 13" y2="126" transform="translate(1259.5 0.5)" fill="none" stroke="#383838" stroke-width="5"/>
+    <path id="Path_14" data-name="Path 14" d="M105.1,0,210.2,65H0Z" transform="translate(1154 118)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

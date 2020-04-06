@@ -7,6 +7,8 @@ import plant1 from 'assets/plants/Plant1.svg';
 import plant2 from 'assets/plants/Plant2.svg';
 import plant3 from 'assets/plants/Plant3.svg';
 import plant4 from 'assets/plants/Plant4.svg';
+import potSrc from 'assets/Pot.svg';
+import lampSrc from 'assets/Lamp.svg';
 
 
 Promise.all([
@@ -19,6 +21,8 @@ Promise.all([
         loadImage(spiderSrc),
         loadImage(characterSrc),
         loadImage(sceneSrc),
+        loadImage(potSrc),
+        loadImage(lampSrc)
     ]).then((assets) => {
         const startGame = GameLoop(assets, plants);
         startGame();
