@@ -1,8 +1,8 @@
 import { ctx, canvas, canvasCenter, mask, maskCtx } from 'shared/canvas'
-import { Character, Scene, Spider, PotFactory, LightFactory } from './classes'
-import { getRandomInt } from 'shared/helpers'
+import { Character, Scene, Spider, PotFactory, LightFactory, SpiderFactory } from './classes'
+import { getRandomInt, randomIntFromRange } from 'shared/helpers'
 
-
+import { checkTarget } from './clickHandler'
 
 export const GameLoop = (assets, plantImages) => {
     const [spiderImage, characterImage, sceneImage, potImage, lampImage] = assets;
@@ -15,23 +15,22 @@ export const GameLoop = (assets, plantImages) => {
     let positionX = 100;
     let positionY = character.y;
     let gravity = 0.6;
-    let spiders = [];
 
     const potFactory = new PotFactory(125, 100, potImage);
     const pots = potFactory.createPots(4, 50);
-    const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 200)
-    const lamps = lightFactory.createLights(2, 200);
+    const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 200);
+    const lamps = lightFactory.createLights(3, 200);
+    const spiderFactory = new SpiderFactory(40, 40, spiderImage);
+    const spiders = spiderFactory.createSpiders(10);
 
-    for (let i = 0; i < 10; i++) {
-        spiders.push(
-            new Spider(
-                getRandomInt(canvas.width),
-                getRandomInt(canvas.height),
-                canvasCenter.x,
-                canvasCenter.y,
-            )
-        );
-    }
+
+    console.log(spiders)
+
+    window.addEventListener('click', (e) => {
+        checkTarget(e, spiders, (spider) => {
+            spider.isDead = true;
+        })
+    })
 
     const gameLoop = () => {
         ctx.globalCompositeOperation = 'normal';
@@ -45,13 +44,19 @@ export const GameLoop = (assets, plantImages) => {
         ctx.fillRect((canvas.width / 2) - 5, (canvas.height / 2) - 5, 10, 10);
 
         spiders.forEach((spider) => {
-            ctx.drawImage(
-                spiderImage,
-                spider.positionX += (spider.velocityX * 1),
-                spider.positionY += (spider.velocityY * 1),
-                spider.width,
-                spider.height
-            );
+            if (!spider.isDead) {
+                ctx.translate(spider.x + spider.width / 2, spider.y + spider.height / 2);
+                ctx.rotate(spider.direction)
+                ctx.translate(-spider.x - spider.width / 2, -spider.y - spider.height / 2);
+                ctx.drawImage(
+                    spiderImage,
+                    spider.x += (spider.velocityX * 1),
+                    spider.y += (spider.velocityY * 1),
+                    spider.width,
+                    spider.height
+                );
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+            }
         })
 
         if (positionY > character.y) {
