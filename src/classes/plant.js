@@ -25,6 +25,5 @@ export class Plant {
             x: positionX + this.width / 2,
             y: positionY + this.height / 2
         }
-        console.log(this.plantCenter);
     }
 }

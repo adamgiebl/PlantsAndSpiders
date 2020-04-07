@@ -12,6 +12,5 @@ export class Spider {
         this.angle = Math.atan2(this.deltaY, this.deltaX);
         this.velocityX = Math.cos(this.angle) * 1.0;
         this.velocityY = Math.sin(this.angle) * 1.0;
-
     }
 }

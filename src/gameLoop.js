@@ -1,147 +1,108 @@
-import { ctx, canvas, canvasCenter, canvasOverlay, canvasOverlayCtx } from 'shared/canvas'
-import { Character, Scene, Spider, Plant, Pot, Light } from './classes'
-import { groundHeight, groundY } from 'shared/globalVariables'
-import { getRandomInt, checkCollision } from 'shared/helpers'
+import { ctx, canvas, canvasCenter, mask, maskCtx } from 'shared/canvas'
+import { Character, Scene, Spider, PotFactory, LightFactory } from './classes'
+import { getRandomInt } from 'shared/helpers'
+
+
 
 export const GameLoop = (assets, plantImages) => {
     const [spiderImage, characterImage, sceneImage, potImage, lampImage] = assets;
-    const plantsImages = plantImages;
+
     const character = new Character(characterImage);
     const scene = new Scene(sceneImage);
-
-    let characterY = canvas.height - groundHeight - character.height + 5;
 
     let velocityX = 6;
     let velocityY = 0;
     let positionX = 100;
-    let positionY = characterY;
+    let positionY = character.y;
     let gravity = 0.6;
-    let keyPresses = {};
-    let isOnGround = true;
     let spiders = [];
-    let pots = [];
-    let lamps = [];
 
-    lamps.push(new Light(700, 0, lampImage, 'rgb(251, 252, 214)'));
-    lamps.push(new Light(300, 0, lampImage, 'rgb(251, 252, 214)'));
-
-    function keyUpListener(event) {
-        if (event.keyCode === 32) {
-            keyPresses["k32"] = false;
-            if (velocityY < -6.0)
-                velocityY = -6.0;
-        } else {
-            keyPresses["k" + event.keyCode] = false;
-        }
-    }
-
-    function keyDownListener(event) {
-        keyPresses["k" + event.keyCode] = true;
-    }
+    const potFactory = new PotFactory(125, 100, potImage);
+    const pots = potFactory.createPots(4, 50);
+    const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 200)
+    const lamps = lightFactory.createLights(2, 200);
 
     for (let i = 0; i < 10; i++) {
-        spiders.push(new Spider(getRandomInt(canvas.width), getRandomInt(canvas.height), canvasCenter.x, canvasCenter.y));
-    }
-
-    //centering pots
-    const potHeight = 100;
-    const potWidth = 125;
-    const potMargin = 50;
-    const numberOfPots = 4;
-    const widthSum = (potWidth * numberOfPots) + (potMargin * (numberOfPots - 1));
-    const offset = (canvas.width - widthSum) / 2;
-    console.log(offset)
-    for (let i = 0; i < 4; i++) {
-        pots.push(new Pot(offset + ((potWidth + (i === numberOfPots ? 0 : potMargin)) * i), groundY, 125, 100));
+        spiders.push(
+            new Spider(
+                getRandomInt(canvas.width),
+                getRandomInt(canvas.height),
+                canvasCenter.x,
+                canvasCenter.y,
+            )
+        );
     }
 
     const gameLoop = () => {
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(sceneImage, 0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'normal';
+
+        scene.draw(ctx);
+
         velocityY += gravity;
         positionY += velocityY;
 
-        ctx.fillStyle = "red";
-
+        // center point
         ctx.fillRect((canvas.width / 2) - 5, (canvas.height / 2) - 5, 10, 10);
 
-        spiders.forEach((spider, index) => {
-            let positionX = spider.positionX += (spider.velocityX * 1);
-            let positionY = spider.positionY += (spider.velocityY * 1);
-            if (positionX === spider.destinationX || positionY === spider.destinationY) {
-                console.log('das')
-                removeSpider(index);
-            } else {
-                ctx.drawImage(spiderImage, positionX, positionY, spider.width, spider.height);
-            }
+        spiders.forEach((spider) => {
+            ctx.drawImage(
+                spiderImage,
+                spider.positionX += (spider.velocityX * 1),
+                spider.positionY += (spider.velocityY * 1),
+                spider.width,
+                spider.height
+            );
         })
 
-        pots.forEach((pot, i) => {
-            ctx.drawImage(potImage, pot.x, pot.y - pot.height, pot.width, pot.height);
-        })
-
-        if (positionY > characterY) {
-            positionY = characterY;
-            isOnGround = true;
+        if (positionY > character.y) {
+            positionY = character.y;
+            character.isOnGround = true;
             velocityY = 0.0;
         }
 
-        if (keyPresses.k65) {
-            if (positionX < 0) {
-                //positionX = 0;
-            } else {
+        if (character.direction.left) {
+            if (positionX > 0) {
                 positionX -= velocityX;
             }
-        } else if (keyPresses.k68) {
-            if (positionX > canvas.width - character.width) {
-                //positionX = canvas.width - character.width
-            } else {
+        } else if (character.direction.right) {
+            if (positionX < canvas.width - character.width) {
                 positionX += velocityX;
             }
         }
-        if (keyPresses.k32) {
-            if (isOnGround) {
+        if (character.direction.jumping) {
+            if (character.isOnGround) {
                 velocityY = -12.0;
-                isOnGround = false;
+                character.isOnGround = false;
             }
         }
 
-        ctx.drawImage(characterImage, positionX, positionY, character.width, character.height);
-
-
-
-
-        const canvasOverlay = document.createElement('canvas');
-        canvasOverlay.width = canvas.width;
-        canvasOverlay.height = canvas.height;
-        const canvasOverlayCtx = canvasOverlay.getContext('2d');
-
-
-
-
-        canvasOverlayCtx.fillStyle = "rgba(0,0,0, 0.6)";
-        canvasOverlayCtx.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height);
-
-        canvasOverlayCtx.fillStyle = 'transparent';
-        canvasOverlayCtx.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height);
-        canvasOverlayCtx.fillStyle = 'white';
-        lamps.forEach(lamp => {
-            lamp.draw(canvasOverlayCtx);
+        pots.forEach((pot) => {
+            pot.draw(ctx);
         })
 
+        ctx.drawImage(
+            characterImage,
+            positionX,
+            positionY,
+            character.width,
+            character.height
+        );
 
+        // drawing a black mask over the whole screen
+        maskCtx.fillStyle = "rgb(68, 68, 68)";
+        maskCtx.fillRect(0, 0, mask.width, mask.height);
+
+        // adding "white" light onto the mask
+        lamps.forEach(lamp => {
+            lamp.draw(ctx, maskCtx)
+        })
+
+        // multiply the mask with the underlying canvas
         ctx.globalCompositeOperation = 'multiply';
-
-        ctx.drawImage(canvasOverlay, 0, 0);
-
-
-
+        ctx.drawImage(mask, 0, 0);
 
         window.requestAnimationFrame(gameLoop);
     }
-
-    window.addEventListener('keydown', keyDownListener);
-    window.addEventListener('keyup', keyUpListener);
 
     return () => { window.requestAnimationFrame(gameLoop) }
 }
