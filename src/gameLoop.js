@@ -1,5 +1,5 @@
-import { ctx, canvas, canvasCenter } from 'shared/canvas'
-import { Character, Scene, Spider, Plant, Pot, Lamp } from './classes'
+import { ctx, canvas, canvasCenter, canvasOverlay, canvasOverlayCtx } from 'shared/canvas'
+import { Character, Scene, Spider, Plant, Pot, Light } from './classes'
 import { groundHeight, groundY } from 'shared/globalVariables'
 import { getRandomInt, checkCollision } from 'shared/helpers'
 
@@ -22,7 +22,8 @@ export const GameLoop = (assets, plantImages) => {
     let pots = [];
     let lamps = [];
 
-    lamps.push(new Lamp(canvasCenter.x, 0, lampImage))
+    lamps.push(new Light(700, 0, lampImage, 'rgb(251, 252, 214)'));
+    lamps.push(new Light(300, 0, lampImage, 'rgb(251, 252, 214)'));
 
     function keyUpListener(event) {
         if (event.keyCode === 32) {
@@ -48,13 +49,14 @@ export const GameLoop = (assets, plantImages) => {
     const potMargin = 50;
     const numberOfPots = 4;
     const widthSum = (potWidth * numberOfPots) + (potMargin * (numberOfPots - 1));
-    const offset = (canvas.width - widthSum) / 2; 
+    const offset = (canvas.width - widthSum) / 2;
     console.log(offset)
     for (let i = 0; i < 4; i++) {
         pots.push(new Pot(offset + ((potWidth + (i === numberOfPots ? 0 : potMargin)) * i), groundY, 125, 100));
     }
-    
+
     const gameLoop = () => {
+        ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(sceneImage, 0, 0, canvas.width, canvas.height);
         velocityY += gravity;
         positionY += velocityY;
@@ -77,19 +79,6 @@ export const GameLoop = (assets, plantImages) => {
         pots.forEach((pot, i) => {
             ctx.drawImage(potImage, pot.x, pot.y - pot.height, pot.width, pot.height);
         })
-        
-        ctx.globalAlpha = 0.3
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalAlpha = 1;
-
-        ctx.globalCompositeOperation = 'lighten';
-        ctx.fillStyle = 'rgba(255, 240, 0, 0.2)';
-        lamps.forEach(lamp => {
-            lamp.draw();
-        })
-        ctx.globalCompositeOperation = 'normal';
-        ctx.globalAlpha = 1
 
         if (positionY > characterY) {
             positionY = characterY;
@@ -100,8 +89,7 @@ export const GameLoop = (assets, plantImages) => {
         if (keyPresses.k65) {
             if (positionX < 0) {
                 //positionX = 0;
-            } 
-            else {
+            } else {
                 positionX -= velocityX;
             }
         } else if (keyPresses.k68) {
@@ -119,6 +107,36 @@ export const GameLoop = (assets, plantImages) => {
         }
 
         ctx.drawImage(characterImage, positionX, positionY, character.width, character.height);
+
+
+
+
+        const canvasOverlay = document.createElement('canvas');
+        canvasOverlay.width = canvas.width;
+        canvasOverlay.height = canvas.height;
+        const canvasOverlayCtx = canvasOverlay.getContext('2d');
+
+
+
+
+        canvasOverlayCtx.fillStyle = "rgba(0,0,0, 0.6)";
+        canvasOverlayCtx.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height);
+
+        canvasOverlayCtx.fillStyle = 'transparent';
+        canvasOverlayCtx.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height);
+        canvasOverlayCtx.fillStyle = 'white';
+        lamps.forEach(lamp => {
+            lamp.draw(canvasOverlayCtx);
+        })
+
+
+        ctx.globalCompositeOperation = 'multiply';
+
+        ctx.drawImage(canvasOverlay, 0, 0);
+
+
+
+
         window.requestAnimationFrame(gameLoop);
     }
 

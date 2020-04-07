@@ -1,6 +1,14 @@
 export const canvas = document.querySelector('canvas')
 export const ctx = canvas.getContext('2d')
 
+
+export const canvasOverlay = document.createElement('canvas');
+canvasOverlay.width = canvas.width;
+canvasOverlay.height = canvas.height;
+export const canvasOverlayCtx = canvasOverlay.getContext('2d');
+canvasOverlayCtx.fillStyle = "rgba(0,0,0, 0.6)";
+
+
 const resizeCanvas = () => {
     canvas.width = innerWidth;
     canvas.height = innerHeight;
