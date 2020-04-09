@@ -1,5 +1,6 @@
 import { groundY } from 'shared/globalVariables'
 import { canvas, maskCtx } from 'shared/canvas'
+import { audioPlayer } from '../AudioPlayer'
 
 export class Light {
     constructor(positionX, positionY, width, height, image, color, lightWidth) {
@@ -38,6 +39,9 @@ export class Light {
         this.drawLight(maskCtx)
     }
     onClick() {
+        if (!this.isShot) {
+            audioPlayer.playAudio('glass')
+        }
         this.isShot = true
     }
 }

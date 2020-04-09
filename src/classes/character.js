@@ -33,7 +33,7 @@ export class Character {
                 x: this.x + this.lowerBody.width / 2,
                 y: this.y + this.upperBody.height / 2 - 70
             },
-            x: this.x - 30,
+            x: this.x - 20,
             y: this.y - this.lowerBody.height + 100
         }
         ctx.strokeStyle = 'red'

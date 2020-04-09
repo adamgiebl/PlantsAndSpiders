@@ -1,5 +1,6 @@
 import { GameLoop } from './gameLoop'
 import { loadImage } from './classes/loaders'
+import { AudioPlayer } from './AudioPlayer'
 import spiderSrc from 'assets/spider.svg'
 import spiderSplashSrc from 'assets/SpiderSplash.svg'
 import characterUpperSrc from 'assets/CharacterUpper.svg'

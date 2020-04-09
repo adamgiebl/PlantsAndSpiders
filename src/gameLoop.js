@@ -1,6 +1,7 @@
 import { ctx, canvas, canvasCenter, mask, maskCtx } from 'shared/canvas'
 import { Character, Scene, Spider, PotFactory, LightFactory, SpiderFactory } from './classes'
 import { groundY } from 'shared/globalVariables'
+import { audioPlayer } from './AudioPlayer'
 
 import { checkTarget } from './clickHandler'
 
@@ -16,7 +17,7 @@ export const GameLoop = (assets, plantImages) => {
     ] = assets
 
     const character = new Character(
-        { width: 300, height: 200, image: characterUpperImage },
+        { width: 260, height: 200, image: characterUpperImage },
         { width: 140, height: 200, image: characterLowerImage }
     )
     const scene = new Scene(sceneImage)
@@ -33,7 +34,8 @@ export const GameLoop = (assets, plantImages) => {
     const spiders = spiderFactory.createSpiders(10, character)
 
     window.addEventListener('click', e => {
-        checkTarget(e, [...spiders, ...lamps, ...pots], entity => {
+        audioPlayer.playAudio('gunshot')
+        checkTarget(e, [...lamps, ...spiders, ...pots], entity => {
             if (entity) entity.onClick()
         })
     })

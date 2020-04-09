@@ -1,5 +1,6 @@
 import { canvas, canvasCenter } from 'shared/canvas'
 import { randomIntFromRange } from 'shared/helpers'
+import { audioPlayer } from '../AudioPlayer'
 
 export class Spider {
     constructor(positionX, positionY, destinationX, destinationY, character) {
@@ -22,6 +23,7 @@ export class Spider {
         this.direction = this.angle - Math.PI / 2
     }
     onClick() {
+        audioPlayer.playAudio('splash')
         this.isShot = true
         this.killer = { x: this.character.upperBody.x, y: this.character.upperBody.y }
         const deltaX = this.x - (this.killer.x + this.character.upperBody.width / 2)
