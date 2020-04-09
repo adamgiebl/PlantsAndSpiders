@@ -13,8 +13,6 @@ const resizeCanvas = () => {
     canvas.height = innerHeight;
     mask.width = innerWidth;
     mask.height = innerHeight;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(sceneImage, 0, 0, canvas.width, canvas.height);
 }
 
 export const canvasCenter = { x: canvas.width / 2, y: canvas.height / 2 }

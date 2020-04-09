@@ -1,9 +1,9 @@
 export function loadImage(url) {
     return new Promise(resolve => {
-        const image = new Image();
+        const image = new Image()
         image.addEventListener('load', () => {
-            resolve(image);
-        });
-        image.src = url;
+            resolve(image)
+        })
+        image.src = url
     })
 }
