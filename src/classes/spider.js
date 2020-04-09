@@ -23,11 +23,10 @@ export class Spider {
     }
     onClick() {
         this.isShot = true
-        this.killer = { x: this.character.x, y: this.character.y }
-        const deltaX = this.x - (this.killer.x + this.character.width / 2)
+        this.killer = { x: this.character.upperBody.x, y: this.character.upperBody.y }
+        const deltaX = this.x - (this.killer.x + this.character.upperBody.width / 2)
         const deltaY = this.y - (this.killer.y + 100)
         this.splashAngle = Math.atan2(deltaX, deltaY)
-        console.log(this.splashAngle)
     }
 }
 

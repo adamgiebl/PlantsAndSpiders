@@ -1,6 +1,5 @@
 import { ctx, canvas, canvasCenter, mask, maskCtx } from 'shared/canvas'
 import { Character, Scene, Spider, PotFactory, LightFactory, SpiderFactory } from './classes'
-import { getRandomInt, randomIntFromRange } from 'shared/helpers'
 import { groundY } from 'shared/globalVariables'
 
 import { checkTarget } from './clickHandler'
@@ -17,7 +16,7 @@ export const GameLoop = (assets, plantImages) => {
     ] = assets
 
     const character = new Character(
-        { width: 320, height: 200, image: characterUpperImage },
+        { width: 300, height: 200, image: characterUpperImage },
         { width: 140, height: 200, image: characterLowerImage }
     )
     const scene = new Scene(sceneImage)
@@ -27,11 +26,11 @@ export const GameLoop = (assets, plantImages) => {
     let gravity = 0.6
 
     const potFactory = new PotFactory(150, 120, potImage, plantImages)
-    const pots = potFactory.createPots(5, 50)
+    const pots = potFactory.createPots(3, 50)
     const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 300)
-    const lamps = lightFactory.createLights(2, 200)
+    const lamps = lightFactory.createLights(5, 100)
     const spiderFactory = new SpiderFactory(40, 40, spiderImage, spiderSplash)
-    const spiders = spiderFactory.createSpiders(0, character)
+    const spiders = spiderFactory.createSpiders(10, character)
 
     window.addEventListener('click', e => {
         checkTarget(e, [...spiders, ...lamps, ...pots], entity => {
@@ -46,14 +45,13 @@ export const GameLoop = (assets, plantImages) => {
     const gameLoop = () => {
         ctx.globalCompositeOperation = 'normal'
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
         scene.draw(ctx)
 
         velocityY += gravity
         character.y += velocityY
 
-        if (character.y + character.lowerHeight >= groundY) {
-            character.y = groundY - character.lowerHeight
+        if (character.y + character.lowerBody.height >= groundY) {
+            character.y = groundY - character.lowerBody.height
             character.isOnGround = true
             velocityY = 0.0
         }
@@ -91,8 +89,7 @@ export const GameLoop = (assets, plantImages) => {
                 character.x -= velocityX
             }
         } else if (character.direction.right) {
-            console.log('123')
-            if (character.x < canvas.width - character.upperWidth) {
+            if (character.x < canvas.width - character.upperBody.width) {
                 character.x += velocityX
             }
         }

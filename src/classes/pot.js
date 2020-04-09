@@ -48,7 +48,13 @@ export class Pot {
     draw(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
 
-        //ctx.drawImage(this.plantImages[this.size], this.potCenter.x - this.plantSize.width / 2, this.y - this.plantSize.height, this.plantSize.width, this.plantSize.height);
+        ctx.drawImage(
+            this.plantImages[this.size],
+            this.potCenter.x - this.plantSize.width / 2,
+            this.y - this.plantSize.height,
+            this.plantSize.width,
+            this.plantSize.height
+        )
     }
     grow() {
         if (this.size < this.plantImages.length - 1) {
