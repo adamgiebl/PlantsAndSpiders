@@ -19,7 +19,6 @@ export class AudioPlayer {
         const source = this.audioContext.createBufferSource()
         source.connect(this.audioContext.destination)
         source.buffer = this.audioBuffers.get(name)
-        console.log(source.buffer)
         source.start(0)
     }
 }
@@ -33,4 +32,13 @@ audioPlayer.loadAudio(splashSrc).then(buff => {
 })
 audioPlayer.loadAudio(glassShatterSrc).then(buff => {
     audioPlayer.addAudio('glass', buff)
+})
+Promise.all([
+    audioPlayer.loadAudio(gunshotSrc),
+    audioPlayer.loadAudio(splashSrc),
+    audioPlayer.loadAudio(glassShatterSrc)
+]).then(([gunshot, splash, glass]) => {
+    audioPlayer.addAudio('gunshot', gunshot)
+    audioPlayer.addAudio('splash', splash)
+    audioPlayer.addAudio('glass', glass)
 })

@@ -1,7 +1,6 @@
 import { ctx, canvas, canvasCenter, mask, maskCtx } from 'shared/canvas'
 import { Character, Scene, Spider, PotFactory, LightFactory, SpiderFactory } from './classes'
 import { groundY } from 'shared/globalVariables'
-import { audioPlayer } from './AudioPlayer'
 
 import { checkTarget } from './clickHandler'
 
@@ -10,15 +9,18 @@ export const GameLoop = (assets, plantImages) => {
         spiderImage,
         spiderSplash,
         characterLowerImage,
+        characterLowerImageFlipped,
         characterUpperImage,
+        characterUpperImageFlipped,
         sceneImage,
         potImage,
-        lampImage
+        lampImage,
+        flashImage
     ] = assets
 
     const character = new Character(
-        { width: 260, height: 200, image: characterUpperImage },
-        { width: 140, height: 200, image: characterLowerImage }
+        { width: 260, height: 200, image: characterUpperImage, imageFlipped: characterUpperImageFlipped },
+        { width: 120, height: 200, image: characterLowerImage, imageFlipped: characterLowerImageFlipped }
     )
     const scene = new Scene(sceneImage)
 
@@ -26,15 +28,17 @@ export const GameLoop = (assets, plantImages) => {
     let velocityY = 0
     let gravity = 0.6
 
+    let shotFrames = 0
+
     const potFactory = new PotFactory(150, 120, potImage, plantImages)
-    const pots = potFactory.createPots(3, 50)
+    const pots = potFactory.createPots(0, 50)
     const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 300)
-    const lamps = lightFactory.createLights(5, 100)
+    const lamps = lightFactory.createLights(2, 200)
     const spiderFactory = new SpiderFactory(40, 40, spiderImage, spiderSplash)
-    const spiders = spiderFactory.createSpiders(10, character)
+    const spiders = spiderFactory.createSpiders(20, character)
 
     window.addEventListener('click', e => {
-        audioPlayer.playAudio('gunshot')
+        character.onClick()
         checkTarget(e, [...lamps, ...spiders, ...pots], entity => {
             if (entity) entity.onClick()
         })
@@ -112,6 +116,28 @@ export const GameLoop = (assets, plantImages) => {
         maskCtx.fillStyle = 'rgb(68, 68, 68)'
         //maskCtx.fillStyle = "rgb(45, 45, 45)";
         maskCtx.fillRect(0, 0, mask.width, mask.height)
+
+        if (character.shot == true) {
+            if (shotFrames >= 5) {
+                shotFrames = 0
+                character.shot = false
+            } else {
+                shotFrames++
+                maskCtx.translate(character.upperBody.rotationPoint.x, character.upperBody.rotationPoint.y)
+                maskCtx.rotate(character.angle)
+                maskCtx.translate(-character.upperBody.rotationPoint.x, -character.upperBody.rotationPoint.y)
+                maskCtx.strokeStyle = 'limegreen'
+                //ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
+                maskCtx.drawImage(
+                    flashImage,
+                    character.upperBody.x + character.upperBody.width,
+                    character.upperBody.y + (character.flip ? 0 : 100),
+                    character.upperBody.width,
+                    character.upperBody.height / 2
+                )
+                maskCtx.setTransform(1, 0, 0, 1, 0, 0)
+            }
+        }
 
         // adding "white" light onto the mask
         lamps.forEach(lamp => {

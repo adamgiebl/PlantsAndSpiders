@@ -1,6 +1,7 @@
 import { ctx, canvas } from 'shared/canvas'
 import { groundHeight } from 'shared/globalVariables'
 import { setUpKeyboard } from '../input'
+import { audioPlayer } from '../AudioPlayer'
 
 export class Character {
     constructor(upperBody, lowerBody) {
@@ -14,6 +15,7 @@ export class Character {
         this.deltaY = 0
         this.angle = 0
         this.flip = false
+        this.shot = false
         this.lowerBody = {
             ...lowerBody
         }
@@ -31,21 +33,27 @@ export class Character {
             ...this.upperBody,
             rotationPoint: {
                 x: this.x + this.lowerBody.width / 2,
-                y: this.y + this.upperBody.height / 2 - 70
+                y: this.y + 30
             },
-            x: this.x - 20,
-            y: this.y - this.lowerBody.height + 100
+            x: this.x - 30,
+            y: this.y - this.lowerBody.height + (this.flip ? 160 : 100)
         }
         ctx.strokeStyle = 'red'
         ctx.strokeRect(this.x, this.y, this.lowerBody.width, this.lowerBody.height)
-        ctx.drawImage(this.lowerBody.image, this.x, this.y, this.lowerBody.width, this.lowerBody.height)
+        ctx.drawImage(
+            this.flip ? this.lowerBody.imageFlipped : this.lowerBody.image,
+            this.x,
+            this.y,
+            this.lowerBody.width,
+            this.lowerBody.height
+        )
         ctx.translate(this.upperBody.rotationPoint.x, this.upperBody.rotationPoint.y)
         ctx.rotate(this.angle)
         ctx.translate(-this.upperBody.rotationPoint.x, -this.upperBody.rotationPoint.y)
         ctx.strokeStyle = 'limegreen'
         ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
         ctx.drawImage(
-            this.upperBody.image,
+            this.flip ? this.upperBody.imageFlipped : this.upperBody.image,
             this.upperBody.x,
             this.upperBody.y,
             this.upperBody.width,
@@ -62,6 +70,12 @@ export class Character {
         if (this.angle > 1.5 && this.angle < 4.7) {
             //character should flip upperbody
             this.flip = true
+        } else {
+            this.flip = false
         }
+    }
+    onClick() {
+        audioPlayer.playAudio('gunshot')
+        this.shot = true
     }
 }
