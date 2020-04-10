@@ -39,7 +39,7 @@ export class Character {
             y: this.y - this.lowerBody.height + (this.flip ? 160 : 100)
         }
         ctx.strokeStyle = 'red'
-        ctx.strokeRect(this.x, this.y, this.lowerBody.width, this.lowerBody.height)
+        //ctx.strokeRect(this.x, this.y, this.lowerBody.width, this.lowerBody.height)
         ctx.drawImage(
             this.flip ? this.lowerBody.imageFlipped : this.lowerBody.image,
             this.x,
@@ -51,7 +51,7 @@ export class Character {
         ctx.rotate(this.angle)
         ctx.translate(-this.upperBody.rotationPoint.x, -this.upperBody.rotationPoint.y)
         ctx.strokeStyle = 'limegreen'
-        ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
+        //ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
         ctx.drawImage(
             this.flip ? this.upperBody.imageFlipped : this.upperBody.image,
             this.upperBody.x,
@@ -61,7 +61,7 @@ export class Character {
         )
         ctx.setTransform(1, 0, 0, 1, 0, 0)
         ctx.fillStyle = 'blue'
-        ctx.fillRect(this.upperBody.rotationPoint.x - 5, this.upperBody.rotationPoint.y - 5, 10, 10)
+        //d ctx.fillRect(this.upperBody.rotationPoint.x - 5, this.upperBody.rotationPoint.y - 5, 10, 10)
     }
     rotate(clientX, clientY) {
         const deltaX = this.x + this.upperBody.width / 2 - clientX

@@ -9,23 +9,30 @@ export class Light {
         this.x = positionX
         this.y = positionY
         this.lampCenter = {
-            x: positionX + this.width / 2,
-            y: positionY + this.height / 2
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
         }
         this.image = image
         this.turnedOn = true
         this.color = color
         this.lightWidth = lightWidth
-        this.offset = 20
+        this.offset = 10
         this.isShot = false
+        this.perspective = 40
     }
     drawLight(ctx) {
         if (this.turnedOn) {
             ctx.beginPath()
-            ctx.moveTo(this.x + this.offset, this.height)
-            ctx.lineTo(this.x - this.lightWidth, groundY)
-            ctx.lineTo(this.x + this.width + this.lightWidth, groundY)
-            ctx.lineTo(this.x + this.width - this.offset, this.height)
+            //top left
+            ctx.moveTo(this.x + this.offset, this.y + this.height)
+            //bottom left
+            ctx.lineTo(this.x - this.lightWidth, canvas.height - 65)
+            ctx.lineTo(this.x - this.lightWidth - this.perspective, canvas.height)
+            //bottom right
+            ctx.lineTo(this.x + +this.width + this.lightWidth + this.perspective, canvas.height)
+            ctx.lineTo(this.x + this.width + this.lightWidth, canvas.height - 65)
+            //top right
+            ctx.lineTo(this.x + this.width - this.offset, this.y + this.height)
             ctx.closePath()
             ctx.fillStyle = this.color
             ctx.fill()

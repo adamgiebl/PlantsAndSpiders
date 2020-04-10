@@ -31,11 +31,11 @@ export const GameLoop = (assets, plantImages) => {
     let shotFrames = 0
 
     const potFactory = new PotFactory(150, 120, potImage, plantImages)
-    const pots = potFactory.createPots(0, 50)
-    const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 300)
-    const lamps = lightFactory.createLights(2, 200)
+    const pots = potFactory.createPots(3, 50)
+    const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 200)
+    const lamps = lightFactory.createLights(3, 140)
     const spiderFactory = new SpiderFactory(40, 40, spiderImage, spiderSplash)
-    const spiders = spiderFactory.createSpiders(20, character)
+    const spiders = spiderFactory.createSpiders(5, character)
 
     window.addEventListener('click', e => {
         character.onClick()
@@ -118,11 +118,13 @@ export const GameLoop = (assets, plantImages) => {
         maskCtx.fillRect(0, 0, mask.width, mask.height)
 
         if (character.shot == true) {
-            if (shotFrames >= 5) {
+            if (shotFrames >= 3) {
                 shotFrames = 0
                 character.shot = false
             } else {
                 shotFrames++
+                maskCtx.fillStyle = 'rgba(249, 191, 0, 0.1)'
+                maskCtx.fillRect(0, 0, canvas.width, canvas.height)
                 maskCtx.translate(character.upperBody.rotationPoint.x, character.upperBody.rotationPoint.y)
                 maskCtx.rotate(character.angle)
                 maskCtx.translate(-character.upperBody.rotationPoint.x, -character.upperBody.rotationPoint.y)

@@ -35,13 +35,13 @@ export class Pot {
         this.width = width
         this.height = height
         this.x = positionX
-        this.y = positionY
+        this.y = positionY - 15
         this.size = 0
         this.plantImages = plantImages
         this.plantSize = { width: 200, height: 400 }
         this.potCenter = {
-            x: positionX + this.width / 2,
-            y: positionY + this.height / 2
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
         }
         this.image = image
     }
