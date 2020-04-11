@@ -4,7 +4,7 @@ import { setUpKeyboard } from '../input'
 import { audioPlayer } from '../AudioPlayer'
 
 export class Character {
-    constructor(upperBody, lowerBody) {
+    constructor(upperBody, lowerBody, flashImage) {
         this.direction = {
             left: false,
             right: false,
@@ -25,6 +25,12 @@ export class Character {
             ...upperBody,
             x: this.x - 30,
             y: this.y - this.lowerBody.height + 70
+        }
+        this.flashAnimation = {
+            active: false,
+            duration: 3,
+            frame: 0,
+            image: flashImage
         }
         setUpKeyboard(this)
     }
@@ -63,6 +69,31 @@ export class Character {
         ctx.fillStyle = 'blue'
         //d ctx.fillRect(this.upperBody.rotationPoint.x - 5, this.upperBody.rotationPoint.y - 5, 10, 10)
     }
+    drawFlash(maskCtx) {
+        if (this.flashAnimation.active == true) {
+            if (this.flashAnimation.frame >= this.flashAnimation.duration) {
+                this.flashAnimation.frame = 0
+                this.flashAnimation.active = false
+            } else {
+                this.flashAnimation.frame++
+                maskCtx.fillStyle = 'rgba(249, 191, 0, 0.1)'
+                maskCtx.fillRect(0, 0, canvas.width, canvas.height)
+                maskCtx.translate(this.upperBody.rotationPoint.x, this.upperBody.rotationPoint.y)
+                maskCtx.rotate(this.angle)
+                maskCtx.translate(-this.upperBody.rotationPoint.x, -this.upperBody.rotationPoint.y)
+                maskCtx.strokeStyle = 'limegreen'
+                //ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
+                maskCtx.drawImage(
+                    this.flashAnimation.image,
+                    this.upperBody.x + this.upperBody.width,
+                    this.upperBody.y + (this.flip ? 0 : 100),
+                    this.upperBody.width,
+                    this.upperBody.height / 2
+                )
+                maskCtx.setTransform(1, 0, 0, 1, 0, 0)
+            }
+        }
+    }
     rotate(clientX, clientY) {
         const deltaX = this.x + this.upperBody.width / 2 - clientX
         const deltaY = this.y + this.upperBody.height / 2 - clientY
@@ -76,6 +107,6 @@ export class Character {
     }
     onClick() {
         audioPlayer.playAudio('gunshot')
-        this.shot = true
+        this.flashAnimation.active = true
     }
 }
