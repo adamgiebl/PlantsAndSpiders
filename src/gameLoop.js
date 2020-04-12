@@ -30,7 +30,7 @@ export const GameLoop = (assets, plantImages) => {
     let gravity = 0.6
 
     const potFactory = new PotFactory(150, 120, potImage, plantImages)
-    const pots = potFactory.createPots(3, 50)
+    const pots = potFactory.createPots(0, 50)
     const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 200)
     const lamps = lightFactory.createLights(3, 140)
     const spiderFactory = new SpiderFactory(40, 40, spiderImage, spiderSplash)

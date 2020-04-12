@@ -1,6 +1,8 @@
 import { groundY } from 'shared/globalVariables'
 import { canvas, maskCtx } from 'shared/canvas'
 import { audioPlayer } from '../AudioPlayer'
+import { loadImage } from './loaders'
+import lampSrc from 'assets/Lamp.svg'
 
 export class Light {
     constructor(positionX, positionY, width, height, image, color, lightWidth) {
@@ -12,10 +14,10 @@ export class Light {
             x: this.x + this.width / 2,
             y: this.y + this.height / 2
         }
-        this.image = image
         this.turnedOn = true
         this.color = color
         this.lightWidth = lightWidth
+        this.image = image,
         this.offset = 10
         this.isShot = false
         this.perspective = 40

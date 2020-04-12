@@ -19,7 +19,8 @@ module.exports = (env, argv) => ({
     resolve: {
         alias: {
             shared: path.resolve(__dirname, 'src/shared/'),
-            assets: path.resolve(__dirname, 'assets/')
+            assets: path.resolve(__dirname, 'assets/'),
+            classes: path.resolve(__dirname, 'classes/')
         }
     },
     module: {
