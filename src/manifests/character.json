@@ -1,0 +1,26 @@
+{
+    "upperBodyimageURL": "/assets/CharacterUpper.svg",
+    "upperBodyFlippedImageURL": "/assets/CharacterUpperFlipped.svg",
+    "lowerBodyimageURL": "/assets/CharacterLower.svg",
+    "lowerBodyFlippedImageURL": "/assets/CharacterLowerFlipped.gif",
+    "flashImageURL" : "/assets/Flash.svg",
+
+    "frames": [
+        {
+            "name": "idle",
+            "rect": [276, 44, 16, 16]
+        }
+    ],
+
+    "animations": [
+        {
+            "name": "run",
+            "frameLen": 6,
+            "frames": [
+                "run-1",
+                "run-2",
+                "run-3"
+            ]
+        }
+    ]
+}

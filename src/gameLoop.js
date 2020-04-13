@@ -23,6 +23,8 @@ export const GameLoop = (assets, plantImages) => {
         { width: 120, height: 200, image: characterLowerImage, imageFlipped: characterLowerImageFlipped },
         flashImage
     )
+
+    
     const scene = new Scene(sceneImage)
 
     let velocityX = 6
