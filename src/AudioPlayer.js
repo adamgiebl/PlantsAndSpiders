@@ -19,11 +19,12 @@ export class AudioPlayer {
         const source = this.audioContext.createBufferSource()
         source.connect(this.audioContext.destination)
         source.buffer = this.audioBuffers.get(name)
-        source.start(0)
+        //source.start(0)
     }
 }
 
 export const audioPlayer = new AudioPlayer()
+
 audioPlayer.loadAudio(gunshotSrc).then(buff => {
     audioPlayer.addAudio('gunshot', buff)
 })

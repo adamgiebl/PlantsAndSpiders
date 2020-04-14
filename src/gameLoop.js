@@ -16,7 +16,7 @@ export const GameLoop = async config => {
     let velocityY = 0
     let gravity = 0.6
 
-    const plants = plantFactory.createPlants(0, 50)
+    const plants = plantFactory.createPlants(0)
     const lamps = lightFactory.createLights(3)
     const spiders = spiderFactory.createSpiders(5, character)
 

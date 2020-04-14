@@ -9,26 +9,8 @@
         "width": 120,
         "height": 200,
         "imageURL": "images/CharacterLower.svg",
-        "flippedImageURL": "images/CharacterLowerFlipped.svg"
+        "flippedImageURL": "images/CharacterLowerFlipped.svg",
+        "spriteSheetURL": "images/CharacterLowerSpriteSheet.svg"
     },
-    "flashImageURL" : "images/Flash.svg",
-
-    "frames": [
-        {
-            "name": "idle",
-            "rect": [276, 44, 16, 16]
-        }
-    ],
-
-    "animations": [
-        {
-            "name": "run",
-            "frameLen": 6,
-            "frames": [
-                "run-1",
-                "run-2",
-                "run-3"
-            ]
-        }
-    ]
+    "flashImageURL" : "images/Flash.svg"
 }

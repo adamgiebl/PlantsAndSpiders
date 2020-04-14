@@ -137,7 +137,8 @@ export const loadCharacter = async () => {
     manifest.lowerBody = {
         ...manifest.lowerBody,
         image: await loadImage(manifest.lowerBody.imageURL),
-        imageFlipped: await loadImage(manifest.lowerBody.flippedImageURL)
+        imageFlipped: await loadImage(manifest.lowerBody.flippedImageURL),
+        spriteSheet: await loadImage(manifest.lowerBody.spriteSheetURL)
     }
     manifest.upperBody = {
         ...manifest.upperBody,

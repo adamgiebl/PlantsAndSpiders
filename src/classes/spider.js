@@ -4,7 +4,8 @@ import { audioPlayer } from '../AudioPlayer'
 import { loadImage, loadManifest } from './loaders'
 
 export class Spider {
-    constructor(positionX, positionY, destinationX, destinationY, image, splash, character) {
+    constructor(positionX, positionY, destinationX, destinationY, image, splash, character, spriteMap, manifest) {
+        this.manifest = manifest
         this.height = 50
         this.width = 50
         this.x = positionX
@@ -15,6 +16,7 @@ export class Spider {
         this.character = character
         this.killer = {}
         this.image = image
+        this.spriteMap = spriteMap
 
         this.deltaX = destinationX - positionX
         this.deltaY = destinationY - positionY
@@ -24,13 +26,18 @@ export class Spider {
         this.velocityX = Math.cos(this.angle) * 1.0
         this.velocityY = Math.sin(this.angle) * 1.0
         this.direction = this.angle - Math.PI / 2
+        this.distance = 0
+
+        console.log(this.spriteMap)
     }
     draw(ctx) {
+        this.distance += 2
+        //console.log(Math.floor(this.distance / 3) % this.spriteMap.size)
         if (!this.isShot) {
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(this.direction)
             ctx.translate(-this.x - this.width / 2, -this.y - this.height / 2)
-            this.getImage(ctx)
+            this.getFrame(ctx, `spider-${Math.floor(this.distance / 20) % this.spriteMap.size}`)
             ctx.setTransform(1, 0, 0, 1, 0, 0)
         } else {
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
@@ -40,18 +47,21 @@ export class Spider {
             ctx.setTransform(1, 0, 0, 1, 0, 0)
         }
     }
-    getImage(ctx) {
-        ctx.drawImage(
-            this.image,
-            0,
-            0,
-            130,
-            150,
-            (this.x += this.velocityX * 1),
-            (this.y += this.velocityY * 1),
-            this.width,
-            this.height
-        )
+    getFrame(ctx, name) {
+        const frame = this.spriteMap.get(name)
+        if (frame) {
+            ctx.drawImage(
+                this.image,
+                frame.x,
+                frame.y,
+                frame.width,
+                frame.height,
+                (this.x += this.velocityX * 1),
+                (this.y += this.velocityY * 1),
+                this.width,
+                this.height
+            )
+        }
     }
     onClick() {
         audioPlayer.playAudio('splash')
@@ -68,7 +78,7 @@ export class SpiderFactory {
         this.manifest = manifest
     }
     createSpiders(numberOfSpiders, character) {
-        const { image, splashImage, width, height } = this.manifest
+        const { image, splashImage } = this.manifest
         let spiders = []
         for (let i = 0; i < numberOfSpiders; i++) {
             spiders.push(
@@ -79,7 +89,9 @@ export class SpiderFactory {
                     canvas.height,
                     image,
                     splashImage,
-                    character
+                    character,
+                    this.manifest.spriteMap,
+                    this.manifest
                 )
             )
         }
@@ -91,5 +103,10 @@ export const loadSpiderFactory = async () => {
     const manifest = await loadManifest('spider')
     manifest.image = await loadImage(manifest.mainImageURL)
     manifest.splashImage = await loadImage(manifest.splashImageURL)
+    const spriteMap = new Map()
+    manifest.frames.forEach(frame => {
+        spriteMap.set(frame.name, frame.rect)
+    })
+    manifest.spriteMap = spriteMap
     return new SpiderFactory(manifest)
 }
