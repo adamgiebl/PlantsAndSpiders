@@ -2,5 +2,6 @@
     "mainImageURL": "images/Pot.svg",
     "plantImages": ["assets/plants/Plant1.svg", "assets/plants/Plant2.svg", "assets/plants/Plant3.svg", "assets/plants/Plant4.svg"],
     "width": 150,
-    "height": 120
+    "height": 120,
+    "potMargin": 40
 }

@@ -34,6 +34,12 @@ export class Character {
             frame: 0,
             image: this.manifest.flashImage
         }
+        this.shootingAnimation = {
+            active: false,
+            duration: 4,
+            frame: 0,
+            size: 5
+        }
         setUpKeyboard(this)
     }
     draw(ctx) {
@@ -41,9 +47,9 @@ export class Character {
             ...this.upperBody,
             rotationPoint: {
                 x: this.x + this.lowerBody.width / 2,
-                y: this.y + 30
+                y: this.y + 25
             },
-            x: this.x - 30,
+            x: this.x - 25,
             y: this.y - this.lowerBody.height + (this.flip ? 160 : 100)
         }
         ctx.strokeStyle = 'red'
@@ -59,7 +65,7 @@ export class Character {
         ctx.rotate(this.angle)
         ctx.translate(-this.upperBody.rotationPoint.x, -this.upperBody.rotationPoint.y)
         ctx.strokeStyle = 'limegreen'
-        //ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
+        this.runShootingAnimation()
         ctx.drawImage(
             this.flip ? this.upperBody.imageFlipped : this.upperBody.image,
             this.upperBody.x,
@@ -67,6 +73,7 @@ export class Character {
             this.upperBody.width,
             this.upperBody.height
         )
+        //ctx.strokeRect(this.upperBody.x, this.upperBody.y, this.upperBody.width, this.upperBody.height)
         ctx.setTransform(1, 0, 0, 1, 0, 0)
         ctx.fillStyle = 'blue'
         //d ctx.fillRect(this.upperBody.rotationPoint.x - 5, this.upperBody.rotationPoint.y - 5, 10, 10)
@@ -96,6 +103,17 @@ export class Character {
             }
         }
     }
+    runShootingAnimation() {
+        if (this.shootingAnimation.active) {
+            if (this.shootingAnimation.frame >= this.shootingAnimation.duration) {
+                this.shootingAnimation.frame = 0
+                this.shootingAnimation.active = false
+            } else {
+                this.shootingAnimation.frame++
+                this.upperBody.x = this.upperBody.x - this.shootingAnimation.size * this.shootingAnimation.frame
+            }
+        }
+    }
     rotate(clientX, clientY) {
         const deltaX = this.x + this.upperBody.width / 2 - clientX
         const deltaY = this.y + this.upperBody.height / 2 - clientY
@@ -110,6 +128,7 @@ export class Character {
     onClick() {
         audioPlayer.playAudio('gunshot')
         this.flashAnimation.active = true
+        this.shootingAnimation.active = true
     }
 }
 

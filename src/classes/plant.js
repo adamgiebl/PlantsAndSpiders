@@ -6,8 +6,8 @@ export class PlantFactory {
     constructor(manifest) {
         this.manifest = manifest
     }
-    createPlants(numberOfPlants, potMargin) {
-        const { width, height, image, plantImages } = this.manifest
+    createPlants(numberOfPlants) {
+        const { width, height, image, plantImages, potMargin } = this.manifest
         const plants = []
         const widthSum = width * numberOfPlants + potMargin * (numberOfPlants - 1)
         const offset = (canvas.width - widthSum) / 2

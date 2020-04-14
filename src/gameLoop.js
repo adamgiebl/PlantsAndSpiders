@@ -17,12 +17,12 @@ export const GameLoop = async config => {
     let gravity = 0.6
 
     const plants = plantFactory.createPlants(0, 50)
-    const lamps = lightFactory.createLights(3, 140)
+    const lamps = lightFactory.createLights(3)
     const spiders = spiderFactory.createSpiders(5, character)
 
     window.addEventListener('click', e => {
         character.onClick()
-        checkTarget(e, [...lamps, ...spiders], entity => {
+        checkTarget(e, [...lamps, ...spiders, ...plants], entity => {
             if (entity) entity.onClick()
         })
     })

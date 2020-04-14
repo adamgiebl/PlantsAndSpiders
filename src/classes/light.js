@@ -58,8 +58,8 @@ export class LightFactory {
         this.manifest = manifest
     }
 
-    createLights(numberOfLights, lightMargin) {
-        const { width, height, image, color, lightWidth } = this.manifest
+    createLights(numberOfLights) {
+        const { width, height, image, color, lightWidth, lightMargin } = this.manifest
         const lights = []
         const widthSum = width * numberOfLights + lightMargin * (numberOfLights - 1)
         const offset = (canvas.width - widthSum) / 2
