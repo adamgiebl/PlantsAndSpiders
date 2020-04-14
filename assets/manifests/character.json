@@ -1,0 +1,34 @@
+{
+    "upperBody" : {
+        "width": 260,
+        "height": 200,
+        "imageURL": "images/CharacterUpper.svg",
+        "flippedImageURL": "images/CharacterUpperFlipped.svg"
+    },
+    "lowerBody" : {
+        "width": 120,
+        "height": 200,
+        "imageURL": "images/CharacterLower.svg",
+        "flippedImageURL": "images/CharacterLowerFlipped.svg"
+    },
+    "flashImageURL" : "images/Flash.svg",
+
+    "frames": [
+        {
+            "name": "idle",
+            "rect": [276, 44, 16, 16]
+        }
+    ],
+
+    "animations": [
+        {
+            "name": "run",
+            "frameLen": 6,
+            "frames": [
+                "run-1",
+                "run-2",
+                "run-3"
+            ]
+        }
+    ]
+}

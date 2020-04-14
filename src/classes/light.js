@@ -1,8 +1,7 @@
 import { groundY } from 'shared/globalVariables'
 import { canvas, maskCtx } from 'shared/canvas'
 import { audioPlayer } from '../AudioPlayer'
-import { loadImage } from './loaders'
-import lampSrc from 'assets/Lamp.svg'
+import { loadImage, loadManifest } from './loaders'
 
 export class Light {
     constructor(positionX, positionY, width, height, image, color, lightWidth) {
@@ -17,8 +16,7 @@ export class Light {
         this.turnedOn = true
         this.color = color
         this.lightWidth = lightWidth
-        this.image = image,
-        this.offset = 10
+        ;(this.image = image), (this.offset = 10)
         this.isShot = false
         this.perspective = 40
     }
@@ -56,33 +54,36 @@ export class Light {
 }
 
 export class LightFactory {
-    constructor(width, height, image, color, lightWidth) {
-        this.width = width
-        this.height = height
-        this.color = color
-        this.image = image
-        this.lightWidth = lightWidth
+    constructor(manifest) {
+        this.manifest = manifest
     }
 
     createLights(numberOfLights, lightMargin) {
+        const { width, height, image, color, lightWidth } = this.manifest
         const lights = []
-        const widthSum = this.width * numberOfLights + lightMargin * (numberOfLights - 1)
+        const widthSum = width * numberOfLights + lightMargin * (numberOfLights - 1)
         const offset = (canvas.width - widthSum) / 2
 
         for (let i = 0; i < numberOfLights; i++) {
             lights.push(
                 new Light(
-                    offset + (this.width + (i === numberOfLights ? 0 : lightMargin)) * i,
+                    offset + (width + (i === numberOfLights ? 0 : lightMargin)) * i,
                     0,
-                    this.width,
-                    this.height,
-                    this.image,
-                    this.color,
-                    this.lightWidth
+                    width,
+                    height,
+                    image,
+                    color,
+                    lightWidth
                 )
             )
         }
 
         return lights
     }
+}
+
+export const loadLightFactory = async () => {
+    const manifest = await loadManifest('light')
+    manifest.image = await loadImage(manifest.mainImageURL)
+    return new LightFactory(manifest)
 }

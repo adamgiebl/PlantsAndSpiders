@@ -1,6 +1,7 @@
 import { canvas, canvasCenter } from 'shared/canvas'
 import { randomIntFromRange } from 'shared/helpers'
 import { audioPlayer } from '../AudioPlayer'
+import { loadImage, loadManifest } from './loaders'
 
 export class Spider {
     constructor(positionX, positionY, destinationX, destinationY, image, splash, character) {
@@ -63,13 +64,11 @@ export class Spider {
 }
 
 export class SpiderFactory {
-    constructor(width, height, image, splash) {
-        this.width = width
-        this.height = height
-        this.image = image
-        this.splash = splash
+    constructor(manifest) {
+        this.manifest = manifest
     }
     createSpiders(numberOfSpiders, character) {
+        const { image, splashImage, width, height } = this.manifest
         let spiders = []
         for (let i = 0; i < numberOfSpiders; i++) {
             spiders.push(
@@ -78,12 +77,19 @@ export class SpiderFactory {
                     randomIntFromRange(-200, 0),
                     randomIntFromRange(canvasCenter.x - 200, canvasCenter.x + 200),
                     canvas.height,
-                    this.image,
-                    this.splash,
+                    image,
+                    splashImage,
                     character
                 )
             )
         }
         return spiders
     }
+}
+
+export const loadSpiderFactory = async () => {
+    const manifest = await loadManifest('spider')
+    manifest.image = await loadImage(manifest.mainImageURL)
+    manifest.splashImage = await loadImage(manifest.splashImageURL)
+    return new SpiderFactory(manifest)
 }

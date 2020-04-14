@@ -1,46 +1,28 @@
-import { ctx, canvas, canvasCenter, mask, maskCtx } from 'shared/canvas'
-import { Character, Scene, Spider, PotFactory, LightFactory, SpiderFactory } from './classes'
+import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
+import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory } from './classes'
 import { groundY } from 'shared/globalVariables'
 
 import { checkTarget } from './clickHandler'
 
-export const GameLoop = (assets, plantImages) => {
-    const [
-        spiderImage,
-        spiderSplash,
-        characterLowerImage,
-        characterLowerImageFlipped,
-        characterUpperImage,
-        characterUpperImageFlipped,
-        sceneImage,
-        potImage,
-        lampImage,
-        flashImage
-    ] = assets
-
-    const character = new Character(
-        { width: 260, height: 200, image: characterUpperImage, imageFlipped: characterUpperImageFlipped },
-        { width: 120, height: 200, image: characterLowerImage, imageFlipped: characterLowerImageFlipped },
-        flashImage
-    )
-
-    
-    const scene = new Scene(sceneImage)
+export const GameLoop = async config => {
+    console.log(config)
+    const character = await loadCharacter()
+    const scene = await loadScene()
+    const plantFactory = await loadPlantFactory()
+    const lightFactory = await loadLightFactory()
+    const spiderFactory = await loadSpiderFactory()
 
     let velocityX = 6
     let velocityY = 0
     let gravity = 0.6
 
-    const potFactory = new PotFactory(150, 120, potImage, plantImages)
-    const pots = potFactory.createPots(0, 50)
-    const lightFactory = new LightFactory(200, 130, lampImage, 'rgba(251, 252, 214, 0.8)', 200)
+    const plants = plantFactory.createPlants(0, 50)
     const lamps = lightFactory.createLights(3, 140)
-    const spiderFactory = new SpiderFactory(40, 40, spiderImage, spiderSplash)
     const spiders = spiderFactory.createSpiders(5, character)
 
     window.addEventListener('click', e => {
         character.onClick()
-        checkTarget(e, [...lamps, ...spiders, ...pots], entity => {
+        checkTarget(e, [...lamps, ...spiders], entity => {
             if (entity) entity.onClick()
         })
     })
@@ -83,7 +65,7 @@ export const GameLoop = (assets, plantImages) => {
             spider.draw(ctx)
         })
 
-        pots.forEach(pot => {
+        plants.forEach(pot => {
             pot.draw(ctx)
         })
 

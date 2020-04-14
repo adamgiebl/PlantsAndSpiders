@@ -1,10 +1,12 @@
-import { ctx, canvas } from 'shared/canvas'
+import { canvas } from 'shared/canvas'
 import { groundHeight } from 'shared/globalVariables'
 import { setUpKeyboard } from '../input'
 import { audioPlayer } from '../AudioPlayer'
+import { loadImage, loadManifest } from './loaders'
 
 export class Character {
-    constructor(upperBody, lowerBody, flashImage) {
+    constructor(manifest) {
+        this.manifest = manifest
         this.direction = {
             left: false,
             right: false,
@@ -17,12 +19,12 @@ export class Character {
         this.flip = false
         this.shot = false
         this.lowerBody = {
-            ...lowerBody
+            ...this.manifest.lowerBody
         }
         this.x = 0
         this.y = canvas.height - groundHeight - this.lowerBody.height + 5
         this.upperBody = {
-            ...upperBody,
+            ...this.manifest.upperBody,
             x: this.x - 30,
             y: this.y - this.lowerBody.height + 70
         }
@@ -30,7 +32,7 @@ export class Character {
             active: false,
             duration: 3,
             frame: 0,
-            image: flashImage
+            image: this.manifest.flashImage
         }
         setUpKeyboard(this)
     }
@@ -109,4 +111,20 @@ export class Character {
         audioPlayer.playAudio('gunshot')
         this.flashAnimation.active = true
     }
+}
+
+export const loadCharacter = async () => {
+    const manifest = await loadManifest('character')
+    manifest.lowerBody = {
+        ...manifest.lowerBody,
+        image: await loadImage(manifest.lowerBody.imageURL),
+        imageFlipped: await loadImage(manifest.lowerBody.flippedImageURL)
+    }
+    manifest.upperBody = {
+        ...manifest.upperBody,
+        image: await loadImage(manifest.upperBody.imageURL),
+        imageFlipped: await loadImage(manifest.upperBody.flippedImageURL)
+    }
+    manifest.flashImage = await loadImage(manifest.flashImageURL)
+    return new Character(manifest)
 }

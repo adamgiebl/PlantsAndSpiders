@@ -54,16 +54,7 @@ module.exports = (env, argv) => ({
             filename: 'index.html'
         }),
         new WebpackMd5Hash(),
-        new CopyWebpackPlugin([
-            // {
-            //     from: './src/assets',
-            //     to: './assets'
-            // },
-            // {
-            //     from: 'manifest.json',
-            //     to: 'manifest.json'
-            // }
-        ]),
+        new CopyWebpackPlugin([{ from: 'assets' }]),
         new CompressionPlugin({
             algorithm: 'gzip'
         })
