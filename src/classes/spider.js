@@ -27,13 +27,11 @@ export class Spider {
         this.velocityY = Math.sin(this.angle) * 1.0
         this.direction = this.angle - Math.PI / 2
         this.distance = 0
-
-        console.log(this.spriteMap)
     }
     draw(ctx) {
-        this.distance += 2
         //console.log(Math.floor(this.distance / 3) % this.spriteMap.size)
         if (!this.isShot) {
+            this.distance += 2
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(this.direction)
             ctx.translate(-this.x - this.width / 2, -this.y - this.height / 2)

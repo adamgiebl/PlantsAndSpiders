@@ -1,10 +1,11 @@
-import { groundY } from 'shared/globalVariables'
+import { groundY } from 'shared/canvas'
 import { canvas, maskCtx } from 'shared/canvas'
 import { audioPlayer } from '../AudioPlayer'
 import { loadImage, loadManifest } from './loaders'
 
 export class Light {
-    constructor(positionX, positionY, width, height, image, color, lightWidth) {
+    constructor(id, positionX, positionY, width, height, image, color, lightWidth, turnOn, numberOfLights) {
+        this.id = id
         this.width = width
         this.height = height
         this.x = positionX
@@ -13,12 +14,15 @@ export class Light {
             x: this.x + this.width / 2,
             y: this.y + this.height / 2
         }
-        this.turnedOn = true
+        this.turnedOn = false
         this.color = color
         this.lightWidth = lightWidth
-        ;(this.image = image), (this.offset = 10)
+        this.image = image
+        this.offset = 10
         this.isShot = false
         this.perspective = 40
+        this.turnOn = turnOn
+        this.numberOfLights = numberOfLights
     }
     drawLight(ctx) {
         if (this.turnedOn) {
@@ -26,11 +30,20 @@ export class Light {
             //top left
             ctx.moveTo(this.x + this.offset, this.y + this.height)
             //bottom left
-            ctx.lineTo(this.x - this.lightWidth, canvas.height - 65)
-            ctx.lineTo(this.x - this.lightWidth - this.perspective, canvas.height)
+            if (this.id == 0) {
+                ctx.lineTo(this.x - this.lightWidth, canvas.height - 65)
+                ctx.lineTo(this.x - this.lightWidth - this.perspective, canvas.height)
+            } else {
+                ctx.lineTo(this.x - this.lightWidth, canvas.height)
+            }
             //bottom right
-            ctx.lineTo(this.x + +this.width + this.lightWidth + this.perspective, canvas.height)
-            ctx.lineTo(this.x + this.width + this.lightWidth, canvas.height - 65)
+            if (this.id == this.numberOfLights - 1) {
+                ctx.lineTo(this.x + +this.width + this.lightWidth + this.perspective, canvas.height)
+                ctx.lineTo(this.x + this.width + this.lightWidth, canvas.height - 65)
+            } else {
+                ctx.lineTo(this.x + this.width + this.lightWidth, canvas.height)
+            }
+
             //top right
             ctx.lineTo(this.x + this.width - this.offset, this.y + this.height)
             ctx.closePath()
@@ -58,24 +71,27 @@ export class LightFactory {
         this.manifest = manifest
     }
 
-    createLights(numberOfLights) {
+    createLights(numberOfLights, delay) {
         const { width, height, image, color, lightWidth, lightMargin } = this.manifest
         const lights = []
         const widthSum = width * numberOfLights + lightMargin * (numberOfLights - 1)
         const offset = (canvas.width - widthSum) / 2
 
         for (let i = 0; i < numberOfLights; i++) {
-            lights.push(
-                new Light(
-                    offset + (width + (i === numberOfLights ? 0 : lightMargin)) * i,
-                    0,
-                    width,
-                    height,
-                    image,
-                    color,
-                    lightWidth
-                )
+            const turnOn = i + delay
+            const light = new Light(
+                i,
+                offset + (width + (i === numberOfLights ? 0 : lightMargin)) * i,
+                0,
+                width,
+                height,
+                image,
+                color,
+                lightWidth,
+                turnOn,
+                numberOfLights
             )
+            lights.push(light)
         }
 
         return lights

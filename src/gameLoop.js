@@ -1,72 +1,55 @@
 import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
-import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory } from './classes'
-import { groundY } from 'shared/globalVariables'
+import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory, Timer } from './classes'
 
 import { checkTarget } from './clickHandler'
 
 export const GameLoop = async config => {
     console.log(config)
+    const timer = new Timer()
     const character = await loadCharacter()
     const scene = await loadScene()
     const plantFactory = await loadPlantFactory()
     const lightFactory = await loadLightFactory()
     const spiderFactory = await loadSpiderFactory()
 
-    let velocityX = 6
-    let velocityY = 0
-    let gravity = 0.6
+    const plants = plantFactory.createPlants(3)
+    const lamps = lightFactory.createLights(3, config.timing.startLights)
+    let spiders = []
+    character.epicEntrance().then(() => {})
 
-    const plants = plantFactory.createPlants(0)
-    const lamps = lightFactory.createLights(3)
-    const spiders = spiderFactory.createSpiders(5, character)
-
-    window.addEventListener('click', e => {
-        character.onClick()
+    canvas.addEventListener('click', e => {
         checkTarget(e, [...lamps, ...spiders, ...plants], entity => {
             if (entity) entity.onClick()
         })
     })
 
-    window.addEventListener('mousemove', ({ clientX, clientY }) => {
-        character.rotate(clientX, clientY)
-    })
+    timer.start()
 
     const gameLoop = () => {
         ctx.globalCompositeOperation = 'normal'
 
         scene.draw(ctx)
 
-        velocityY += gravity
-        character.y += velocityY
-
-        if (character.y + character.lowerBody.height >= groundY) {
-            character.y = groundY - character.lowerBody.height
-            character.isOnGround = true
-            velocityY = 0.0
-        }
-
-        if (character.direction.left) {
-            if (character.x > 0) {
-                character.x -= velocityX
-            }
-        } else if (character.direction.right) {
-            if (character.x < canvas.width - character.upperBody.width) {
-                character.x += velocityX
-            }
-        }
-        if (character.direction.jumping) {
-            if (character.isOnGround) {
-                velocityY = -12.0
-                character.isOnGround = false
-            }
-        }
+        character.move()
 
         spiders.forEach(spider => {
             spider.draw(ctx)
         })
 
-        plants.forEach(pot => {
-            pot.draw(ctx)
+        //check if all plants are planted
+        if (timer.getTimeElapsed() >= config.timing.showSeeds) {
+            if (!document.querySelector('.seedButton.active')) {
+                if (spiders.length == 0) {
+                    spiders = spiderFactory.createSpiders(5, character)
+                }
+            }
+        }
+        plants.forEach(plant => {
+            if (plant.showSeed && config.timing.showSeeds == timer.getTimeElapsed()) {
+                plant.showSeedButton()
+                plant.showSeed = false
+            }
+            plant.draw(ctx)
         })
 
         character.draw(ctx)
@@ -77,10 +60,13 @@ export const GameLoop = async config => {
         maskCtx.fillRect(0, 0, mask.width, mask.height)
 
         character.drawFlash(maskCtx)
-
         // adding "white" light onto the mask
         lamps.forEach(lamp => {
             if (!lamp.isShot) {
+                if (!lamp.turnedOn && lamp.turnOn == timer.getTimeElapsed()) {
+                    lamp.turnedOn = true
+                    //spiders = spiderFactory.createSpiders(15, character)
+                }
                 lamp.drawBody(ctx)
                 lamp.drawLight(maskCtx)
             } else {
@@ -91,6 +77,7 @@ export const GameLoop = async config => {
         // multiply the mask with the underlying canvas
         ctx.globalCompositeOperation = 'multiply'
         ctx.drawImage(mask, 0, 0)
+        timer.logTimeElapsed()
 
         window.requestAnimationFrame(gameLoop)
     }

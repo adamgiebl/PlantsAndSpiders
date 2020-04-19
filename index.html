@@ -16,8 +16,59 @@
             width: 100vw;
             height: 100vh;
         }
+        html {
+            height: 100%;
+        }
         body {
             overflow: hidden;
+            height: 100%;
+        }
+        .seedButton {
+            position: absolute;
+            cursor: pointer;
+            display: none;
+            transition: transform 0.3s;
+        }
+        .active {
+            display: block;
+            animation: jumpOut 0.3s ease-out;
+            
+        }
+        .seedButton__image {
+            position: relative;
+            width: 80px;
+            height: 90px;
+            background-image: url("./images/Seed.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: float 0.6s infinite alternate ease-in-out;
+            animation-delay: 0.3s;
+            
+        }
+        .seedButton:hover {
+            transform: translateY(-10px);
+        }
+        .seedButton:hover .seedButton__image {
+            animation-play-state: paused;
+        }
+        @keyframes float {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(-10px);
+            }
+        }
+        @keyframes jumpOut {
+            0% {
+                transform: translateY(50px) scale(0.5);
+            }
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+        }
+        #overlay {
+            position: absolute;
         }
     </style>
 </head>
@@ -25,6 +76,7 @@
 <body>
 
     <body>
+        <div id="overlay"></div>
         <canvas></canvas>
     </body>
     <script async src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>

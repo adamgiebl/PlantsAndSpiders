@@ -1,7 +1,25 @@
 {
     "mainImageURL": "images/Pot.svg",
-    "plantImages": ["assets/plants/Plant1.svg", "assets/plants/Plant2.svg", "assets/plants/Plant3.svg", "assets/plants/Plant4.svg"],
-    "width": 150,
+    "width": 170,
     "height": 120,
-    "potMargin": 40
+    "potMargin": 60,
+    "plantImages": ["plants/Plant1.svg", "plants/Plant2.svg", "plants/Plant3.svg", "plants/Plant4.svg"],
+    "plantSizes": [
+        {
+            "width": 100,
+            "height": 100
+        },
+        {
+            "width": 100,
+            "height": 100
+        },
+        {
+            "width": 100,
+            "height": 100
+        },
+        {
+            "width": 100,
+            "height": 100
+        }
+    ]
 }

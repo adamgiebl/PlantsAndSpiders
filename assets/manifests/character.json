@@ -12,5 +12,60 @@
         "flippedImageURL": "images/CharacterLowerFlipped.svg",
         "spriteSheetURL": "images/CharacterLowerSpriteSheet.svg"
     },
-    "flashImageURL" : "images/Flash.svg"
+    "flashImageURL" : "images/Flash.svg",
+    "animationsToBeLoaded": [
+        {
+            "name": "running",
+            "frames": [
+            { 
+                "name": "walk-0", 
+                "rect": {
+                    "x": 301,
+                    "y": 0,
+                    "width": 146,
+                    "height": 235
+                } 
+            },
+            { 
+                "name": "walk-1", 
+                "rect": {
+                    "x": 448,
+                    "y": 0,
+                    "width": 146,
+                    "height": 235
+                } 
+            },
+            { 
+                "name": "walk-2", 
+                "rect": { 
+                    "x": 594,
+                    "y": 0,
+                    "width": 146,
+                    "height": 235
+                } 
+            },
+            { 
+                "name": "walk-3", 
+                "rect": { 
+                    "x": 740,
+                    "y": 0,
+                    "width": 146,
+                    "height": 235
+                } 
+            }
+        ]},
+        {   
+            "name": "jumping",
+            "frames": [
+            { 
+                "name": "jump-0", 
+                "rect": {
+                    "x": 155,
+                    "y": 0,
+                    "width": 146,
+                    "height": 235
+                } 
+            }
+        ]}
+    ]
 }

@@ -1,4 +1,5 @@
 import KeyboardHandler from './KeyboardHandler'
+import { canvas } from 'shared/canvas'
 
 export const setUpKeyboard = character => {
     const keyboard = new KeyboardHandler()
@@ -16,4 +17,13 @@ export const setUpKeyboard = character => {
     })
 
     keyboard.listenTo(window)
+}
+
+export const setUpMouse = character => {
+    canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
+        character.rotate(clientX, clientY)
+    })
+    canvas.addEventListener('click', e => {
+        character.onClick()
+    })
 }
