@@ -3,23 +3,23 @@
     "width": 170,
     "height": 120,
     "potMargin": 60,
-    "plantImages": ["plants/Plant1.svg", "plants/Plant2.svg", "plants/Plant3.svg", "plants/Plant4.svg"],
+    "plantImages": ["plants/Plant1.png", "plants/Plant2.png", "plants/Plant3.png", "plants/Plant4.png"],
     "plantSizes": [
         {
-            "width": 100,
-            "height": 100
+            "width": 125,
+            "height": 125
         },
         {
-            "width": 100,
-            "height": 100
+            "width": 179,
+            "height": 223
         },
         {
-            "width": 100,
-            "height": 100
+            "width": 211,
+            "height": 308
         },
         {
-            "width": 100,
-            "height": 100
+            "width": 260,
+            "height": 440
         }
     ]
 }

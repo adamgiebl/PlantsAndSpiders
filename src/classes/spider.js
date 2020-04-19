@@ -17,7 +17,6 @@ export class Spider {
         this.killer = {}
         this.image = image
         this.spriteMap = spriteMap
-
         this.deltaX = destinationX - positionX
         this.deltaY = destinationY - positionY
         this.angle = Math.atan2(this.deltaY, this.deltaX)
@@ -45,6 +44,7 @@ export class Spider {
             ctx.setTransform(1, 0, 0, 1, 0, 0)
         }
     }
+    checkCollision() {}
     getFrame(ctx, name) {
         const frame = this.spriteMap.get(name)
         if (frame) {

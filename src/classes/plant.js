@@ -19,8 +19,7 @@ export class PlantFactory {
                 new Plant(
                     offset + (width + (i === numberOfPlants ? 0 : potMargin)) * i,
                     groundY - height,
-                    plantSizes[i].width,
-                    plantSizes[i].height,
+                    plantSizes,
                     image,
                     loadedPlantImages,
                     i
@@ -33,39 +32,43 @@ export class PlantFactory {
 }
 
 export class Plant {
-    constructor(positionX, positionY, width, height, image, plantImages, id) {
-        this.width = width
-        this.height = height
+    constructor(positionX, positionY, plantSizes, image, plantImages, id) {
         this.id = id
         this.x = positionX
         this.y = positionY - 15
         this.size = 0
+        this.plantSizes = plantSizes
         this.planted = false
         this.showSeed = true
         this.plantImages = plantImages
-        this.potSize = { width: 170, height: 120 }
+        this.width = 170
+        this.height = 120
         this.potCenter = {
-            x: this.x + this.potSize.width / 2,
-            y: this.y + this.potSize.height / 2
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
         }
         this.image = image
         this.timeToShowSeedButton = 1
+        this.activePlant = plantSizes[0]
+        this.activePlantImage = plantImages[0]
         this.createSeedButton()
     }
     draw(ctx) {
-        ctx.drawImage(this.image, this.x, this.y, this.potSize.width, this.potSize.height)
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
         if (this.planted) {
             ctx.drawImage(
-                this.plantImages[this.size],
-                this.potCenter.x - this.width / 2,
-                this.y - this.height,
-                this.width,
-                this.height
+                this.activePlantImage,
+                this.potCenter.x - this.activePlant.width / 2,
+                this.y - this.activePlant.height,
+                this.activePlant.width,
+                this.activePlant.height
             )
         }
     }
     grow() {
-        if (this.size < this.plantImages.length - 1) {
+        if (this.size < this.plantImages.length && this.planted) {
+            this.activePlant = this.plantSizes[this.size]
+            this.activePlantImage = this.plantImages[this.size]
             this.size++
         }
     }
