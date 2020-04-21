@@ -49,8 +49,14 @@ export class Plant {
         }
         this.image = image
         this.timeToShowSeedButton = 1
-        this.activePlant = plantSizes[0]
-        this.activePlantImage = plantImages[0]
+        this.activePlant = plantSizes[this.size]
+        this.activePlantImage = plantImages[this.size]
+        this.plantBoundingRect = {
+            x: this.potCenter.x - this.activePlant.width / 2,
+            y: this.y - this.activePlant.height,
+            width: this.activePlant.width,
+            height: this.activePlant.height
+        }
         this.createSeedButton()
     }
     draw(ctx) {
@@ -58,10 +64,10 @@ export class Plant {
         if (this.planted) {
             ctx.drawImage(
                 this.activePlantImage,
-                this.potCenter.x - this.activePlant.width / 2,
-                this.y - this.activePlant.height,
-                this.activePlant.width,
-                this.activePlant.height
+                this.plantBoundingRect.x,
+                this.plantBoundingRect.y,
+                this.plantBoundingRect.width,
+                this.plantBoundingRect.height
             )
         }
     }
@@ -70,6 +76,12 @@ export class Plant {
             this.activePlant = this.plantSizes[this.size]
             this.activePlantImage = this.plantImages[this.size]
             this.size++
+            this.plantBoundingRect = {
+                x: this.potCenter.x - this.activePlant.width / 2,
+                y: this.y - this.activePlant.height,
+                width: this.activePlant.width,
+                height: this.activePlant.height
+            }
         }
     }
     onClick() {

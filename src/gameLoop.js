@@ -40,7 +40,7 @@ export const GameLoop = async config => {
         if (timer.getTimeElapsed() >= config.timing.showSeeds) {
             if (!document.querySelector('.seedButton.active')) {
                 if (spiders.length == 0) {
-                    spiders = spiderFactory.createSpiders(5, character)
+                    spiders = spiderFactory.createSpiders(5, character, plants)
                 }
             }
         }

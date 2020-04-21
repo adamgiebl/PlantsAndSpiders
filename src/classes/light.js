@@ -43,7 +43,6 @@ export class Light {
             } else {
                 ctx.lineTo(this.x + this.width + this.lightWidth, canvas.height)
             }
-
             //top right
             ctx.lineTo(this.x + this.width - this.offset, this.y + this.height)
             ctx.closePath()

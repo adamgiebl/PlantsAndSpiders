@@ -4,23 +4,18 @@ import { audioPlayer } from '../AudioPlayer'
 import { loadImage, loadManifest } from './loaders'
 
 export class Spider {
-    constructor(positionX, positionY, destinationX, destinationY, image, splash, character, spriteMap, manifest) {
+    constructor(manifest) {
+        const { destination, position } = manifest
         this.manifest = manifest
         this.height = 50
         this.width = 50
-        this.x = positionX
-        this.y = positionY
-        this.destinationX = destinationX
-        this.destinationY = destinationY
+        this.x = position.x
+        this.y = position.y
         this.isShot = false
-        this.character = character
         this.killer = {}
-        this.image = image
-        this.spriteMap = spriteMap
-        this.deltaX = destinationX - positionX
-        this.deltaY = destinationY - positionY
+        this.deltaX = destination.x - this.x
+        this.deltaY = destination.y - this.y
         this.angle = Math.atan2(this.deltaY, this.deltaX)
-        this.splash = splash
         this.splashAngle = 0
         this.velocityX = Math.cos(this.angle) * 1.0
         this.velocityY = Math.sin(this.angle) * 1.0
@@ -28,28 +23,45 @@ export class Spider {
         this.distance = 0
     }
     draw(ctx) {
-        //console.log(Math.floor(this.distance / 3) % this.spriteMap.size)
         if (!this.isShot) {
             this.distance += 2
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(this.direction)
             ctx.translate(-this.x - this.width / 2, -this.y - this.height / 2)
-            this.getFrame(ctx, `spider-${Math.floor(this.distance / 20) % this.spriteMap.size}`)
+            this.getFrame(ctx, `spider-${Math.floor(this.distance / 20) % this.manifest.spriteMap.size}`)
             ctx.setTransform(1, 0, 0, 1, 0, 0)
+            this.checkCollision()
         } else {
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(-this.splashAngle + Math.PI)
             ctx.translate(-this.x - this.width / 2, -this.y - this.height / 2)
-            ctx.drawImage(this.splash, this.x - 10, this.y - this.height, this.width + 20, this.height * 2)
+            ctx.drawImage(
+                this.manifest.splashImage,
+                this.x - 10,
+                this.y - this.height,
+                this.width + 20,
+                this.height * 2
+            )
             ctx.setTransform(1, 0, 0, 1, 0, 0)
         }
     }
-    checkCollision() {}
+    checkCollision() {
+        this.manifest.plants.forEach(({ plantBoundingRect }) => {
+            if (
+                plantBoundingRect.x < this.x + this.width &&
+                plantBoundingRect.x + plantBoundingRect.width > this.x &&
+                plantBoundingRect.y < this.y + this.height &&
+                plantBoundingRect.y + plantBoundingRect.height > this.y
+            ) {
+                console.log('spider hit')
+            }
+        })
+    }
     getFrame(ctx, name) {
-        const frame = this.spriteMap.get(name)
+        const frame = this.manifest.spriteMap.get(name)
         if (frame) {
             ctx.drawImage(
-                this.image,
+                this.manifest.image,
                 frame.x,
                 frame.y,
                 frame.width,
@@ -64,8 +76,8 @@ export class Spider {
     onClick() {
         audioPlayer.playAudio('splash')
         this.isShot = true
-        this.killer = { x: this.character.upperBody.x, y: this.character.upperBody.y }
-        const deltaX = this.x - (this.killer.x + this.character.upperBody.width / 2)
+        this.killer = { x: this.manifest.character.upperBody.x, y: this.manifest.character.upperBody.y }
+        const deltaX = this.x - (this.killer.x + this.manifest.character.upperBody.width / 2)
         const deltaY = this.y - (this.killer.y + 100)
         this.splashAngle = Math.atan2(deltaX, deltaY)
     }
@@ -75,23 +87,20 @@ export class SpiderFactory {
     constructor(manifest) {
         this.manifest = manifest
     }
-    createSpiders(numberOfSpiders, character) {
-        const { image, splashImage } = this.manifest
+    createSpiders(numberOfSpiders, character, plants) {
+        this.manifest.character = character
+        this.manifest.plants = plants
         let spiders = []
         for (let i = 0; i < numberOfSpiders; i++) {
-            spiders.push(
-                new Spider(
-                    randomIntFromRange(-200, canvas.width + 200),
-                    randomIntFromRange(-200, 0),
-                    randomIntFromRange(canvasCenter.x - 200, canvasCenter.x + 200),
-                    canvas.height,
-                    image,
-                    splashImage,
-                    character,
-                    this.manifest.spriteMap,
-                    this.manifest
-                )
-            )
+            this.manifest.position = {
+                x: randomIntFromRange(-200, canvas.width + 200),
+                y: randomIntFromRange(-200, 0)
+            }
+            this.manifest.destination = {
+                x: randomIntFromRange(canvasCenter.x - 200, canvasCenter.x + 200),
+                y: canvas.height
+            }
+            spiders.push(new Spider(this.manifest))
         }
         return spiders
     }
