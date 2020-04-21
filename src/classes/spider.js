@@ -12,6 +12,7 @@ export class Spider {
         this.x = position.x
         this.y = position.y
         this.isShot = false
+        this.hasKilledAPlant = false
         this.killer = {}
         this.deltaX = destination.x - this.x
         this.deltaY = destination.y - this.y
@@ -23,7 +24,7 @@ export class Spider {
         this.distance = 0
     }
     draw(ctx) {
-        if (!this.isShot) {
+        if (!this.isShot && !this.hasKilledAPlant) {
             this.distance += 2
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(this.direction)
@@ -31,6 +32,8 @@ export class Spider {
             this.getFrame(ctx, `spider-${Math.floor(this.distance / 20) % this.manifest.spriteMap.size}`)
             ctx.setTransform(1, 0, 0, 1, 0, 0)
             this.checkCollision()
+        } else if (this.hasKilledAPlant) {
+            //console.log('killedAPlant')
         } else {
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(-this.splashAngle + Math.PI)
@@ -46,14 +49,17 @@ export class Spider {
         }
     }
     checkCollision() {
-        this.manifest.plants.forEach(({ plantBoundingRect }) => {
+        this.manifest.plants.forEach(plant => {
             if (
-                plantBoundingRect.x < this.x + this.width &&
-                plantBoundingRect.x + plantBoundingRect.width > this.x &&
-                plantBoundingRect.y < this.y + this.height &&
-                plantBoundingRect.y + plantBoundingRect.height > this.y
+                plant.plantBoundingRect.x < this.x + this.width &&
+                plant.plantBoundingRect.x + plant.plantBoundingRect.width > this.x &&
+                plant.plantBoundingRect.y < this.y + this.height &&
+                plant.plantBoundingRect.y + plant.plantBoundingRect.height > this.y
             ) {
-                console.log('spider hit')
+                console.log('collision')
+                //console.log(plant)
+                plant.shrink()
+                this.hasKilledAPlant = true
             }
         })
     }

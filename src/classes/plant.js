@@ -73,9 +73,22 @@ export class Plant {
     }
     grow() {
         if (this.size < this.plantImages.length && this.planted) {
+            this.size++
             this.activePlant = this.plantSizes[this.size]
             this.activePlantImage = this.plantImages[this.size]
-            this.size++
+            this.plantBoundingRect = {
+                x: this.potCenter.x - this.activePlant.width / 2,
+                y: this.y - this.activePlant.height,
+                width: this.activePlant.width,
+                height: this.activePlant.height
+            }
+        }
+    }
+    shrink() {
+        if (this.size > 0 && this.planted) {
+            this.size--
+            this.activePlant = this.plantSizes[this.size]
+            this.activePlantImage = this.plantImages[this.size]
             this.plantBoundingRect = {
                 x: this.potCenter.x - this.activePlant.width / 2,
                 y: this.y - this.activePlant.height,
