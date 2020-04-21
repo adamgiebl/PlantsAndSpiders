@@ -72,7 +72,7 @@ export class Plant {
         }
     }
     grow() {
-        if (this.size < this.plantImages.length && this.planted) {
+        if (this.size < this.plantImages.length - 1 && this.planted) {
             this.size++
             this.activePlant = this.plantSizes[this.size]
             this.activePlantImage = this.plantImages[this.size]

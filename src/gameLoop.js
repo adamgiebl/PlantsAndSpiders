@@ -1,10 +1,11 @@
 import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
 import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory, Timer } from './classes'
+import { randomIntFromRange } from 'shared/helpers'
 
 import { checkTarget } from './clickHandler'
 
 export const GameLoop = async config => {
-    console.log(config)
+    window.game = config
     const timer = new Timer()
     const character = await loadCharacter()
     const scene = await loadScene()
@@ -15,6 +16,13 @@ export const GameLoop = async config => {
     const plants = plantFactory.createPlants(3)
     const lamps = lightFactory.createLights(3, config.timing.startLights)
     let spiders = []
+    console.log()
+    console.log(randomIntFromRange(0, plants.length))
+    console.log(randomIntFromRange(0, plants.length))
+    console.log(randomIntFromRange(0, plants.length))
+    console.log(randomIntFromRange(0, plants.length))
+    console.log(randomIntFromRange(0, plants.length))
+
     character.epicEntrance().then(() => {})
 
     canvas.addEventListener('click', e => {
@@ -40,7 +48,7 @@ export const GameLoop = async config => {
         if (timer.getTimeElapsed() >= config.timing.showSeeds) {
             if (!document.querySelector('.seedButton.active')) {
                 if (spiders.length == 0) {
-                    spiders = spiderFactory.createSpiders(5, character, plants)
+                    spiders = spiderFactory.createSpiders(25, character, plants)
                 }
             }
         }

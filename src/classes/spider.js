@@ -5,10 +5,10 @@ import { loadImage, loadManifest } from './loaders'
 
 export class Spider {
     constructor(manifest) {
-        const { destination, position } = manifest
+        const { destination, position, width, height } = manifest
         this.manifest = manifest
-        this.height = 50
-        this.width = 50
+        this.height = width
+        this.width = height
         this.x = position.x
         this.y = position.y
         this.isShot = false
@@ -33,7 +33,6 @@ export class Spider {
             ctx.setTransform(1, 0, 0, 1, 0, 0)
             this.checkCollision()
         } else if (this.hasKilledAPlant) {
-            //console.log('killedAPlant')
         } else {
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2)
             ctx.rotate(-this.splashAngle + Math.PI)
@@ -56,8 +55,6 @@ export class Spider {
                 plant.plantBoundingRect.y < this.y + this.height &&
                 plant.plantBoundingRect.y + plant.plantBoundingRect.height > this.y
             ) {
-                console.log('collision')
-                //console.log(plant)
                 plant.shrink()
                 this.hasKilledAPlant = true
             }
@@ -102,9 +99,15 @@ export class SpiderFactory {
                 x: randomIntFromRange(-200, canvas.width + 200),
                 y: randomIntFromRange(-200, 0)
             }
+            const size = randomIntFromRange(25, 80)
+            this.manifest.width = size
+            this.manifest.height = size
+
+            //spider will pick a random plant and attack it
+            const plant = plants[randomIntFromRange(0, plants.length - 1)]
             this.manifest.destination = {
-                x: randomIntFromRange(canvasCenter.x - 200, canvasCenter.x + 200),
-                y: canvas.height
+                x: plant.x + plant.width / 2,
+                y: plant.y
             }
             spiders.push(new Spider(this.manifest))
         }
