@@ -1,102 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Plants and Spiders</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        canvas {
-            width: 100vw;
-            height: 100vh;
-        }
-        html {
-            height: 100%;
-        }
-        body {
-            overflow: hidden;
-            height: 100%;
-        }
-        .seedButton {
-            position: absolute;
-            cursor: pointer;
-            display: none;
-            transition: transform 0.3s;
-        }
-        .active {
-            display: block;
-            animation: jumpOut 0.3s ease-out;
-            
-        }
-        .seedButton__image {
-            position: relative;
-            width: 80px;
-            height: 90px;
-            background-image: url("./images/Seed.svg");
-            background-size: contain;
-            background-repeat: no-repeat;
-            animation: float 0.6s infinite alternate ease-in-out;
-            animation-delay: 0.3s;
-            
-        }
-        .seedButton:hover {
-            transform: translateY(-10px);
-        }
-        .seedButton:hover .seedButton__image {
-            animation-play-state: paused;
-        }
-        @keyframes float {
-            from {
-                transform: translateY(0px);
-            }
-            to {
-                transform: translateY(-10px);
-            }
-        }
-        @keyframes jumpOut {
-            0% {
-                transform: translateY(50px) scale(0.5);
-            }
-            100% {
-                transform: translateY(0px) scale(1);
-            }
-        }
-        #overlay {
-            position: absolute;
-        }
-        #gameOverScreen {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            background: black;
-            z-index: 1;
-            display: grid;
-            place-items: center;
-            color: white
-        }
-        body .hidden {
-            display: none !important;
-        }
-    </style>
-</head>
-
-<body>
-
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Plants and Spiders</title>
+    </head>
     <body>
-        <div id="overlay"></div>
-        <div id="gameOverScreen" class="hidden">
-            <h1>Game over!</h1>
-            <span id="score"></span>
-        </div>
-        <canvas></canvas>
-    </body>
-    <script async src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
-</body>
 
+        <body style="background: black">
+            <div id="overlay">
+                <button id="mute-button" class="mute-button">Mute</button>
+                <button id="level" class="level-display"></button>
+            </div>
+            <div id="gameOverScreen" class="hidden">
+                <h1>Game over!</h1>
+                <span id="score"></span>
+            </div>
+            <div id="loadingScreen">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63.17236 61.32012"><defs></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><polygon class="cls-1" points="30.585 60.82 30.586 48.82 20.585 55.819 12.585 56.819 17.585 51.819 24.586 47.82 11.586 46.819 1.586 39.818 14.586 39.819 23.586 41.82 9.587 29.819 5.587 18.818 18.587 25.819 28.586 38.82 25.587 22.82 31.588 1.82 37.587 22.82 34.586 38.82 44.587 25.821 57.587 18.822 53.587 29.821 39.586 41.821 48.586 39.821 61.586 39.822 51.586 46.821 38.586 47.82 45.585 51.821 50.585 56.821 42.585 55.821 32.586 48.82 32.585 60.82 30.585 60.82"/></g></g></svg>
+            </div>
+            <canvas></canvas>
+        </body>
+        <script async src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+    </body>
 </html>

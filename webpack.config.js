@@ -33,8 +33,9 @@ module.exports = (env, argv) => ({
                 }
             },
             {
-                test: /\.scss$/,
-                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+                test: /\.css$/,
+                sideEffects: true,
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(png|svg|jpg|gif|mp3)$/,

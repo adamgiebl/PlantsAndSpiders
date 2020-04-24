@@ -1,7 +1,8 @@
 import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
 import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory, Timer } from './classes'
 import { randomIntFromRange } from 'shared/helpers'
-import { showGameOver } from 'shared/UI'
+import { showGameOver, updateLevel, hideLoadingScreen } from 'shared/UI'
+import { audioPlayer } from './AudioPlayer'
 
 import { checkTarget } from './clickHandler'
 
@@ -14,15 +15,18 @@ export const GameLoop = async config => {
             spidersKilled: 0,
             level: -1,
             currentLevel: -1,
-            gameOver: false
+            gameOver: false,
+            levelUpdated: false
         }
     }
+
     const timer = new Timer()
     const character = await loadCharacter()
     const scene = await loadScene()
     const plantFactory = await loadPlantFactory()
     const lightFactory = await loadLightFactory()
     const spiderFactory = await loadSpiderFactory()
+    await audioPlayer.loadAllSounds()
 
     const plants = plantFactory.createPlants(3)
     const lamps = lightFactory.createLights(3, config.timing.startLights)
@@ -40,6 +44,9 @@ export const GameLoop = async config => {
 
     timer.start()
 
+    // forcing loading screen to see the amazingness
+    setTimeout(() => hideLoadingScreen(), 2000)
+
     const gameLoop = () => {
         ctx.globalCompositeOperation = 'normal'
 
@@ -51,6 +58,11 @@ export const GameLoop = async config => {
             spider.draw(ctx)
         })
 
+        if (!window.game.state.levelUpdated) {
+            window.game.state.levelUpdated = true
+            updateLevel()
+        }
+
         if (config.timing.showSeeds == timer.getTimeElapsed()) {
             window.game.state.level = 0
         }
@@ -61,6 +73,7 @@ export const GameLoop = async config => {
                 if (spiders.length == 0) {
                     console.log('current level', 0)
                     window.game.state.currentLevel = 0
+                    window.game.state.levelUpdated = false
                     spiders = spiderFactory.createSpiders(
                         window.game.config.levels[0].numberOfSpiders,
                         character,
@@ -79,6 +92,7 @@ export const GameLoop = async config => {
             }
         } else if (window.game.state.level === 1 && window.game.state.currentLevel !== 1) {
             window.game.state.currentLevel = 1
+            window.game.state.levelUpdated = false
             console.log('current level', 1)
             window.game.state.spidersKilled = 0
             plants.forEach(plant => {
@@ -88,6 +102,7 @@ export const GameLoop = async config => {
             spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 2 && window.game.state.currentLevel !== 2) {
             window.game.state.currentLevel = 2
+            window.game.state.levelUpdated = false
             console.log('current level', 2)
             window.game.state.spidersKilled = 0
             plants.forEach(plant => {
@@ -97,6 +112,7 @@ export const GameLoop = async config => {
             spiders = spiderFactory.createSpiders(window.game.config.levels[2].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 3 && window.game.state.currentLevel !== 3) {
             window.game.state.currentLevel = 3
+            window.game.state.levelUpdated = false
             console.log('current level', 3)
             window.game.state.spidersKilled = 0
             plants.forEach(plant => {
@@ -106,6 +122,7 @@ export const GameLoop = async config => {
             spiders = spiderFactory.createSpiders(window.game.config.levels[3].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 4 && window.game.state.currentLevel !== 4) {
             window.game.state.currentLevel = 4
+            window.game.state.levelUpdated = false
             console.log('current level', 4)
             window.game.state.gameOver = true
         }

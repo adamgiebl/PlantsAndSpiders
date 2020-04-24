@@ -1,7 +1,6 @@
 export * from './character'
 export * from './scene'
 export * from './spider'
-export * from './plantSizes'
 export * from './plant'
 export * from './light'
 export * from './loaders'
