@@ -1,0 +1,8 @@
+{
+    "mainImageURL": "images/Lamp.svg",
+    "width": 200, 
+    "height": 130,
+    "color": "rgba(251, 252, 214, 0.8)",
+    "lightWidth": 200,
+    "lightMargin": 140
+}

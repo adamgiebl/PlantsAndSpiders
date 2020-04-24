@@ -1,0 +1,26 @@
+{
+    "mainImageURL": "images/SpiderSpriteSheet.svg",
+    "splashImageURL": "images/SpiderSplash.svg",
+    "width": 40,
+    "height": 40,
+    "frames": [
+        { 
+            "name": "spider-0", 
+            "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 130,
+                "height": 137
+            } 
+        },
+        { 
+            "name": "spider-1", 
+            "rect": { 
+                "x": 130,
+                "y": 0,
+                "width": 130,
+                "height": 137
+            } 
+        }
+    ]
+}

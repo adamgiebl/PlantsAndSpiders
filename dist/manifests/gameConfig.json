@@ -1,0 +1,26 @@
+{
+    "name": "Plants and Spiders",
+    "timing": {
+        "showSeeds": 7,
+        "startLights": 2,
+        "delayBetweenLights": 1
+    },
+    "levels": [
+        { 
+            "id": 0,
+            "numberOfSpiders": 10
+        },
+        { 
+            "id": 1,
+            "numberOfSpiders": 15
+        },
+        { 
+            "id": 2,
+            "numberOfSpiders": 20
+        },
+        { 
+            "id": 3,
+            "numberOfSpiders": 25
+        }
+    ]
+}
