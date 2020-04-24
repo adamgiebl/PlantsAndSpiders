@@ -47,7 +47,7 @@ build/Release
 node_modules/
 
 # Build directory
-dist/
+# dist/
 
 # Firebase Config
 .firebaserc

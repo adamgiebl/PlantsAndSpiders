@@ -85,6 +85,7 @@ export class Plant {
         }
     }
     shrink() {
+        console.log(this.size)
         if (this.size > 0 && this.planted) {
             this.size--
             this.activePlant = this.plantSizes[this.size]
@@ -95,12 +96,16 @@ export class Plant {
                 width: this.activePlant.width,
                 height: this.activePlant.height
             }
+        } else {
+            this.size = -1
+            this.planted = false
         }
     }
     onClick() {
         this.grow()
     }
     plantSeed() {
+        window.game.state.seedsPlanted += 1
         this.planted = true
         document.querySelector(`.seedButton[data-id="${this.id}"]`).outerHTML = ''
     }

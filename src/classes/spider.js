@@ -77,12 +77,16 @@ export class Spider {
         }
     }
     onClick() {
+        window.game.state.spidersKilled += 1
         audioPlayer.playAudio('splash')
         this.isShot = true
         this.killer = { x: this.manifest.character.upperBody.x, y: this.manifest.character.upperBody.y }
         const deltaX = this.x - (this.killer.x + this.manifest.character.upperBody.width / 2)
         const deltaY = this.y - (this.killer.y + 100)
         this.splashAngle = Math.atan2(deltaX, deltaY)
+        if (window.game.state.spidersKilled === window.game.config.levels[window.game.state.level].numberOfSpiders) {
+            window.game.state.level++
+        }
     }
 }
 

@@ -1,11 +1,22 @@
 import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
 import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory, Timer } from './classes'
 import { randomIntFromRange } from 'shared/helpers'
+import { showGameOver } from 'shared/UI'
 
 import { checkTarget } from './clickHandler'
 
 export const GameLoop = async config => {
-    window.game = config
+    window.game = {
+        config: config,
+        state: {
+            seedsPlanted: 0,
+            seedsShown: false,
+            spidersKilled: 0,
+            level: -1,
+            currentLevel: -1,
+            gameOver: false
+        }
+    }
     const timer = new Timer()
     const character = await loadCharacter()
     const scene = await loadScene()
@@ -16,14 +27,10 @@ export const GameLoop = async config => {
     const plants = plantFactory.createPlants(3)
     const lamps = lightFactory.createLights(3, config.timing.startLights)
     let spiders = []
-    console.log()
-    console.log(randomIntFromRange(0, plants.length))
-    console.log(randomIntFromRange(0, plants.length))
-    console.log(randomIntFromRange(0, plants.length))
-    console.log(randomIntFromRange(0, plants.length))
-    console.log(randomIntFromRange(0, plants.length))
 
-    character.epicEntrance().then(() => {})
+    character.epicEntrance().then(() => {
+        // do something when character is ready to move
+    })
 
     canvas.addEventListener('click', e => {
         checkTarget(e, [...lamps, ...spiders, ...plants], entity => {
@@ -44,19 +51,61 @@ export const GameLoop = async config => {
             spider.draw(ctx)
         })
 
-        //check if all plants are planted
-        if (timer.getTimeElapsed() >= config.timing.showSeeds) {
-            if (!document.querySelector('.seedButton.active')) {
+        if (config.timing.showSeeds == timer.getTimeElapsed()) {
+            window.game.state.level = 0
+        }
+
+        if (window.game.state.level === 0 && window.game.state.currentLevel !== 0) {
+            // spawn spiders when plants are planted
+            if (window.game.state.seedsPlanted == plants.length) {
                 if (spiders.length == 0) {
-                    spiders = spiderFactory.createSpiders(25, character, plants)
+                    window.game.state.currentLevel = 0
+                    spiders = spiderFactory.createSpiders(
+                        window.game.config.levels[0].numberOfSpiders,
+                        character,
+                        plants
+                    )
                 }
             }
-        }
-        plants.forEach(plant => {
-            if (plant.showSeed && config.timing.showSeeds == timer.getTimeElapsed()) {
-                plant.showSeedButton()
-                plant.showSeed = false
+            if (!window.game.state.seedsShown) {
+                window.game.state.seedsShown = true
+                plants.forEach(plant => {
+                    if (plant.showSeed) {
+                        plant.showSeedButton()
+                        plant.showSeed = false
+                    }
+                })
             }
+        } else if (window.game.state.level === 1 && window.game.state.currentLevel !== 1) {
+            window.game.state.currentLevel = 1
+            window.game.state.spidersKilled = 0
+            plants.forEach(plant => {
+                plant.grow()
+            })
+            spiders = []
+            spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
+        } else if (window.game.state.level === 2 && window.game.state.currentLevel !== 2) {
+            window.game.state.currentLevel = 2
+            window.game.state.spidersKilled = 0
+            plants.forEach(plant => {
+                plant.grow()
+            })
+            spiders = []
+            spiders = spiderFactory.createSpiders(window.game.config.levels[2].numberOfSpiders, character, plants)
+        } else if (window.game.state.level === 3 && window.game.state.currentLevel !== 3) {
+            window.game.state.currentLevel = 3
+            window.game.state.spidersKilled = 0
+            plants.forEach(plant => {
+                plant.grow()
+            })
+            spiders = []
+            spiders = spiderFactory.createSpiders(window.game.config.levels[3].numberOfSpiders, character, plants)
+        } else if (window.game.state.level === 4 && window.game.state.currentLevel !== 4) {
+            window.game.state.currentLevel = 4
+            window.game.state.gameOver = true
+        }
+
+        plants.forEach(plant => {
             plant.draw(ctx)
         })
 
@@ -87,7 +136,11 @@ export const GameLoop = async config => {
         ctx.drawImage(mask, 0, 0)
         timer.logTimeElapsed()
 
-        window.requestAnimationFrame(gameLoop)
+        if (!window.game.state.gameOver) {
+            window.requestAnimationFrame(gameLoop)
+        } else {
+            showGameOver()
+        }
     }
 
     return () => {
