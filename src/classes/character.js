@@ -239,6 +239,5 @@ export const loadCharacter = async () => {
     }
     manifest.flashImage = await loadImage(manifest.flashImageURL)
     manifest.animations = loadAnimations(manifest.animationsToBeLoaded)
-    console.log(manifest.animations)
     return new Character(manifest)
 }

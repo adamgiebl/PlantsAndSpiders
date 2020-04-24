@@ -129,10 +129,14 @@ export class Plant {
 export const loadPlantFactory = async () => {
     const manifest = await loadManifest('plant')
     manifest.image = await loadImage(manifest.mainImageURL)
-    console.log(manifest)
     manifest.loadedPlantImages = []
-    manifest.plantImages.forEach(async img => {
-        manifest.loadedPlantImages.push(await loadImage(img))
+    Promise.all([
+        loadImage(manifest.plantImages[0]),
+        loadImage(manifest.plantImages[1]),
+        loadImage(manifest.plantImages[2]),
+        loadImage(manifest.plantImages[3])
+    ]).then(async plants => {
+        manifest.loadedPlantImages = await plants
     })
     return new PlantFactory(manifest)
 }

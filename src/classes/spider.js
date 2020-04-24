@@ -57,6 +57,13 @@ export class Spider {
             ) {
                 plant.shrink()
                 this.hasKilledAPlant = true
+                window.game.state.spidersKilled += 1
+                if (
+                    window.game.state.spidersKilled ===
+                    window.game.config.levels[window.game.state.level].numberOfSpiders
+                ) {
+                    window.game.state.level++
+                }
             }
         })
     }

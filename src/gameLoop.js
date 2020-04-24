@@ -59,6 +59,7 @@ export const GameLoop = async config => {
             // spawn spiders when plants are planted
             if (window.game.state.seedsPlanted == plants.length) {
                 if (spiders.length == 0) {
+                    console.log('current level', 0)
                     window.game.state.currentLevel = 0
                     spiders = spiderFactory.createSpiders(
                         window.game.config.levels[0].numberOfSpiders,
@@ -78,6 +79,7 @@ export const GameLoop = async config => {
             }
         } else if (window.game.state.level === 1 && window.game.state.currentLevel !== 1) {
             window.game.state.currentLevel = 1
+            console.log('current level', 1)
             window.game.state.spidersKilled = 0
             plants.forEach(plant => {
                 plant.grow()
@@ -86,6 +88,7 @@ export const GameLoop = async config => {
             spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 2 && window.game.state.currentLevel !== 2) {
             window.game.state.currentLevel = 2
+            console.log('current level', 2)
             window.game.state.spidersKilled = 0
             plants.forEach(plant => {
                 plant.grow()
@@ -94,6 +97,7 @@ export const GameLoop = async config => {
             spiders = spiderFactory.createSpiders(window.game.config.levels[2].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 3 && window.game.state.currentLevel !== 3) {
             window.game.state.currentLevel = 3
+            console.log('current level', 3)
             window.game.state.spidersKilled = 0
             plants.forEach(plant => {
                 plant.grow()
@@ -102,6 +106,7 @@ export const GameLoop = async config => {
             spiders = spiderFactory.createSpiders(window.game.config.levels[3].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 4 && window.game.state.currentLevel !== 4) {
             window.game.state.currentLevel = 4
+            console.log('current level', 4)
             window.game.state.gameOver = true
         }
 
@@ -122,7 +127,6 @@ export const GameLoop = async config => {
             if (!lamp.isShot) {
                 if (!lamp.turnedOn && lamp.turnOn == timer.getTimeElapsed()) {
                     lamp.turnedOn = true
-                    //spiders = spiderFactory.createSpiders(15, character)
                 }
                 lamp.drawBody(ctx)
                 lamp.drawLight(maskCtx)
