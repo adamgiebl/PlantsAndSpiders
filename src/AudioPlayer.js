@@ -1,7 +1,7 @@
 import gunshotSrc from 'assets/sounds/ShotgunQuieter.mp3'
 import splashSrc from 'assets/sounds/Splash.mp3'
 import glassShatterSrc from 'assets/sounds/GlassShatter.mp3'
-import musicSrc from 'assets/sounds/hush.mp3'
+import musicSrc from 'assets/sounds/reggae.mp3'
 
 export class AudioPlayer {
     constructor() {
@@ -35,8 +35,8 @@ export class AudioPlayer {
             this.gainNode.gain.value = 1
         }
     }
-    loadAllSounds() {
-        Promise.all([
+    async loadAllSounds() {
+        await Promise.all([
             audioPlayer.loadAudio(gunshotSrc),
             audioPlayer.loadAudio(splashSrc),
             audioPlayer.loadAudio(glassShatterSrc),

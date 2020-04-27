@@ -27,6 +27,7 @@ export const GameLoop = async config => {
     const lightFactory = await loadLightFactory()
     const spiderFactory = await loadSpiderFactory()
     await audioPlayer.loadAllSounds()
+    audioPlayer.playAudio('music')
 
     const plants = plantFactory.createPlants(3)
     const lamps = lightFactory.createLights(3, config.timing.startLights)
@@ -42,10 +43,19 @@ export const GameLoop = async config => {
         })
     })
 
+    const nextLevel = () => {
+        window.game.state.currentLevel = window.game.state.level
+        window.game.state.levelUpdated = false
+        window.game.state.spidersKilled = 0
+        spiders = []
+        console.log('current level', window.game.state.currentLevel)
+    }
+
     timer.start()
 
     // forcing loading screen to see the amazingness
-    setTimeout(() => hideLoadingScreen(), 2000)
+    //setTimeout(() => hideLoadingScreen(), 2000)
+    hideLoadingScreen()
 
     const gameLoop = () => {
         ctx.globalCompositeOperation = 'normal'
@@ -67,13 +77,10 @@ export const GameLoop = async config => {
             window.game.state.level = 0
         }
 
-        if (window.game.state.level === 0 && window.game.state.currentLevel !== 0) {
+        if (window.game.state.level === 0 && window.game.state.currentLevel !== window.game.state.level) {
             // spawn spiders when plants are planted
             if (window.game.state.seedsPlanted == plants.length) {
                 if (spiders.length == 0) {
-                    console.log('current level', 0)
-                    window.game.state.currentLevel = 0
-                    window.game.state.levelUpdated = false
                     spiders = spiderFactory.createSpiders(
                         window.game.config.levels[0].numberOfSpiders,
                         character,
@@ -90,40 +97,26 @@ export const GameLoop = async config => {
                     }
                 })
             }
-        } else if (window.game.state.level === 1 && window.game.state.currentLevel !== 1) {
-            window.game.state.currentLevel = 1
-            window.game.state.levelUpdated = false
-            console.log('current level', 1)
-            window.game.state.spidersKilled = 0
+        } else if (window.game.state.level === 1 && window.game.state.currentLevel !== window.game.state.level) {
+            nextLevel()
             plants.forEach(plant => {
                 plant.grow()
             })
-            spiders = []
             spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
-        } else if (window.game.state.level === 2 && window.game.state.currentLevel !== 2) {
-            window.game.state.currentLevel = 2
-            window.game.state.levelUpdated = false
-            console.log('current level', 2)
-            window.game.state.spidersKilled = 0
+        } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
+            nextLevel()
             plants.forEach(plant => {
                 plant.grow()
             })
-            spiders = []
             spiders = spiderFactory.createSpiders(window.game.config.levels[2].numberOfSpiders, character, plants)
-        } else if (window.game.state.level === 3 && window.game.state.currentLevel !== 3) {
-            window.game.state.currentLevel = 3
-            window.game.state.levelUpdated = false
-            console.log('current level', 3)
-            window.game.state.spidersKilled = 0
+        } else if (window.game.state.level === 3 && window.game.state.currentLevel !== window.game.state.level) {
+            nextLevel()
             plants.forEach(plant => {
                 plant.grow()
             })
-            spiders = []
             spiders = spiderFactory.createSpiders(window.game.config.levels[3].numberOfSpiders, character, plants)
-        } else if (window.game.state.level === 4 && window.game.state.currentLevel !== 4) {
-            window.game.state.currentLevel = 4
-            window.game.state.levelUpdated = false
-            console.log('current level', 4)
+        } else if (window.game.state.level === 4 && window.game.state.currentLevel !== window.game.state.level) {
+            nextLevel()
             window.game.state.gameOver = true
         }
 

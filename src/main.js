@@ -2,9 +2,13 @@ import { GameLoop } from './gameLoop'
 import config from 'assets/manifests/gameConfig.json'
 import './style.css'
 
-GameLoop(config).then(startGame => {
-    console.log('All systems are go!')
-    startGame()
+const titleScreen = document.querySelector('#titleScreen')
+titleScreen.addEventListener('click', () => {
+    titleScreen.classList.add('hidden')
+    GameLoop(config).then(startGame => {
+        console.log('All systems are go!')
+        startGame()
+    })
 })
 
 /*features:

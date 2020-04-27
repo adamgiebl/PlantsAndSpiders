@@ -72,7 +72,9 @@ export class Plant {
         }
     }
     grow() {
+        console.log('grow func')
         if (this.size < this.plantImages.length - 1 && this.planted) {
+            console.log('inside grow func')
             this.size++
             this.activePlant = this.plantSizes[this.size]
             this.activePlantImage = this.plantImages[this.size]

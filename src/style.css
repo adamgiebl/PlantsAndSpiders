@@ -120,7 +120,45 @@ body .hidden {
     animation: dash 3s linear infinite;
 }
 @keyframes dash {
-    to {
-      stroke-dashoffset: 800;
-    }
-  }
+to {
+    stroke-dashoffset: 800;
+}
+}
+
+#titleScreen {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    place-content: center;
+    color: white;
+}
+
+#titleScreen .background{
+    position: absolute;
+    background-image: url('/images/title-background.png');
+    background-size: 100% 100%;
+    filter: brightness(0.2) blur(6px);
+    background-repeat: no-repeat;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+}
+
+#titleScreen img {
+    width: 40vw;
+}
+
+#titleScreen .continue-button {
+    border: none;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    color: white;
+    padding: 10px 40px;
+    margin-top: 150px;
+    font-size: 20px;
+    background: transparent;
+}
