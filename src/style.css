@@ -139,7 +139,7 @@ to {
 
 #titleScreen .background{
     position: absolute;
-    background-image: url('/images/title-background.png');
+    background-image: url('https://adamgiebl.github.io/PlantsAndSpiders/images/title-background.png');
     background-size: 100% 100%;
     filter: brightness(0.2) blur(6px);
     background-repeat: no-repeat;
@@ -149,7 +149,7 @@ to {
 }
 
 #titleScreen img {
-    width: 40vw;
+    width: 600px;
 }
 
 #titleScreen .continue-button {
