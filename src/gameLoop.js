@@ -74,6 +74,7 @@ export const GameLoop = async config => {
 
         if (config.timing.showSeeds == timer.getTimeElapsed()) {
             window.game.state.level = 0
+            updateLevel()
         }
 
         if (window.game.state.level === 0 && window.game.state.currentLevel !== window.game.state.level) {

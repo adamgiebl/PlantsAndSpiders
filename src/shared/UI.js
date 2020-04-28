@@ -19,7 +19,10 @@ export const showGameOver = () => {
 }
 
 export const updateLevel = () => {
-    document.querySelector('#level').innerHTML = window.game.state.currentLevel
+    if (window.game.state.level >= 0) {
+        document.querySelector('#level').innerText = window.game.state.level + 1
+        document.querySelector('#level').classList.remove('hidden')
+    }
 }
 
 export const hideLoadingScreen = () => {

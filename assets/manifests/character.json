@@ -2,8 +2,8 @@
     "upperBody" : {
         "width": 260,
         "height": 200,
-        "imageURL": "images/CharacterUpper.svg",
-        "flippedImageURL": "images/CharacterUpperFlipped.svg"
+        "imageURL": "images/CharacterUpper.png",
+        "flippedImageURL": "images/CharacterUpperFlipped.png"
     },
     "lowerBody" : {
         "width": 120,
