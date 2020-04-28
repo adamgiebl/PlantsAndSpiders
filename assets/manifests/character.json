@@ -8,9 +8,7 @@
     "lowerBody" : {
         "width": 120,
         "height": 200,
-        "imageURL": "images/CharacterLower.svg",
-        "flippedImageURL": "images/CharacterLowerFlipped.svg",
-        "spriteSheetURL": "images/CharacterLowerSpriteSheet.svg"
+        "spriteSheetURL": "images/CharacterLowerSpriteSheet.png"
     },
     "flashImageURL" : "images/Flash.svg",
     "animationsToBeLoaded": [

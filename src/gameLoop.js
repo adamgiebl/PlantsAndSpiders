@@ -48,7 +48,6 @@ export const GameLoop = async config => {
         window.game.state.levelUpdated = false
         window.game.state.spidersKilled = 0
         spiders = []
-        console.log('current level', window.game.state.currentLevel)
     }
 
     timer.start()
@@ -78,7 +77,6 @@ export const GameLoop = async config => {
         }
 
         if (window.game.state.level === 0 && window.game.state.currentLevel !== window.game.state.level) {
-            // spawn spiders when plants are planted
             if (window.game.state.seedsPlanted == plants.length) {
                 if (spiders.length == 0) {
                     spiders = spiderFactory.createSpiders(
