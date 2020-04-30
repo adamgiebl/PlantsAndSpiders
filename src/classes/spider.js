@@ -22,6 +22,12 @@ export class Spider {
         this.velocityY = Math.sin(this.angle) * 1.0
         this.direction = this.angle - Math.PI / 2
         this.distance = 0
+        this.points = {
+            shown: false,
+            value: Math.floor(1000 / this.width),
+            y: this.y,
+            speed: 2
+        }
     }
     draw(ctx) {
         if (!this.isShot && !this.hasKilledAPlant) {
@@ -45,6 +51,9 @@ export class Spider {
                 this.height * 2
             )
             ctx.setTransform(1, 0, 0, 1, 0, 0)
+            if (this.points.shown) {
+                this.drawPoints(ctx)
+            }
         }
     }
     checkCollision() {
@@ -67,6 +76,18 @@ export class Spider {
             }
         })
     }
+    drawPoints(ctx) {
+        this.points.y -= this.points.speed
+        ctx.font = `${this.width - 10}px Anton`
+        //const perc = this.width / 8 / 10
+        //console.log('Spider -> drawPoints -> perc', perc)
+        ctx.fillStyle = 'white'
+        ctx.textAlign = 'center'
+        ctx.fillText(this.points.value, this.x + this.width / 2, this.points.y)
+        if (this.points.y < 0) {
+            this.points.shown = false
+        }
+    }
     getFrame(ctx, name) {
         const frame = this.manifest.spriteMap.get(name)
         if (frame) {
@@ -84,9 +105,13 @@ export class Spider {
         }
     }
     onClick() {
+        window.game.state.spidersKilledTotal += 1
         window.game.state.spidersKilled += 1
+        window.game.state.score += this.points.value
         audioPlayer.playAudio('splash')
         this.isShot = true
+        this.points.shown = true
+        this.points.y = this.y
         this.killer = { x: this.manifest.character.upperBody.x, y: this.manifest.character.upperBody.y }
         const deltaX = this.x - (this.killer.x + this.manifest.character.upperBody.width / 2)
         const deltaY = this.y - (this.killer.y + 100)

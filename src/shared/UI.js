@@ -16,6 +16,15 @@ export const addEventListeners = plants => {
 
 export const showGameOver = () => {
     document.querySelector('#gameOverScreen').classList.remove('hidden')
+    document.querySelector('#gameOverScreen').innerHTML += `
+        <div>
+            <h2>Spiders killed: ${window.game.state.spidersKilledTotal}</h2>
+            <h2>Points from spiders: ${window.game.state.spidersKilledTotal * 30}</h2>
+            <h2>Points from plants: ${window.game.plants.reduce((acc, plant) => {
+                return acc + plant.size * 100
+            }, 0)}</h2>
+        </div>
+    `
 }
 
 export const updateLevel = () => {
@@ -23,6 +32,10 @@ export const updateLevel = () => {
         document.querySelector('#level').innerText = window.game.state.level + 1
         document.querySelector('#level').classList.remove('hidden')
     }
+}
+
+export const updateScore = () => {
+    document.querySelector('#score').innerText = window.game.state.score
 }
 
 export const hideLoadingScreen = () => {

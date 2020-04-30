@@ -30,7 +30,6 @@ body {
 .active {
     display: block;
     animation: jumpOut 0.3s ease-out;
-    
 }
 .seedButton__image {
     position: relative;
@@ -66,14 +65,16 @@ body {
     }
 }
 #overlay {
-    position: absolute;
-    width: 100%;
 }
-#gameOverScreen {
+
+.screen {
     position: absolute;
     width: 100vw;
     height: 100vh;
     background: black;
+}
+
+#gameOverScreen {
     z-index: 1;
     display: grid;
     place-items: center;
@@ -91,7 +92,7 @@ body .hidden {
     border: 2px solid white;
     color: white;
     left: 20px;
-    top: 20px;
+    bottom: 20px;
     cursor: pointer;
 }
 .mute-button.mute {
@@ -117,10 +118,6 @@ body .hidden {
 }
 
 #loadingScreen {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background: black;
     z-index: 2;
     display: grid;
     place-items: center;
@@ -141,10 +138,6 @@ to {
 }
 
 #titleScreen {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background: black;
     z-index: 2;
     display: grid;
     place-items: center;
@@ -152,7 +145,7 @@ to {
     color: white;
 }
 
-#titleScreen .background{
+#titleScreen .background {
     position: absolute;
     background-image: url('https://adamgiebl.github.io/PlantsAndSpiders/images/title-background.png');
     background-size: 100% 100%;
@@ -177,4 +170,78 @@ to {
     font-size: 25px;
     cursor: pointer;
     background: transparent;
+}
+
+#tutorialScreen {
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    place-content: center;
+}
+
+#tutorialScreen .background{
+    position: absolute;
+    background-image: url('https://adamgiebl.github.io/PlantsAndSpiders/images/title-background.png');
+    background-size: 100% 100%;
+    filter: brightness(0.2) blur(6px);
+    background-repeat: no-repeat;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+}
+
+.score-counter {
+    width: 150px;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+
+.score-counter .cls-1 {
+    fill:#fff;
+    stroke-width:2px;
+    stroke:#009245;
+    stroke-miterlimit:10;
+}
+
+.score-counter .cls-2 {
+    fill:#39b54a;
+}
+
+.score-counter .score {
+    position: absolute;
+    top: 28px;
+    font-size: 25px;
+    right: 77px;
+}
+
+.tutorial {
+    display: flex;
+    justify-content: center;
+}
+
+.tutorial__box {
+    border: 2px solid white;
+    width: 350px;
+    height: 500px;
+    margin: 20px;
+    background-size: cover;
+    mix-blend-mode: exclusion;
+}
+
+.tutorial__box--1 {
+    background-image: url('/images/tutorial/tut1.png');
+}
+
+.tutorial__box--2 {
+    background-image: url('/images/tutorial/tut2.png');
+}
+
+.tutorial__box--3 {
+    background-image: url('/images/tutorial/tut3.png');
+}
+
+.tutorial__heading {
+    font-size: 50px;
+    color: white;
 }

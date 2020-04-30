@@ -1,7 +1,7 @@
 import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
 import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory, Timer } from './classes'
 import { randomIntFromRange } from 'shared/helpers'
-import { showGameOver, updateLevel, hideLoadingScreen } from 'shared/UI'
+import { showGameOver, updateLevel, hideLoadingScreen, updateScore } from 'shared/UI'
 import { audioPlayer } from './AudioPlayer'
 
 import { checkTarget } from './clickHandler'
@@ -13,10 +13,12 @@ export const GameLoop = async config => {
             seedsPlanted: 0,
             seedsShown: false,
             spidersKilled: 0,
+            spidersKilledTotal: 0,
             level: -1,
             currentLevel: -1,
             gameOver: false,
-            levelUpdated: false
+            levelUpdated: false,
+            score: 0
         }
     }
 
@@ -27,19 +29,19 @@ export const GameLoop = async config => {
     const lightFactory = await loadLightFactory()
     const spiderFactory = await loadSpiderFactory()
     await audioPlayer.loadAllSounds()
+
     audioPlayer.playAudio('music')
 
-    const plants = plantFactory.createPlants(3)
-    const lamps = lightFactory.createLights(3, config.timing.startLights)
+    const plants = plantFactory.createPlants(config.settings.plants.numberOfPots)
+    const lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights)
     let spiders = []
 
-    character.epicEntrance().then(() => {
-        // do something when character is ready to move
-    })
+    character.epicEntrance().then(() => {})
 
     canvas.addEventListener('click', e => {
         checkTarget(e, [...lamps, ...spiders, ...plants], entity => {
             if (entity) entity.onClick()
+            updateScore()
         })
     })
 
@@ -101,6 +103,9 @@ export const GameLoop = async config => {
             plants.forEach(plant => {
                 plant.grow()
             })
+            window.game.state.gameOver = true
+            window.game.plants = plants
+            console.log('gameLoop -> plants', plants)
             spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
             nextLevel()
@@ -117,6 +122,8 @@ export const GameLoop = async config => {
         } else if (window.game.state.level === 4 && window.game.state.currentLevel !== window.game.state.level) {
             nextLevel()
             window.game.state.gameOver = true
+            window.game.plants = plants
+            console.log('gameLoop -> plants', plants)
         }
 
         plants.forEach(plant => {

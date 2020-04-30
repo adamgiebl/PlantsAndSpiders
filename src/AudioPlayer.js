@@ -26,7 +26,6 @@ export class AudioPlayer {
         source.start(0)
     }
     toggleMuteAudio() {
-        console.log('muting')
         if (!this.muted) {
             this.muted = true
             this.gainNode.gain.value = 0
@@ -51,3 +50,4 @@ export class AudioPlayer {
 }
 
 export const audioPlayer = new AudioPlayer()
+audioPlayer.toggleMuteAudio()

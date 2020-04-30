@@ -1,5 +1,6 @@
 export const canvas = document.querySelector('canvas')
 export const ctx = canvas.getContext('2d')
+ctx.font = '30px Anton'
 canvas.width = innerWidth
 canvas.height = innerHeight
 

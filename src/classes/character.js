@@ -23,7 +23,7 @@ export class Character {
         this.flip = false
         this.shot = false
         this.distance = 0
-        this.ready = false
+        this.ready = true
         this.lowerBody = {
             ...this.manifest.lowerBody,
             runningAnimation: this.manifest.animations.get('running'),
@@ -204,7 +204,12 @@ export class Character {
         this.flashAnimation.active = true
         this.shootingAnimation.active = true
     }
+    setUp() {
+        setUpKeyboard(this)
+        setUpMouse(this)
+    }
     epicEntrance() {
+        this.setUp()
         return new Promise((resolve, reject) => {
             this.x = -this.upperBody.width
 
@@ -214,8 +219,7 @@ export class Character {
                     this.distance += 2
                 } else {
                     clearInterval(entering)
-                    setUpKeyboard(this)
-                    setUpMouse(this)
+                    //this.setUp()
                     this.ready = true
                     resolve()
                 }
