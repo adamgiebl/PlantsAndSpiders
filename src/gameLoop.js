@@ -5,6 +5,7 @@ import { showGameOver, updateLevel, hideLoadingScreen, updateScore } from 'share
 import { audioPlayer } from './AudioPlayer'
 
 import { checkTarget } from './clickHandler'
+import { updateStreak } from './shared/UI'
 
 export const GameLoop = async config => {
     window.game = {
@@ -18,7 +19,9 @@ export const GameLoop = async config => {
             currentLevel: -1,
             gameOver: false,
             levelUpdated: false,
-            score: 0
+            score: 0,
+            streak: 0,
+            biggestStreak: 0
         }
     }
 
@@ -36,12 +39,19 @@ export const GameLoop = async config => {
     const lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights)
     let spiders = []
 
-    character.epicEntrance().then(() => {})
+    //character.epicEntrance().then(() => {})
 
-    canvas.addEventListener('click', e => {
-        checkTarget(e, [...lamps, ...spiders, ...plants], entity => {
+    canvas.addEventListener('mousedown', e => {
+        checkTarget(e, [...spiders], entity => {
             if (entity) entity.onClick()
+            else {
+                window.game.state.streak = 0
+            }
             updateScore()
+            updateStreak(character.streak)
+        })
+        checkTarget(e, [...lamps, ...plants], entity => {
+            if (entity) entity.onClick()
         })
     })
 
@@ -103,9 +113,8 @@ export const GameLoop = async config => {
             plants.forEach(plant => {
                 plant.grow()
             })
-            window.game.state.gameOver = true
+            //window.game.state.gameOver = true
             window.game.plants = plants
-            console.log('gameLoop -> plants', plants)
             spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
             nextLevel()
@@ -123,7 +132,6 @@ export const GameLoop = async config => {
             nextLevel()
             window.game.state.gameOver = true
             window.game.plants = plants
-            console.log('gameLoop -> plants', plants)
         }
 
         plants.forEach(plant => {
@@ -164,6 +172,7 @@ export const GameLoop = async config => {
     }
 
     return () => {
+        //setInterval(gameLoop, 1000 / 60)
         window.requestAnimationFrame(gameLoop)
     }
 }

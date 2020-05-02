@@ -1,5 +1,4 @@
 import { audioPlayer } from '../AudioPlayer'
-const overlay = document.querySelector('#overlay')
 
 // file for interaction between html elements and canvas
 export const addEventListeners = plants => {
@@ -19,9 +18,10 @@ export const showGameOver = () => {
     document.querySelector('#gameOverScreen').innerHTML += `
         <div>
             <h2>Spiders killed: ${window.game.state.spidersKilledTotal}</h2>
-            <h2>Points from spiders: ${window.game.state.spidersKilledTotal * 30}</h2>
+            <h2>Points from spiders: ${window.game.state.score}</h2>
+            <h2>Highest killstreak: ${window.game.state.biggestStreak}</h2>
             <h2>Points from plants: ${window.game.plants.reduce((acc, plant) => {
-                return acc + plant.size * 100
+                return acc + plant.size * 1000
             }, 0)}</h2>
         </div>
     `
@@ -36,6 +36,21 @@ export const updateLevel = () => {
 
 export const updateScore = () => {
     document.querySelector('#score').innerText = window.game.state.score
+}
+
+export const updateStreak = () => {
+    const streak = document.querySelector('#streak')
+    const streakCont = document.querySelector('#streak-container')
+    streak.innerText = Math.floor((1 + window.game.state.streak * 0.1) * 10) / 10
+    if (window.game.state.streak !== 0) {
+        streakCont.classList.remove('hidden')
+        streak.classList.remove('streak-animation')
+        streak.offsetWidth
+        streak.classList.add('streak-animation')
+        //streak.style.color = '#' + (((1 << 24) * Math.random()) | 0).toString(16)
+    } else {
+        streakCont.classList.add('hidden')
+    }
 }
 
 export const hideLoadingScreen = () => {

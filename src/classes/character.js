@@ -24,6 +24,8 @@ export class Character {
         this.shot = false
         this.distance = 0
         this.ready = true
+        this.streak = 0
+        this.highestStreak = 0
         this.lowerBody = {
             ...this.manifest.lowerBody,
             runningAnimation: this.manifest.animations.get('running'),
@@ -48,6 +50,7 @@ export class Character {
             frame: 0,
             size: 5
         }
+        this.setUp()
     }
     draw(ctx) {
         this.upperBody = {

@@ -3,11 +3,17 @@ import config from 'assets/manifests/gameConfig.json'
 import './style.css'
 
 const titleScreen = document.querySelector('#titleScreen')
+const tutorialScreen = document.querySelector('#tutorialScreen')
 titleScreen.addEventListener('click', () => {
     titleScreen.classList.add('hidden')
-    GameLoop(config).then(startGame => {
-        console.log('All systems are go!')
-        startGame()
+
+    tutorialScreen.addEventListener('click', () => {
+        tutorialScreen.classList.add('hidden')
+
+        GameLoop(config).then(startGame => {
+            console.log('All systems are go!')
+            startGame()
+        })
     })
 })
 

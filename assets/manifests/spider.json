@@ -1,6 +1,6 @@
 {
     "mainImageURL": "images/SpiderSpriteSheet.png",
-    "splashImageURL": "images/SpiderSplash.svg",
+    "splashImageURL": "images/SpiderSplash.png",
     "width": 40,
     "height": 40,
     "frames": [

@@ -9,7 +9,7 @@
         }
     },
     "timing": {
-        "showSeeds": 7,
+        "showSeeds": 5,
         "startLights": 2,
         "delayBetweenLights": 1
     },

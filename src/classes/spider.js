@@ -26,7 +26,8 @@ export class Spider {
             shown: false,
             value: Math.floor(1000 / this.width),
             y: this.y,
-            speed: 2
+            speed: 2,
+            multiplier: 1
         }
     }
     draw(ctx) {
@@ -79,11 +80,9 @@ export class Spider {
     drawPoints(ctx) {
         this.points.y -= this.points.speed
         ctx.font = `${this.width - 10}px Anton`
-        //const perc = this.width / 8 / 10
-        //console.log('Spider -> drawPoints -> perc', perc)
         ctx.fillStyle = 'white'
         ctx.textAlign = 'center'
-        ctx.fillText(this.points.value, this.x + this.width / 2, this.points.y)
+        ctx.fillText(Math.floor(this.points.value * this.points.multiplier), this.x + this.width / 2, this.points.y)
         if (this.points.y < 0) {
             this.points.shown = false
         }
@@ -105,9 +104,14 @@ export class Spider {
         }
     }
     onClick() {
+        window.game.state.streak += 1
         window.game.state.spidersKilledTotal += 1
         window.game.state.spidersKilled += 1
-        window.game.state.score += this.points.value
+        this.points.multiplier = 1 + window.game.state.streak * 0.1
+        window.game.state.score += Math.floor(this.points.value * this.points.multiplier)
+        if (window.game.state.streak > window.game.state.biggestStreak) {
+            window.game.state.biggestStreak = window.game.state.streak
+        }
         audioPlayer.playAudio('splash')
         this.isShot = true
         this.points.shown = true

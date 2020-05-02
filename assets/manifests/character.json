@@ -10,7 +10,7 @@
         "height": 200,
         "spriteSheetURL": "images/CharacterLowerSpriteSheet.png"
     },
-    "flashImageURL" : "images/Flash.svg",
+    "flashImageURL" : "images/Flash.png",
     "animationsToBeLoaded": [
         {
             "name": "running",
