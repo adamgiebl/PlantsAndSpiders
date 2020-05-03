@@ -9,7 +9,7 @@ export function loadImage(url) {
 }
 
 export function loadManifest(name) {
-    return fetch(`/manifests/${name}.json`).then(res => res.json())
+    return fetch(`./manifests/${name}.json`).then(res => res.json())
 }
 
 export function loadAnimations(animations) {

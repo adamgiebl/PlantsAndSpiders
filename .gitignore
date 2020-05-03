@@ -70,3 +70,9 @@ firebase.json
 
 # dotenv environment variables file
 .env
+
+#parcel cache
+.cache
+
+#screenshots of game
+screenshots
