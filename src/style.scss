@@ -19,34 +19,42 @@ body {
     overflow: hidden;
     height: 100%;
     font-family: 'Anton', sans-serif;
+
+    .hidden {
+        display: none !important;
+    }
 }
 .seedButton {
     position: absolute;
     cursor: pointer;
     display: none;
     transition: transform 0.3s;
+
+    &.active {
+        display: block;
+        animation: jumpOut 0.3s ease-out;
+    }    
+
+    &__image {
+        position: relative;
+        width: 80px;
+        height: 90px;
+        background-image: url("/static/images/Seed.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: float 0.6s infinite alternate ease-in-out;
+        animation-delay: 0.3s;   
+    }
+
+    &:hover {
+        transform: translateY(-10px);
+    }
+    &:hover .seedButton__image {
+        animation-play-state: paused;
+    }
 }
-.active {
-    display: block;
-    animation: jumpOut 0.3s ease-out;
-}
-.seedButton__image {
-    position: relative;
-    width: 80px;
-    height: 90px;
-    background-image: url("/static/images/Seed.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: float 0.6s infinite alternate ease-in-out;
-    animation-delay: 0.3s;
-    
-}
-.seedButton:hover {
-    transform: translateY(-10px);
-}
-.seedButton:hover .seedButton__image {
-    animation-play-state: paused;
-}
+
+
 @keyframes float {
     from {
         transform: translateY(0px);
@@ -63,8 +71,6 @@ body {
         transform: translateY(0px) scale(1);
     }
 }
-#overlay {
-}
 
 .screen {
     position: absolute;
@@ -80,10 +86,6 @@ body {
     place-content: center;
     color: white
 }
-body .hidden {
-    display: none !important;
-}
-
 .mute-button {
     position: absolute;
     padding: 10px 15px;
@@ -93,9 +95,10 @@ body .hidden {
     left: 20px;
     bottom: 20px;
     cursor: pointer;
-}
-.mute-button.mute {
-    border: 2px solid red;
+
+    &.mute {
+        border: 2px solid red;
+    }
 }
 
 .level-display {
@@ -122,18 +125,20 @@ body .hidden {
     place-items: center;
     place-content: center;
     color: white
+
+    svg {
+        width: 7vw;
+        fill:none;
+        stroke:#27A102;
+        stroke-dasharray: 400;
+        animation: dash 3s linear infinite;
+    }
 }
-#loadingScreen svg {
-    width: 7vw;
-    fill:none;
-    stroke:#27A102;
-    stroke-dasharray: 400;
-    animation: dash 3s linear infinite;
-}
+
 @keyframes dash {
-to {
-    stroke-dashoffset: 800;
-}
+    to {
+        stroke-dashoffset: 800;
+    }
 }
 
 #titleScreen {
@@ -142,21 +147,21 @@ to {
     place-items: center;
     place-content: center;
     color: white;
-}
 
-#titleScreen .background {
-    position: absolute;
-    background-image: url('/static/images/title-background.png');
-    background-size: 100% 100%;
-    filter: brightness(0.2) blur(6px);
-    background-repeat: no-repeat;
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
-}
+    .background {
+        position: absolute;
+        background-image: url('/static/images/title-background.png');
+        background-size: 100% 100%;
+        filter: brightness(0.2) blur(6px);
+        background-repeat: no-repeat;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+    }
 
-#titleScreen img {
-    width: 600px;
+    img {
+        width: 600px;
+    }
 }
 
 .continue-button {
@@ -180,17 +185,21 @@ to {
     display: grid;
     place-items: center;
     place-content: center;
-}
 
-#tutorialScreen .background{
-    position: absolute;
-    background-image: url('/static/images/title-background.png');
-    background-size: 100% 100%;
-    filter: brightness(0.2) blur(6px);
-    background-repeat: no-repeat;
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
+    .background{
+        position: absolute;
+        background-image: url('/static/images/title-background.png');
+        background-size: 100% 100%;
+        filter: brightness(0.2) blur(6px);
+        background-repeat: no-repeat;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .continue-button {
+        margin-top: 4vh;
+    }
 }
 
 .score-counter {
@@ -198,24 +207,24 @@ to {
     position: absolute;
     top: 25px;
     right: 25px;
-}
 
-.score-counter .cls-1 {
-    fill:#fff;
-    stroke-width:2px;
-    stroke:#009245;
-    stroke-miterlimit:10;
-}
+    .cls-1 {
+        fill:#fff;
+        stroke-width:2px;
+        stroke:#009245;
+        stroke-miterlimit:10;
+    }
 
-.score-counter .cls-2 {
-    fill:#39b54a;
-}
+    .cls-2 {
+        fill:#39b54a;
+    }
 
-.score-counter .score {
-    position: absolute;
-    top: 28px;
-    font-size: 25px;
-    right: 77px;
+    .score {
+        position: absolute;
+        top: 28px;
+        font-size: 25px;
+        right: 77px;
+    }
 }
 
 .streak-container {
@@ -229,17 +238,21 @@ to {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.streak {
-    color: white;
-    font-size: 40px;
+
+    .streak {
+        color: white;
+        font-size: 40px;
+
+        &.streak-animation {
+            animation: streak_kf;
+            animation-duration: 0.5s;
+            animation-iteration-count: 1;
+        }
+    }
 }
 
-.streak-animation {
-    animation: streak_kf;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
-}
+
+
 
 @keyframes streak_kf {
     0% {
@@ -257,49 +270,45 @@ to {
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-.tutorial__box {
-    border: 2px solid white;
-    
-    margin: 0 20px;
-    background-size: 100% 100%;
-    border-radius: 0.5vw;
-    overflow: hidden;
-    padding: 0vw 0vw 0.2vw 0vw;
-}
+    &__box {
+        border: 2px solid white;
+        
+        margin: 0 20px;
+        background-size: 100% 100%;
+        border-radius: 0.5vw;
+        overflow: hidden;
+        padding: 0vw 0vw 0.2vw 0vw;
 
-.tutorial__box img {
-    max-width: 18vw;
-    max-height: 45vh;
-    width: auto;
-    height: auto;
-    display: block;
-}
+        img {
+            max-width: 18vw;
+            max-height: 45vh;
+            width: auto;
+            height: auto;
+            display: block;
+        }
+    }
 
-
-.tutorial__heading {
-    font-size: 50px;
-    color: white;
+    &__heading {
+        font-size: 50px;
+        color: white;
+    }
 }
 
 .controls {
     margin-bottom: 3vh;
     display: flex;
     justify-content: center;
-}
-.controls img {
-    max-width: 30vw;
-    max-height: 20vh;
-}
 
-.controls-heading {
-    color: white;
-    display: block;
-    margin-bottom: 2vh;
-    font-size: 2vw;
-}
+    &-heading {
+        color: white;
+        display: block;
+        margin-bottom: 2vh;
+        font-size: 2vw;
+    }
 
-#tutorialScreen .continue-button {
-    margin-top: 4vh;
+    img {
+        max-width: 30vw;
+        max-height: 20vh;
+    }
 }

@@ -1,6 +1,6 @@
 import { GameLoop } from './gameLoop'
 import config from '/static/manifests/gameConfig.json'
-import './style.css'
+import './style.scss'
 
 const titleScreen = document.querySelector('#titleScreen')
 const tutorialScreen = document.querySelector('#tutorialScreen')
