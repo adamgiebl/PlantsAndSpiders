@@ -1,307 +1,290 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-    font-family: inherit;
-    letter-spacing: inherit;
-}
-canvas {
-    width: 100vw;
-    height: 100vh;
-}
-html {
-    height: 100%;
-    font-family: 'Anton', sans-serif;
-    letter-spacing: 0.04em !important;
-}
-body {
-    overflow: hidden;
-    height: 100%;
-    font-family: 'Anton', sans-serif;
-}
-.seedButton {
-    position: absolute;
-    cursor: pointer;
-    display: none;
-    transition: transform 0.3s;
-}
-.active {
-    display: block;
-    animation: jumpOut 0.3s ease-out;
-}
-.seedButton__image {
-    position: relative;
-    width: 80px;
-    height: 90px;
-    background-image: url("/Seed.533b09c9.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: float 0.6s infinite alternate ease-in-out;
-    animation-delay: 0.3s;
-    
-}
-.seedButton:hover {
-    transform: translateY(-10px);
-}
-.seedButton:hover .seedButton__image {
-    animation-play-state: paused;
-}
-@keyframes float {
-    from {
-        transform: translateY(0px);
-    }
-    to {
-        transform: translateY(-10px);
-    }
-}
-@keyframes jumpOut {
-    0% {
-        transform: translateY(50px) scale(0.5);
-    }
-    100% {
-        transform: translateY(0px) scale(1);
-    }
-}
-#overlay {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: inherit;
+  letter-spacing: inherit;
 }
 
+canvas {
+  width: 100vw;
+  height: 100vh;
+}
+
+html {
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  letter-spacing: 0.04em !important;
+}
+
+body {
+  overflow: hidden;
+  height: 100%;
+  font-family: "Anton", sans-serif;
+}
+body .hidden {
+  display: none !important;
+}
+
+.seedButton {
+  position: absolute;
+  cursor: pointer;
+  display: none;
+  transition: transform 0.3s;
+}
+.seedButton.active {
+  display: block;
+  animation: jumpOut 0.3s ease-out;
+}
+.seedButton__image {
+  position: relative;
+  width: 80px;
+  height: 90px;
+  background-image: url("/Seed.533b09c9.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: float 0.6s infinite alternate ease-in-out;
+  animation-delay: 0.3s;
+}
+.seedButton:hover {
+  transform: translateY(-10px);
+}
+.seedButton:hover .seedButton__image {
+  animation-play-state: paused;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+@keyframes jumpOut {
+  0% {
+    transform: translateY(50px) scale(0.5);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
 .screen {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background: black;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: black;
 }
 
 #gameOverScreen {
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    place-content: center;
-    color: white
-}
-body .hidden {
-    display: none !important;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  color: white;
 }
 
 .mute-button {
-    position: absolute;
-    padding: 10px 15px;
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    left: 20px;
-    bottom: 20px;
-    cursor: pointer;
+  position: absolute;
+  padding: 10px 15px;
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  left: 20px;
+  bottom: 20px;
+  cursor: pointer;
 }
 .mute-button.mute {
-    border: 2px solid red;
+  border: 2px solid red;
 }
 
 .level-display {
-    position: absolute;
-    padding: 10px 15px;
-    background: transparent;
-    border: 2px solid white;
-    display: grid;
-    place-items: center;
-    place-content: center;
-    width: 50px;
-    height: 50px;
-    color: white;
-    border-radius: 50%;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 20px;
-    pointer-events: none;
+  position: absolute;
+  padding: 10px 15px;
+  background: transparent;
+  border: 2px solid white;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  width: 50px;
+  height: 50px;
+  color: white;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20px;
+  pointer-events: none;
 }
 
 #loadingScreen {
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    place-content: center;
-    color: white
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  color: white svg;
+  color-width: 7vw;
+  color-fill: none;
+  color-stroke: #27A102;
+  color-stroke-dasharray: 400;
+  color-animation: dash 3s linear infinite;
 }
-#loadingScreen svg {
-    width: 7vw;
-    fill:none;
-    stroke:#27A102;
-    stroke-dasharray: 400;
-    animation: dash 3s linear infinite;
-}
+
 @keyframes dash {
-to {
+  to {
     stroke-dashoffset: 800;
+  }
 }
-}
-
 #titleScreen {
-    z-index: 2;
-    display: grid;
-    place-items: center;
-    place-content: center;
-    color: white;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  color: white;
 }
-
 #titleScreen .background {
-    position: absolute;
-    background-image: url('/title-background.86b0a878.png');
-    background-size: 100% 100%;
-    filter: brightness(0.2) blur(6px);
-    background-repeat: no-repeat;
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
+  position: absolute;
+  background-image: url("/title-background.86b0a878.png");
+  background-size: 100% 100%;
+  filter: brightness(0.2) blur(6px);
+  background-repeat: no-repeat;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
 }
-
 #titleScreen img {
-    width: 600px;
+  width: 600px;
 }
 
 .continue-button {
-    border: none;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-    color: white;
-    padding: 10px 40px;
-    
-    font-size: 25px;
-    cursor: pointer;
-    background: transparent;
+  border: none;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  color: white;
+  padding: 10px 40px;
+  font-size: 25px;
+  cursor: pointer;
+  background: transparent;
 }
 
 #titleScreen .continue-button {
-    margin-top: 150px;
+  margin-top: 150px;
 }
 
 #tutorialScreen {
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    place-content: center;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  place-content: center;
 }
-
-#tutorialScreen .background{
-    position: absolute;
-    background-image: url('/title-background.86b0a878.png');
-    background-size: 100% 100%;
-    filter: brightness(0.2) blur(6px);
-    background-repeat: no-repeat;
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
+#tutorialScreen .background {
+  position: absolute;
+  background-image: url("/title-background.86b0a878.png");
+  background-size: 100% 100%;
+  filter: brightness(0.2) blur(6px);
+  background-repeat: no-repeat;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+}
+#tutorialScreen .continue-button {
+  margin-top: 4vh;
 }
 
 .score-counter {
-    width: 150px;
-    position: absolute;
-    top: 25px;
-    right: 25px;
+  width: 150px;
+  position: absolute;
+  top: 25px;
+  right: 25px;
 }
-
 .score-counter .cls-1 {
-    fill:#fff;
-    stroke-width:2px;
-    stroke:#009245;
-    stroke-miterlimit:10;
+  fill: #fff;
+  stroke-width: 2px;
+  stroke: #009245;
+  stroke-miterlimit: 10;
 }
-
 .score-counter .cls-2 {
-    fill:#39b54a;
+  fill: #39b54a;
 }
-
 .score-counter .score {
-    position: absolute;
-    top: 28px;
-    font-size: 25px;
-    right: 77px;
+  position: absolute;
+  top: 28px;
+  font-size: 25px;
+  right: 77px;
 }
 
 .streak-container {
-    position: absolute;
-    right: 2vw;
-    bottom: 0vw;
-    background-image: url('/multiplier.988f6531.svg');
-    background-size: 100%;
-    width: 14vw;
-    height: 14vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  right: 2vw;
+  bottom: 0vw;
+  background-image: url("/multiplier.988f6531.svg");
+  background-size: 100%;
+  width: 14vw;
+  height: 14vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.streak {
-    color: white;
-    font-size: 40px;
+.streak-container .streak {
+  color: white;
+  font-size: 40px;
 }
-
-.streak-animation {
-    animation: streak_kf;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
+.streak-container .streak.streak-animation {
+  animation: streak_kf;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
 }
 
 @keyframes streak_kf {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.5);
-    }
-    100% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-
 .tutorial {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 .tutorial__box {
-    border: 2px solid white;
-    
-    margin: 0 20px;
-    background-size: 100% 100%;
-    border-radius: 0.5vw;
-    overflow: hidden;
-    padding: 0vw 0vw 0.2vw 0vw;
+  border: 2px solid white;
+  margin: 0 20px;
+  background-size: 100% 100%;
+  border-radius: 0.5vw;
+  overflow: hidden;
+  padding: 0vw 0vw 0.2vw 0vw;
 }
-
 .tutorial__box img {
-    max-width: 18vw;
-    max-height: 45vh;
-    width: auto;
-    height: auto;
-    display: block;
+  max-width: 18vw;
+  max-height: 45vh;
+  width: auto;
+  height: auto;
+  display: block;
 }
-
-
 .tutorial__heading {
-    font-size: 50px;
-    color: white;
+  font-size: 50px;
+  color: white;
 }
 
 .controls {
-    margin-bottom: 3vh;
-    display: flex;
-    justify-content: center;
+  margin-bottom: 3vh;
+  display: flex;
+  justify-content: center;
+}
+.controls-heading {
+  color: white;
+  display: block;
+  margin-bottom: 2vh;
+  font-size: 2vw;
 }
 .controls img {
-    max-width: 30vw;
-    max-height: 20vh;
-}
-
-.controls-heading {
-    color: white;
-    display: block;
-    margin-bottom: 2vh;
-    font-size: 2vw;
-}
-
-#tutorialScreen .continue-button {
-    margin-top: 4vh;
+  max-width: 30vw;
+  max-height: 20vh;
 }
 
 /*# sourceMappingURL=/main.1e43358e.css.map */

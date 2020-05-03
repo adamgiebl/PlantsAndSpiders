@@ -350,7 +350,7 @@ function loadImage(url) {
 }
 
 function loadManifest(name) {
-  return fetch(`/manifests/${name}.json`).then(res => res.json());
+  return fetch(`./manifests/${name}.json`).then(res => res.json());
 }
 
 function loadAnimations(animations) {
@@ -1610,7 +1610,7 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/style.css":[function(require,module,exports) {
+},{"./bundle-url":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/style.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -1622,7 +1622,7 @@ var _gameLoop = require("./gameLoop");
 
 var _gameConfig = _interopRequireDefault(require("/static/manifests/gameConfig.json"));
 
-require("./style.css");
+require("./style.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1657,7 +1657,7 @@ titleScreen.addEventListener('click', () => {
     - collect plants at the end after 4 rounds, your score depends on how much of your plants is left
     - best achievable score is when all plants are fully grown after 4 rounds and you have missed no shots
 */
-},{"./gameLoop":"src/gameLoop.js","/static/manifests/gameConfig.json":"static/manifests/gameConfig.json","./style.css":"src/style.css"}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./gameLoop":"src/gameLoop.js","/static/manifests/gameConfig.json":"static/manifests/gameConfig.json","./style.scss":"src/style.scss"}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1685,7 +1685,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53196" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51248" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
