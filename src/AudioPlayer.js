@@ -1,7 +1,7 @@
-import gunshotSrc from 'assets/sounds/ShotgunQuieter.mp3'
-import splashSrc from 'assets/sounds/Splash.mp3'
-import glassShatterSrc from 'assets/sounds/GlassShatter.mp3'
-import musicSrc from 'assets/sounds/reggae.mp3'
+import gunshotSrc from '/static/sounds/ShotgunQuieter.mp3'
+import splashSrc from '/static/sounds/Splash.mp3'
+import glassShatterSrc from '/static/sounds/GlassShatter.mp3'
+import musicSrc from '/static/sounds/reggae.mp3'
 
 export class AudioPlayer {
     constructor() {

@@ -1,11 +1,11 @@
-import { ctx, canvas, mask, maskCtx } from 'shared/canvas'
+import { ctx, canvas, mask, maskCtx } from '/src/shared/canvas'
 import { loadCharacter, loadScene, loadLightFactory, loadSpiderFactory, loadPlantFactory, Timer } from './classes'
-import { randomIntFromRange } from 'shared/helpers'
-import { showGameOver, updateLevel, hideLoadingScreen, updateScore } from 'shared/UI'
+import { randomIntFromRange } from '/src/shared/helpers'
+import { showGameOver, updateLevel, hideLoadingScreen, updateScore } from '/src/shared/UI'
 import { audioPlayer } from './AudioPlayer'
 
-import { checkTarget } from './clickHandler'
-import { updateStreak } from './shared/UI'
+import { checkTarget } from '/src/clickHandler'
+import { updateStreak } from '/src/shared/UI'
 
 export const GameLoop = async config => {
     window.game = {
@@ -24,6 +24,7 @@ export const GameLoop = async config => {
             biggestStreak: 0
         }
     }
+    console.log('1')
 
     const timer = new Timer()
     const character = await loadCharacter()
@@ -63,6 +64,7 @@ export const GameLoop = async config => {
     }
 
     timer.start()
+    console.log('2')
 
     // forcing loading screen to see the amazingness
     //setTimeout(() => hideLoadingScreen(), 2000)

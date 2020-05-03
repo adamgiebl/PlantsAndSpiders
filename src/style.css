@@ -34,7 +34,7 @@ body {
     position: relative;
     width: 80px;
     height: 90px;
-    background-image: url("https://adamgiebl.github.io/PlantsAndSpiders/images/Seed.svg");
+    background-image: url("/static/images/Seed.svg");
     background-size: contain;
     background-repeat: no-repeat;
     animation: float 0.6s infinite alternate ease-in-out;
@@ -146,7 +146,7 @@ to {
 
 #titleScreen .background {
     position: absolute;
-    background-image: url('https://adamgiebl.github.io/PlantsAndSpiders/images/title-background.png');
+    background-image: url('/static/images/title-background.png');
     background-size: 100% 100%;
     filter: brightness(0.2) blur(6px);
     background-repeat: no-repeat;
@@ -184,7 +184,7 @@ to {
 
 #tutorialScreen .background{
     position: absolute;
-    background-image: url('https://adamgiebl.github.io/PlantsAndSpiders/images/title-background.png');
+    background-image: url('/static/images/title-background.png');
     background-size: 100% 100%;
     filter: brightness(0.2) blur(6px);
     background-repeat: no-repeat;
@@ -222,7 +222,7 @@ to {
     position: absolute;
     right: 2vw;
     bottom: 0vw;
-    background-image: url('/images/multiplier.svg');
+    background-image: url('/static/images/multiplier.svg');
     background-size: 100%;
     width: 14vw;
     height: 14vw;

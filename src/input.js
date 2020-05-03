@@ -1,5 +1,5 @@
 import KeyboardHandler from './KeyboardHandler'
-import { canvas } from 'shared/canvas'
+import { canvas } from '/src/shared/canvas'
 
 export const setUpKeyboard = character => {
     const keyboard = new KeyboardHandler()

@@ -1,7 +1,7 @@
-import { groundY } from 'shared/canvas'
-import { canvas } from 'shared/canvas'
-import { addEventListeners } from 'shared/UI'
-import { loadImage, loadManifest } from './loaders'
+import { groundY } from '/src/shared/canvas'
+import { canvas } from '/src/shared/canvas'
+import { addEventListeners } from '/src/shared/UI'
+import { loadImage, loadManifest } from '/src/classes/loaders'
 
 export class PlantFactory {
     constructor(manifest) {

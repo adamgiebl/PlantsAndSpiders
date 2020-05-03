@@ -1,9 +1,9 @@
-import { canvas } from 'shared/canvas'
-import { groundHeight } from 'shared/canvas'
+import { canvas } from '/src/shared/canvas'
+import { groundHeight } from '/src/shared/canvas'
 import { setUpKeyboard, setUpMouse } from '../input'
 import { audioPlayer } from '../AudioPlayer'
 import { loadImage, loadManifest, loadAnimations } from './loaders'
-import { groundY } from 'shared/canvas'
+import { groundY } from '/src/shared/canvas'
 
 export class Character {
     constructor(manifest) {

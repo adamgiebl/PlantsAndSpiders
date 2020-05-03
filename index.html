@@ -30,24 +30,24 @@
             </div>
             <div id="titleScreen" class="screen">
                 <div class="background"></div>
-                <img src="https://adamgiebl.github.io/PlantsAndSpiders/images/logo.svg" class="logo">
+                <img src="/static/images/SVG/logo.svg" class="logo">
                 <button class="continue-button" id="continue-1">Click to play</button>
             </div>
             <div id="tutorialScreen" class="screen">
                 <div class="background"></div>
                 <span class="controls-heading">Controls</span>
                 <div class="controls">
-                    <img src="/images/tutorial/Controls.svg" alt="">
+                    <img src="/static/images/tutorial/Controls.svg" alt="">
                 </div>
                 <div class="tutorial">
                     <div class="tutorial__box tutorial__box--1">
-                        <img src="/images/tutorial/tut1.svg" alt="">
+                        <img src="/static/images/tutorial/tut1.svg" alt="">
                     </div>
                     <div class="tutorial__box tutorial__box--2">
-                        <img src="/images/tutorial/tut2.svg" alt="">
+                        <img src="/static/images/tutorial/tut2.svg" alt="">
                     </div>
                     <div class="tutorial__box tutorial__box--3">
-                        <img src="/images/tutorial/tut3.svg" alt="">
+                        <img src="/static/images/tutorial/tut3.svg" alt="">
                     </div>
                 </div>
                 <button id="continue-2" class="continue-button">Play</button>
@@ -55,6 +55,6 @@
             
             <canvas></canvas>
         </body>
-        <script async src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+        <script async src="./src/main.js"></script>
     </body>
 </html>

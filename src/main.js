@@ -1,5 +1,5 @@
 import { GameLoop } from './gameLoop'
-import config from 'assets/manifests/gameConfig.json'
+import config from '/static/manifests/gameConfig.json'
 import './style.css'
 
 const titleScreen = document.querySelector('#titleScreen')

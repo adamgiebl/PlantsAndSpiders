@@ -1,5 +1,5 @@
-import { canvas, canvasCenter } from 'shared/canvas'
-import { randomIntFromRange } from 'shared/helpers'
+import { canvas, canvasCenter } from '/src/shared/canvas'
+import { randomIntFromRange } from '/src/shared/helpers'
 import { audioPlayer } from '../AudioPlayer'
 import { loadImage, loadManifest } from './loaders'
 

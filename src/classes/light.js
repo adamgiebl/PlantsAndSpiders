@@ -1,5 +1,4 @@
-import { groundY } from 'shared/canvas'
-import { canvas, maskCtx } from 'shared/canvas'
+import { canvas, maskCtx } from '/src/shared/canvas'
 import { audioPlayer } from '../AudioPlayer'
 import { loadImage, loadManifest } from './loaders'
 

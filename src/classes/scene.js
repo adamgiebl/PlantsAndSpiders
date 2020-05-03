@@ -1,5 +1,5 @@
-import { canvas } from 'shared/canvas'
-import { loadImage, loadManifest } from './loaders'
+import { canvas } from '/src/shared/canvas'
+import { loadImage, loadManifest } from '/src/classes/loaders'
 
 export class Scene {
     constructor(manifest) {
