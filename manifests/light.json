@@ -1,5 +1,5 @@
 {
-    "mainImageURL": "/images/Lamp.png",
+    "mainImageURL": "images/Lamp.png",
     "width": 200, 
     "height": 130,
     "color": "rgba(251, 252, 214, 0.8)",
