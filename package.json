@@ -1,14 +1,14 @@
 {
   "name": "plantsandspiders",
   "version": "1.0.0",
-  "description": "A simple todo application using ES6 and Webpack",
+  "description": "Vanilla JS 2d game",
   "main": "src/main.js",
   "homepage": "https://adamgiebl.github.io/PlantsAndSpiders",
   "scripts": {
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],
-  "author": "Anurag Majumdar",
+  "author": "Adam Giebl",
   "license": "MIT",
   "browserslist": [
     "last 1 Chrome versions"
