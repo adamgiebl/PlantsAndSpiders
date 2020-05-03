@@ -1,14 +1,22 @@
 {
     "name": "Plants and Spiders",
+    "settings" : {
+        "plants": {
+            "numberOfPots": 3
+        },
+        "lights": {
+            "numberOfLights": 3
+        }
+    },
     "timing": {
-        "showSeeds": 7,
+        "showSeeds": 5,
         "startLights": 2,
         "delayBetweenLights": 1
     },
     "levels": [
         { 
             "id": 0,
-            "numberOfSpiders": 10
+            "numberOfSpiders": 30
         },
         { 
             "id": 1,
