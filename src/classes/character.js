@@ -193,9 +193,11 @@ export class Character {
         }
     }
     rotate(clientX, clientY) {
-        const deltaX = this.x + this.upperBody.width / 2 - clientX
-        const deltaY = this.y + this.upperBody.height / 2 - clientY
-        this.angle = Math.atan2(deltaY, deltaX) + Math.PI
+        //const deltaX = this.x + this.upperBody.width / 2 - clientX
+        //const deltaY = this.y + this.upperBody.height / 2 - clientY
+        this.angle =
+            Math.atan2(this.y + this.upperBody.height / 2 - clientY, this.x + this.upperBody.width / 2 - clientX) +
+            Math.PI
         if (this.angle > 1.5 && this.angle < 4.7) {
             this.flip = true
         } else {
@@ -210,24 +212,6 @@ export class Character {
     setUp() {
         setUpKeyboard(this)
         setUpMouse(this)
-    }
-    epicEntrance() {
-        this.setUp()
-        return new Promise((resolve, reject) => {
-            this.x = -this.upperBody.width
-
-            const entering = setInterval(() => {
-                if (this.x < canvas.width / 7) {
-                    this.x += 1
-                    this.distance += 2
-                } else {
-                    clearInterval(entering)
-                    //this.setUp()
-                    this.ready = true
-                    resolve()
-                }
-            }, 10)
-        })
     }
 }
 

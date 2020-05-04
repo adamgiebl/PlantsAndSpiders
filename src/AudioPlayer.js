@@ -8,7 +8,8 @@ export class AudioPlayer {
         this.audioContext = new AudioContext()
         this.audioBuffers = new Map()
         this.muted = false
-        this.gainNode = this.audioContext.createGain()
+        this.gainNodeFx = this.audioContext.createGain()
+        this.gainNodeMusic = this.audioContext.createGain()
     }
     loadAudio(src) {
         return fetch(src)
@@ -20,18 +21,23 @@ export class AudioPlayer {
     }
     playAudio(name) {
         const source = this.audioContext.createBufferSource()
-        source.connect(this.gainNode)
-        this.gainNode.connect(this.audioContext.destination)
+        source.connect(this.gainNodeFx)
+        this.gainNodeFx.connect(this.audioContext.destination)
         source.buffer = this.audioBuffers.get(name)
         source.start(0)
     }
-    toggleMuteAudio() {
-        if (!this.muted) {
-            this.muted = true
-            this.gainNode.gain.value = 0
-        } else {
-            this.muted = false
-            this.gainNode.gain.value = 1
+    playMusic(name) {
+        const source = this.audioContext.createBufferSource()
+        source.connect(this.gainNodeMusic)
+        this.gainNodeMusic.connect(this.audioContext.destination)
+        source.buffer = this.audioBuffers.get(name)
+        source.start(0)
+    }
+    changeVolume(type, value) {
+        if (type === 'MUSIC') {
+            this.gainNodeMusic.gain.value = value
+        } else if (type === 'FX') {
+            this.gainNodeFx.gain.value = value
         }
     }
     async loadAllSounds() {
@@ -50,4 +56,3 @@ export class AudioPlayer {
 }
 
 export const audioPlayer = new AudioPlayer()
-audioPlayer.toggleMuteAudio()

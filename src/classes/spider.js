@@ -166,3 +166,11 @@ export const loadSpiderFactory = async () => {
     manifest.spriteMap = spriteMap
     return new SpiderFactory(manifest)
 }
+
+document.querySelectorAll('audio').forEach(function (audioElement) {
+    if (audioElement.muted) {
+        audioElement.muted = false
+    } else {
+        audioElement.muted = true
+    }
+})

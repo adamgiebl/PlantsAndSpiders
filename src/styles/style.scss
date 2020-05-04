@@ -1,3 +1,5 @@
+@import 'inputs.scss';
+
 * {
     margin: 0;
     padding: 0;
@@ -86,20 +88,7 @@ body {
     place-content: center;
     color: white
 }
-.mute-button {
-    position: absolute;
-    padding: 10px 15px;
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    left: 20px;
-    bottom: 20px;
-    cursor: pointer;
 
-    &.mute {
-        border: 2px solid red;
-    }
-}
 
 .level-display {
     position: absolute;
@@ -124,7 +113,7 @@ body {
     display: grid;
     place-items: center;
     place-content: center;
-    color: white
+    color: white;
 
     svg {
         width: 7vw;
@@ -162,22 +151,47 @@ body {
     img {
         width: 600px;
     }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 7vh;
+        .button {
+            margin-top: 20px;
+        }
+        .settings {
+            padding: 15px 50px;
+            font-size: 20px;
+        }
+    }
 }
 
-.continue-button {
-    border: none;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-    color: white;
-    padding: 10px 40px;
+.game {
+    .button {
+        position: absolute;
+        padding: 10px 15px;
+        color: white;
+        left: 20px;
+        bottom: 20px;
+        font-size: 17px;
+        cursor: pointer;
     
-    font-size: 25px;
-    cursor: pointer;
-    background: transparent;
+        &.mute {
+            //border: 2px solid red;
+        }
+    }
 }
 
-#titleScreen .continue-button {
-    margin-top: 150px;
+.button {
+    border: none;
+    color: white;
+    padding: 18px 60px;
+    font-size: 23px;
+    cursor: pointer;
+    background-color: transparent;
+    background-image: url('/static/images/button.svg');
+    background-size: 100% 100%;
 }
 
 #tutorialScreen {
@@ -197,8 +211,38 @@ body {
         height: 100vh;
     }
 
-    .continue-button {
+    .button {
         margin-top: 4vh;
+    }
+}
+
+.settings-modal {
+    position: absolute;
+    z-index: 10;
+    height: 700px;
+    max-width: 700px;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #303030;
+    border-radius: 5px;
+    padding: 40px;
+    color: white;
+    font-size: 30px;
+
+    input {
+        margin-bottom: 40px;
+    }
+
+    .close-button {
+        position: absolute;
+        filter: brightness(0.7);
+        top: 5px;
+        right: 5px;
+        padding: 0px;
+        width: 40px;
+        height: 40px;
     }
 }
 

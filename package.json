@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "homepage": "https://adamgiebl.github.io/PlantsAndSpiders",
   "scripts": {
-    "deploy": "gh-pages -d dist"
+    "deploy": "parcel build index.html --public-url ./ && gh-pages -d dist"
   },
   "keywords": [],
   "author": "Adam Giebl",

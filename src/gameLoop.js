@@ -34,7 +34,7 @@ export const GameLoop = async config => {
     const spiderFactory = await loadSpiderFactory()
     await audioPlayer.loadAllSounds()
 
-    audioPlayer.playAudio('music')
+    audioPlayer.playMusic('music')
 
     const plants = plantFactory.createPlants(config.settings.plants.numberOfPots)
     const lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights)
@@ -71,6 +71,7 @@ export const GameLoop = async config => {
     hideLoadingScreen()
 
     const gameLoop = () => {
+        if (window.game.state.paused) return window.requestAnimationFrame(gameLoop)
         ctx.globalCompositeOperation = 'normal'
 
         scene.draw(ctx)

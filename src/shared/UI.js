@@ -7,9 +7,23 @@ export const addEventListeners = plants => {
             plants[target.dataset.id].plantSeed()
         })
     })
-    document.querySelector('#mute-button').addEventListener('click', function () {
-        this.classList.toggle('mute')
-        audioPlayer.toggleMuteAudio()
+    document.querySelector('#settings-button').addEventListener('click', () => {
+        document.querySelector('#settings').classList.remove('hidden')
+        window.game.state.paused = true
+    })
+
+    document.querySelector('#close-modal').addEventListener('click', () => {
+        document.querySelector('#settings').classList.add('hidden')
+        window.game.state.paused = false
+    })
+
+    document.querySelector('#fx-slider').addEventListener('change', e => {
+        audioPlayer.playAudio('gunshot')
+        audioPlayer.changeVolume('FX', e.target.value)
+    })
+
+    document.querySelector('#music-slider').addEventListener('change', e => {
+        audioPlayer.changeVolume('MUSIC', e.target.value)
     })
 }
 

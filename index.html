@@ -10,8 +10,8 @@
     <body>
 
         <body style="background: black">
-            <div id="overlay">
-                <button id="mute-button" class="mute-button">Mute</button>
+            <div id="overlay" class="game">
+                <button id="settings-button" class="button">Settings</button>
                 <button id="level" class="level-display hidden"></button>
                 <div id="score-counter" class="score-counter">
                     <span id="score" class="score">0</span>
@@ -31,7 +31,16 @@
             <div id="titleScreen" class="screen">
                 <div class="background"></div>
                 <img src="/static/images/SVG/logo.svg" class="logo">
-                <button class="continue-button" id="continue-1">Click to play</button>
+                <div class="menu">
+                    <button class="button" id="continue-1">Continue</button>
+                </div>
+            </div>
+            <div id="settings" class="settings-modal hidden">
+                <button class="button close-button" id="close-modal">✖</button>
+                <label for="music">Music volume</label>
+                <input type="range" name="music" id="music-slider" min="0.0" max="1.0" value="0.5" step="0.01">
+                <label for="fx">FX volume</label>
+                <input type="range" name="fx" id="fx-slider" min="0.0" max="1.0" value="0.5" step="0.01">
             </div>
             <div id="tutorialScreen" class="screen">
                 <div class="background"></div>
@@ -50,7 +59,7 @@
                         <img src="/static/images/tutorial/tut3.svg" alt="">
                     </div>
                 </div>
-                <button id="continue-2" class="continue-button">Play</button>
+                <button id="continue-2" class="button">Play</button>
             </div>
             
             <canvas></canvas>
