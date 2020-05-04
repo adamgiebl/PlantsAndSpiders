@@ -255,13 +255,13 @@ const setUpMouse = character => {
 
 exports.setUpMouse = setUpMouse;
 },{"./KeyboardHandler":"src/KeyboardHandler.js","/src/shared/canvas":"src/shared/canvas.js"}],"static/sounds/ShotgunQuieter.mp3":[function(require,module,exports) {
-module.exports = "/ShotgunQuieter.079f6f7f.mp3";
+module.exports = "ShotgunQuieter.079f6f7f.mp3";
 },{}],"static/sounds/Splash.mp3":[function(require,module,exports) {
-module.exports = "/Splash.8180e980.mp3";
+module.exports = "Splash.8180e980.mp3";
 },{}],"static/sounds/GlassShatter.mp3":[function(require,module,exports) {
-module.exports = "/GlassShatter.5f6c7e70.mp3";
+module.exports = "GlassShatter.5f6c7e70.mp3";
 },{}],"static/sounds/reggae.mp3":[function(require,module,exports) {
-module.exports = "/reggae.e0ce420b.mp3";
+module.exports = "reggae.e0ce420b.mp3";
 },{}],"src/AudioPlayer.js":[function(require,module,exports) {
 "use strict";
 
@@ -530,9 +530,9 @@ class Character {
   }
 
   rotate(clientX, clientY) {
-    const deltaX = this.x + this.upperBody.width / 2 - clientX;
-    const deltaY = this.y + this.upperBody.height / 2 - clientY;
-    this.angle = Math.atan2(deltaY, deltaX) + Math.PI;
+    //const deltaX = this.x + this.upperBody.width / 2 - clientX
+    //const deltaY = this.y + this.upperBody.height / 2 - clientY
+    this.angle = Math.atan2(this.y + this.upperBody.height / 2 - clientY, this.x + this.upperBody.width / 2 - clientX) + Math.PI;
 
     if (this.angle > 1.5 && this.angle < 4.7) {
       this.flip = true;
@@ -551,24 +551,6 @@ class Character {
   setUp() {
     (0, _input.setUpKeyboard)(this);
     (0, _input.setUpMouse)(this);
-  }
-
-  epicEntrance() {
-    this.setUp();
-    return new Promise((resolve, reject) => {
-      this.x = -this.upperBody.width;
-      const entering = setInterval(() => {
-        if (this.x < _canvas.canvas.width / 7) {
-          this.x += 1;
-          this.distance += 2;
-        } else {
-          clearInterval(entering); //this.setUp()
-
-          this.ready = true;
-          resolve();
-        }
-      }, 10);
-    });
   }
 
 }
@@ -832,6 +814,13 @@ const loadSpiderFactory = async () => {
 };
 
 exports.loadSpiderFactory = loadSpiderFactory;
+document.querySelectorAll('audio').forEach(function (audioElement) {
+  if (audioElement.muted) {
+    audioElement.muted = false;
+  } else {
+    audioElement.muted = true;
+  }
+});
 },{"/src/shared/canvas":"src/shared/canvas.js","/src/shared/helpers":"src/shared/helpers.js","../AudioPlayer":"src/AudioPlayer.js","./loaders":"src/classes/loaders.js"}],"src/shared/UI.js":[function(require,module,exports) {
 "use strict";
 
@@ -1543,7 +1532,7 @@ module.exports = {
     "numberOfSpiders": 25
   }]
 };
-},{}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{}],"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -1575,7 +1564,7 @@ function getBaseURL(url) {
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+},{}],"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/css-loader.js":[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -1610,19 +1599,19 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/style.scss":[function(require,module,exports) {
+},{"./bundle-url":"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/bundle-url.js"}],"src/styles/style.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"/Users/masteradmin/Projects/PlantsAndSpiders/static/images/Seed.svg":[["Seed.533b09c9.svg","static/images/Seed.svg"],"static/images/Seed.svg"],"/Users/masteradmin/Projects/PlantsAndSpiders/static/images/title-background.png":[["title-background.86b0a878.png","static/images/title-background.png"],"static/images/title-background.png"],"/Users/masteradmin/Projects/PlantsAndSpiders/static/images/multiplier.svg":[["multiplier.988f6531.svg","static/images/multiplier.svg"],"static/images/multiplier.svg"],"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/main.js":[function(require,module,exports) {
+},{"C:\\Users\\adamg\\Projects\\plants\\static\\images\\Seed.svg":[["Seed.533b09c9.svg","static/images/Seed.svg"],"static/images/Seed.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\title-background.png":[["title-background.86b0a878.png","static/images/title-background.png"],"static/images/title-background.png"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\button.svg":[["button.66f80176.svg","static/images/button.svg"],"static/images/button.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\multiplier.svg":[["multiplier.988f6531.svg","static/images/multiplier.svg"],"static/images/multiplier.svg"],"_css_loader":"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/css-loader.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _gameLoop = require("./gameLoop");
 
 var _gameConfig = _interopRequireDefault(require("/static/manifests/gameConfig.json"));
 
-require("./style.scss");
+require("./styles/style.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1657,7 +1646,7 @@ titleScreen.addEventListener('click', () => {
     - collect plants at the end after 4 rounds, your score depends on how much of your plants is left
     - best achievable score is when all plants are fully grown after 4 rounds and you have missed no shots
 */
-},{"./gameLoop":"src/gameLoop.js","/static/manifests/gameConfig.json":"static/manifests/gameConfig.json","./style.scss":"src/style.scss"}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./gameLoop":"src/gameLoop.js","/static/manifests/gameConfig.json":"static/manifests/gameConfig.json","./styles/style.scss":"src/styles/style.scss"}],"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1685,7 +1674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51248" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53465" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -1861,5 +1850,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/main.js"], null)
-//# sourceMappingURL=/main.1e43358e.js.map
+},{}]},{},["../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js","src/main.js"], null)
+//# sourceMappingURL=main.1e43358e.js.map
