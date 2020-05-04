@@ -255,13 +255,13 @@ const setUpMouse = character => {
 
 exports.setUpMouse = setUpMouse;
 },{"./KeyboardHandler":"src/KeyboardHandler.js","/src/shared/canvas":"src/shared/canvas.js"}],"static/sounds/ShotgunQuieter.mp3":[function(require,module,exports) {
-module.exports = "ShotgunQuieter.079f6f7f.mp3";
+module.exports = "/ShotgunQuieter.079f6f7f.mp3";
 },{}],"static/sounds/Splash.mp3":[function(require,module,exports) {
-module.exports = "Splash.8180e980.mp3";
+module.exports = "/Splash.8180e980.mp3";
 },{}],"static/sounds/GlassShatter.mp3":[function(require,module,exports) {
-module.exports = "GlassShatter.5f6c7e70.mp3";
+module.exports = "/GlassShatter.5f6c7e70.mp3";
 },{}],"static/sounds/reggae.mp3":[function(require,module,exports) {
-module.exports = "reggae.e0ce420b.mp3";
+module.exports = "/reggae.e0ce420b.mp3";
 },{}],"src/AudioPlayer.js":[function(require,module,exports) {
 "use strict";
 
@@ -285,7 +285,8 @@ class AudioPlayer {
     this.audioContext = new AudioContext();
     this.audioBuffers = new Map();
     this.muted = false;
-    this.gainNode = this.audioContext.createGain();
+    this.gainNodeFx = this.audioContext.createGain();
+    this.gainNodeMusic = this.audioContext.createGain();
   }
 
   loadAudio(src) {
@@ -298,19 +299,25 @@ class AudioPlayer {
 
   playAudio(name) {
     const source = this.audioContext.createBufferSource();
-    source.connect(this.gainNode);
-    this.gainNode.connect(this.audioContext.destination);
+    source.connect(this.gainNodeFx);
+    this.gainNodeFx.connect(this.audioContext.destination);
     source.buffer = this.audioBuffers.get(name);
     source.start(0);
   }
 
-  toggleMuteAudio() {
-    if (!this.muted) {
-      this.muted = true;
-      this.gainNode.gain.value = 0;
-    } else {
-      this.muted = false;
-      this.gainNode.gain.value = 1;
+  playMusic(name) {
+    const source = this.audioContext.createBufferSource();
+    source.connect(this.gainNodeMusic);
+    this.gainNodeMusic.connect(this.audioContext.destination);
+    source.buffer = this.audioBuffers.get(name);
+    source.start(0);
+  }
+
+  changeVolume(type, value) {
+    if (type === 'MUSIC') {
+      this.gainNodeMusic.gain.value = value;
+    } else if (type === 'FX') {
+      this.gainNodeFx.gain.value = value;
     }
   }
 
@@ -328,7 +335,6 @@ class AudioPlayer {
 exports.AudioPlayer = AudioPlayer;
 const audioPlayer = new AudioPlayer();
 exports.audioPlayer = audioPlayer;
-audioPlayer.toggleMuteAudio();
 },{"/static/sounds/ShotgunQuieter.mp3":"static/sounds/ShotgunQuieter.mp3","/static/sounds/Splash.mp3":"static/sounds/Splash.mp3","/static/sounds/GlassShatter.mp3":"static/sounds/GlassShatter.mp3","/static/sounds/reggae.mp3":"static/sounds/reggae.mp3"}],"src/classes/loaders.js":[function(require,module,exports) {
 "use strict";
 
@@ -840,10 +846,21 @@ const addEventListeners = plants => {
       plants[target.dataset.id].plantSeed();
     });
   });
-  document.querySelector('#mute-button').addEventListener('click', function () {
-    this.classList.toggle('mute');
+  document.querySelector('#settings-button').addEventListener('click', () => {
+    document.querySelector('#settings').classList.remove('hidden');
+    window.game.state.paused = true;
+  });
+  document.querySelector('#close-modal').addEventListener('click', () => {
+    document.querySelector('#settings').classList.add('hidden');
+    window.game.state.paused = false;
+  });
+  document.querySelector('#fx-slider').addEventListener('change', e => {
+    _AudioPlayer.audioPlayer.playAudio('gunshot');
 
-    _AudioPlayer.audioPlayer.toggleMuteAudio();
+    _AudioPlayer.audioPlayer.changeVolume('FX', e.target.value);
+  });
+  document.querySelector('#music-slider').addEventListener('change', e => {
+    _AudioPlayer.audioPlayer.changeVolume('MUSIC', e.target.value);
   });
 };
 
@@ -1366,7 +1383,7 @@ const GameLoop = async config => {
   const spiderFactory = await (0, _classes.loadSpiderFactory)();
   await _AudioPlayer.audioPlayer.loadAllSounds();
 
-  _AudioPlayer.audioPlayer.playAudio('music');
+  _AudioPlayer.audioPlayer.playMusic('music');
 
   const plants = plantFactory.createPlants(config.settings.plants.numberOfPots);
   const lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights);
@@ -1399,6 +1416,7 @@ const GameLoop = async config => {
   (0, _UI.hideLoadingScreen)();
 
   const gameLoop = () => {
+    if (window.game.state.paused) return window.requestAnimationFrame(gameLoop);
     _canvas.ctx.globalCompositeOperation = 'normal';
     scene.draw(_canvas.ctx);
     character.move();
@@ -1674,7 +1692,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53465" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49487" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -1851,4 +1869,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js","src/main.js"], null)
-//# sourceMappingURL=main.1e43358e.js.map
+//# sourceMappingURL=/main.1e43358e.js.map

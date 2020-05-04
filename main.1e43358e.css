@@ -1,3 +1,50 @@
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  height: 0;
+  width: 100%;
+  background-color: transparent;
+  position: relative;
+}
+@media only screen and (max-width: 410px) {
+  input[type=range] {
+    position: unset;
+  }
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: black;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #30302f, 0px 0px 1px #30302f;
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: grey;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #30302f, 0px 0px 1px #30302f;
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: grey;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -41,7 +88,7 @@ body .hidden {
   position: relative;
   width: 80px;
   height: 90px;
-  background-image: url("Seed.533b09c9.svg");
+  background-image: url("/Seed.533b09c9.svg");
   background-size: contain;
   background-repeat: no-repeat;
   animation: float 0.6s infinite alternate ease-in-out;
@@ -83,20 +130,6 @@ body .hidden {
   place-items: center;
   place-content: center;
   color: white;
-}
-
-.mute-button {
-  position: absolute;
-  padding: 10px 15px;
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  left: 20px;
-  bottom: 20px;
-  cursor: pointer;
-}
-.mute-button.mute {
-  border: 2px solid red;
 }
 
 .level-display {
@@ -146,7 +179,7 @@ body .hidden {
 }
 #titleScreen .background {
   position: absolute;
-  background-image: url("title-background.86b0a878.png");
+  background-image: url("/title-background.86b0a878.png");
   background-size: 100% 100%;
   filter: brightness(0.2) blur(6px);
   background-repeat: no-repeat;
@@ -157,20 +190,38 @@ body .hidden {
 #titleScreen img {
   width: 600px;
 }
+#titleScreen .menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 7vh;
+}
+#titleScreen .menu .button {
+  margin-top: 20px;
+}
+#titleScreen .menu .settings {
+  padding: 15px 50px;
+  font-size: 20px;
+}
 
-.continue-button {
+.game .button {
+  position: absolute;
+  padding: 10px 15px;
+  color: white;
+  left: 20px;
+  bottom: 20px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.button {
   border: none;
   color: white;
   padding: 18px 60px;
   font-size: 23px;
   cursor: pointer;
   background-color: transparent;
-  background-image: url("button.66f80176.svg");
+  background-image: url("/button.66f80176.svg");
   background-size: 100% 100%;
-}
-
-#titleScreen .continue-button {
-  margin-top: 150px;
 }
 
 #tutorialScreen {
@@ -181,7 +232,7 @@ body .hidden {
 }
 #tutorialScreen .background {
   position: absolute;
-  background-image: url("title-background.86b0a878.png");
+  background-image: url("/title-background.86b0a878.png");
   background-size: 100% 100%;
   filter: brightness(0.2) blur(6px);
   background-repeat: no-repeat;
@@ -189,8 +240,36 @@ body .hidden {
   width: 100vw;
   height: 100vh;
 }
-#tutorialScreen .continue-button {
+#tutorialScreen .button {
   margin-top: 4vh;
+}
+
+.settings-modal {
+  position: absolute;
+  z-index: 10;
+  height: 700px;
+  max-width: 700px;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #303030;
+  border-radius: 5px;
+  padding: 40px;
+  color: white;
+  font-size: 30px;
+}
+.settings-modal input {
+  margin-bottom: 40px;
+}
+.settings-modal .close-button {
+  position: absolute;
+  filter: brightness(0.7);
+  top: 5px;
+  right: 5px;
+  padding: 0px;
+  width: 40px;
+  height: 40px;
 }
 
 .score-counter {
@@ -219,7 +298,7 @@ body .hidden {
   position: absolute;
   right: 2vw;
   bottom: 0vw;
-  background-image: url("multiplier.988f6531.svg");
+  background-image: url("/multiplier.988f6531.svg");
   background-size: 100%;
   width: 14vw;
   height: 14vw;
@@ -289,4 +368,4 @@ body .hidden {
   max-height: 20vh;
 }
 
-/*# sourceMappingURL=main.1e43358e.css.map */
+/*# sourceMappingURL=/main.1e43358e.css.map */
