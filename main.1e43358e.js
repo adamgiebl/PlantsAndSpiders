@@ -657,7 +657,8 @@ class Spider {
       destination,
       position,
       width,
-      height
+      height,
+      speed
     } = manifest;
     this.manifest = manifest;
     this.height = width;
@@ -675,6 +676,7 @@ class Spider {
     this.velocityY = Math.sin(this.angle) * 1.0;
     this.direction = this.angle - Math.PI / 2;
     this.distance = 0;
+    this.speed = speed;
     this.points = {
       shown: false,
       value: Math.floor(1000 / this.width),
@@ -713,7 +715,7 @@ class Spider {
         this.hasKilledAPlant = true;
         window.game.state.spidersKilled += 1;
 
-        if (window.game.state.spidersKilled === window.game.config.levels[window.game.state.level].numberOfSpiders) {
+        if (window.game.state.spidersKilled === window.game.levels[window.game.state.level].numberOfSpiders) {
           window.game.state.level++;
         }
       }
@@ -736,7 +738,7 @@ class Spider {
     const frame = this.manifest.spriteMap.get(name);
 
     if (frame) {
-      ctx.drawImage(this.manifest.image, frame.x, frame.y, frame.width, frame.height, this.x += this.velocityX * 1, this.y += this.velocityY * 1, this.width, this.height);
+      ctx.drawImage(this.manifest.image, frame.x, frame.y, frame.width, frame.height, this.x += this.velocityX * this.speed, this.y += this.velocityY * this.speed, this.width, this.height);
     }
   }
 
@@ -764,7 +766,7 @@ class Spider {
     const deltaY = this.y - (this.killer.y + 100);
     this.splashAngle = Math.atan2(deltaX, deltaY);
 
-    if (window.game.state.spidersKilled === window.game.config.levels[window.game.state.level].numberOfSpiders) {
+    if (window.game.state.spidersKilled === window.game.levels[window.game.state.level].numberOfSpiders) {
       window.game.state.level++;
     }
   }
@@ -781,6 +783,7 @@ class SpiderFactory {
   createSpiders(numberOfSpiders, character, plants) {
     this.manifest.character = character;
     this.manifest.plants = plants;
+    this.manifest.speed = window.game.config.settings.spiders[window.game.difficulty].speed;
     let spiders = [];
 
     for (let i = 0; i < numberOfSpiders; i++) {
@@ -859,8 +862,16 @@ const addEventListeners = plants => {
 
     _AudioPlayer.audioPlayer.changeVolume('FX', e.target.value);
   });
-  document.querySelector('#music-slider').addEventListener('change', e => {
+  document.querySelector('#music-slider').addEventListener('input', e => {
     _AudioPlayer.audioPlayer.changeVolume('MUSIC', e.target.value);
+  });
+  document.querySelectorAll('#difficulty-setting .radio').forEach(input => {
+    input.addEventListener('click', e => {
+      document.querySelector('#settings').classList.add('hidden');
+      window.game.difficulty = e.target.value;
+      window.game.state.shouldRestart = true;
+      window.game.state.paused = false;
+    });
   });
 };
 
@@ -868,7 +879,7 @@ exports.addEventListeners = addEventListeners;
 
 const showGameOver = () => {
   document.querySelector('#gameOverScreen').classList.remove('hidden');
-  document.querySelector('#gameOverScreen').innerHTML += `
+  document.querySelector('#gameOverScreen').innerHTML = `
         <div>
             <h2>Spiders killed: ${window.game.state.spidersKilledTotal}</h2>
             <h2>Points from spiders: ${window.game.state.score}</h2>
@@ -876,8 +887,14 @@ const showGameOver = () => {
             <h2>Points from plants: ${window.game.plants.reduce((acc, plant) => {
     return acc + plant.size * 1000;
   }, 0)}</h2>
+            <button class="button" id="restart-button">Try again</button>
         </div>
     `;
+  document.querySelector('#restart-button').addEventListener('click', () => {
+    document.querySelector('#gameOverScreen').classList.add('hidden');
+    window.game.state.shouldRestart = true;
+    window.game.state.paused = false;
+  });
 };
 
 exports.showGameOver = showGameOver;
@@ -1031,8 +1048,7 @@ class Plant {
     }
   }
 
-  onClick() {
-    this.grow();
+  onClick() {//this.grow()
   }
 
   plantSeed() {
@@ -1357,24 +1373,29 @@ var _AudioPlayer = require("./AudioPlayer");
 
 var _clickHandler = require("/src/clickHandler");
 
+const defaultState = {
+  seedsPlanted: 0,
+  seedsShown: false,
+  spidersKilled: 0,
+  spidersKilledTotal: 0,
+  level: -1,
+  currentLevel: -1,
+  gameOver: false,
+  levelUpdated: false,
+  score: 0,
+  streak: 0,
+  biggestStreak: 0,
+  shouldRestart: false
+};
+const defaultDifficulty = 'NORMAL';
+
 const GameLoop = async config => {
   window.game = {
     config: config,
-    state: {
-      seedsPlanted: 0,
-      seedsShown: false,
-      spidersKilled: 0,
-      spidersKilledTotal: 0,
-      level: -1,
-      currentLevel: -1,
-      gameOver: false,
-      levelUpdated: false,
-      score: 0,
-      streak: 0,
-      biggestStreak: 0
-    }
+    state: JSON.parse(JSON.stringify(defaultState)),
+    difficulty: defaultDifficulty,
+    levels: config.levels[defaultDifficulty]
   };
-  console.log('1');
   const timer = new _classes.Timer();
   const character = await (0, _classes.loadCharacter)();
   const scene = await (0, _classes.loadScene)();
@@ -1385,9 +1406,9 @@ const GameLoop = async config => {
 
   _AudioPlayer.audioPlayer.playMusic('music');
 
-  const plants = plantFactory.createPlants(config.settings.plants.numberOfPots);
-  const lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights);
-  let spiders = []; //character.epicEntrance().then(() => {})
+  let plants = plantFactory.createPlants(config.settings.plants.numberOfPots);
+  let lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights);
+  let spiders = [];
 
   _canvas.canvas.addEventListener('mousedown', e => {
     (0, _clickHandler.checkTarget)(e, [...spiders], entity => {
@@ -1409,8 +1430,7 @@ const GameLoop = async config => {
     spiders = [];
   };
 
-  timer.start();
-  console.log('2'); // forcing loading screen to see the amazingness
+  timer.start(); // forcing loading screen to see the amazingness
   //setTimeout(() => hideLoadingScreen(), 2000)
 
   (0, _UI.hideLoadingScreen)();
@@ -1429,20 +1449,22 @@ const GameLoop = async config => {
       (0, _UI.updateLevel)();
     }
 
-    if (config.timing.showSeeds == timer.getTimeElapsed()) {
-      window.game.state.level = 0;
-      (0, _UI.updateLevel)();
+    if (!window.game.state.seedsShown) {
+      if (config.timing.showSeeds <= timer.getTimeElapsed()) {
+        window.game.state.level = 0;
+        window.game.state.seedsShown = true;
+        (0, _UI.updateLevel)();
+      }
     }
 
     if (window.game.state.level === 0 && window.game.state.currentLevel !== window.game.state.level) {
       if (window.game.state.seedsPlanted == plants.length) {
         if (spiders.length == 0) {
-          spiders = spiderFactory.createSpiders(window.game.config.levels[0].numberOfSpiders, character, plants);
+          spiders = spiderFactory.createSpiders(window.game.levels[0].numberOfSpiders, character, plants);
         }
       }
 
-      if (!window.game.state.seedsShown) {
-        window.game.state.seedsShown = true;
+      if (window.game.state.seedsShown) {
         plants.forEach(plant => {
           if (plant.showSeed) {
             plant.showSeedButton();
@@ -1454,22 +1476,21 @@ const GameLoop = async config => {
       nextLevel();
       plants.forEach(plant => {
         plant.grow();
-      }); //window.game.state.gameOver = true
-
+      });
       window.game.plants = plants;
-      spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants);
+      spiders = spiderFactory.createSpiders(window.game.levels[1].numberOfSpiders, character, plants);
     } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
       nextLevel();
       plants.forEach(plant => {
         plant.grow();
       });
-      spiders = spiderFactory.createSpiders(window.game.config.levels[2].numberOfSpiders, character, plants);
+      spiders = spiderFactory.createSpiders(window.game.levels[2].numberOfSpiders, character, plants);
     } else if (window.game.state.level === 3 && window.game.state.currentLevel !== window.game.state.level) {
       nextLevel();
       plants.forEach(plant => {
         plant.grow();
       });
-      spiders = spiderFactory.createSpiders(window.game.config.levels[3].numberOfSpiders, character, plants);
+      spiders = spiderFactory.createSpiders(window.game.levels[3].numberOfSpiders, character, plants);
     } else if (window.game.state.level === 4 && window.game.state.currentLevel !== window.game.state.level) {
       nextLevel();
       window.game.state.gameOver = true;
@@ -1489,7 +1510,7 @@ const GameLoop = async config => {
 
     lamps.forEach(lamp => {
       if (!lamp.isShot) {
-        if (!lamp.turnedOn && lamp.turnOn == timer.getTimeElapsed()) {
+        if (!lamp.turnedOn && lamp.turnOn <= timer.getTimeElapsed()) {
           lamp.turnedOn = true;
         }
 
@@ -1506,10 +1527,24 @@ const GameLoop = async config => {
 
     timer.logTimeElapsed();
 
-    if (!window.game.state.gameOver) {
+    if (!window.game.state.gameOver && !window.game.state.shouldRestart) {
+      window.requestAnimationFrame(gameLoop);
+    } else if (window.game.state.shouldRestart) {
+      window.game.state = JSON.parse(JSON.stringify(defaultState));
+      spiders = [];
+      plants = plantFactory.createPlants(config.settings.plants.numberOfPots);
+      lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights);
+      window.game.levels = window.game.config.levels[window.game.difficulty];
+      console.log(window.game.difficulty);
+      console.log(window.game.levels);
+      window.game.state.streak = 0;
+      (0, _UI.updateStreak)();
+      window.game.state.shouldRestart = false;
       window.requestAnimationFrame(gameLoop);
     } else {
       (0, _UI.showGameOver)();
+      window.game.state.paused = true;
+      window.requestAnimationFrame(gameLoop);
     }
   };
 
@@ -1529,6 +1564,17 @@ module.exports = {
     },
     "lights": {
       "numberOfLights": 3
+    },
+    "spiders": {
+      "EASY": {
+        "speed": 0.7
+      },
+      "NORMAL": {
+        "speed": 1.1
+      },
+      "HARD": {
+        "speed": 1.5
+      }
     }
   },
   "timing": {
@@ -1536,19 +1582,35 @@ module.exports = {
     "startLights": 2,
     "delayBetweenLights": 1
   },
-  "levels": [{
-    "id": 0,
-    "numberOfSpiders": 30
-  }, {
-    "id": 1,
-    "numberOfSpiders": 15
-  }, {
-    "id": 2,
-    "numberOfSpiders": 20
-  }, {
-    "id": 3,
-    "numberOfSpiders": 25
-  }]
+  "levels": {
+    "EASY": [{
+      "numberOfSpiders": 7
+    }, {
+      "numberOfSpiders": 12
+    }, {
+      "numberOfSpiders": 17
+    }, {
+      "numberOfSpiders": 20
+    }],
+    "NORMAL": [{
+      "numberOfSpiders": 15
+    }, {
+      "numberOfSpiders": 20
+    }, {
+      "numberOfSpiders": 22
+    }, {
+      "numberOfSpiders": 25
+    }],
+    "HARD": [{
+      "numberOfSpiders": 20
+    }, {
+      "numberOfSpiders": 25
+    }, {
+      "numberOfSpiders": 30
+    }, {
+      "numberOfSpiders": 35
+    }]
+  }
 };
 },{}],"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
@@ -1692,7 +1754,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49487" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49230" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

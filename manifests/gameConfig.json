@@ -6,6 +6,17 @@
         },
         "lights": {
             "numberOfLights": 3
+        },
+        "spiders": {
+            "EASY" : {
+                "speed": 0.7
+            },
+            "NORMAL" : {
+                "speed": 1.1
+            },
+            "HARD" : {
+                "speed": 1.5    
+            }
         }
     },
     "timing": {
@@ -13,22 +24,48 @@
         "startLights": 2,
         "delayBetweenLights": 1
     },
-    "levels": [
-        { 
-            "id": 0,
-            "numberOfSpiders": 30
-        },
-        { 
-            "id": 1,
-            "numberOfSpiders": 15
-        },
-        { 
-            "id": 2,
-            "numberOfSpiders": 20
-        },
-        { 
-            "id": 3,
-            "numberOfSpiders": 25
-        }
-    ]
+    "levels": {
+        "EASY" : [
+            {
+                "numberOfSpiders": 7
+            },
+            { 
+                "numberOfSpiders": 12
+            },
+            { 
+                "numberOfSpiders": 17
+            },
+            { 
+                "numberOfSpiders": 20
+            }
+        ],
+        "NORMAL" : [
+            { 
+                "numberOfSpiders": 15
+            },
+            { 
+                "numberOfSpiders": 20
+            },
+            { 
+                "numberOfSpiders": 22
+            },
+            { 
+                "numberOfSpiders": 25
+            }
+        ],
+        "HARD" : [
+            { 
+                "numberOfSpiders": 20
+            },
+            { 
+                "numberOfSpiders": 25
+            },
+            { 
+                "numberOfSpiders": 30
+            },
+            { 
+                "numberOfSpiders": 35
+            }
+        ]
+    }
 }
