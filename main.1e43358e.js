@@ -753,8 +753,7 @@ class Spider {
       window.game.state.biggestStreak = window.game.state.streak;
     }
 
-    _AudioPlayer.audioPlayer.playAudio('splash');
-
+    setTimeout(() => _AudioPlayer.audioPlayer.playAudio('splash'), 100);
     this.isShot = true;
     this.points.shown = true;
     this.points.y = this.y;
