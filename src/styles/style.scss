@@ -86,7 +86,39 @@ body {
     display: grid;
     place-items: center;
     place-content: center;
-    color: white
+    color: white;
+
+    
+
+    .score-container {
+        .final-score {
+            height: 45vh;
+        }
+        #score {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: black;
+            text-align: center;
+            line-height: 45vh;
+            font-size: 5vh;
+        }
+        
+    }
+    .score-stats {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 2.5vh;
+        margin-top: -20vh;
+        color: #00a400;
+        small {
+            color: white;
+        }
+    }
+    .button {
+        margin-top: 5vh;
+    }
 }
 
 
@@ -186,12 +218,17 @@ body {
 .button {
     border: none;
     color: white;
+    display: inline-block;
     padding: 18px 60px;
     font-size: 23px;
     cursor: pointer;
     background-color: transparent;
     background-image: url('/static/images/button.svg');
     background-size: 100% 100%;
+
+    &:hover {
+        filter: brightness(0.9);
+    }
 }
 
 #tutorialScreen {
@@ -219,13 +256,13 @@ body {
 .settings-modal {
     position: absolute;
     z-index: 10;
-    height: 700px;
     max-width: 700px;
     width: 100%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: #303030;
+    border: 10px solid black;
     border-radius: 5px;
     padding: 40px;
     color: white;
@@ -243,6 +280,37 @@ body {
         padding: 0px;
         width: 40px;
         height: 40px;
+    }
+
+    .difficulty {
+        border: 6px solid black;
+        display: inline-flex;
+        justify-content: center;
+        width: auto;
+    }
+
+    .difficulty-label {
+        display: block;
+        margin-bottom: 15px;
+    }
+    .radio {
+        position: absolute;
+        visibility: hidden;
+    }
+    .radio:checked + .button {
+        filter: brightness(0.7);
+
+        &[for="easy"] {
+            color: green;
+        }
+
+        &[for="normal"] {
+            color: orange;
+        }
+
+        &[for="hard"] {
+            color: red;
+        }
     }
 }
 

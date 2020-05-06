@@ -7,26 +7,32 @@ import { audioPlayer } from './AudioPlayer'
 import { checkTarget } from '/src/clickHandler'
 import { updateStreak } from '/src/shared/UI'
 
+const defaultState = {
+    seedsPlanted: 0,
+    seedsShown: false,
+    spidersKilled: 0,
+    spidersKilledTotal: 0,
+    level: -1,
+    currentLevel: -1,
+    gameOver: false,
+    levelUpdated: false,
+    score: 0,
+    streak: 0,
+    biggestStreak: 0,
+    shouldRestart: false
+}
+
+const defaultDifficulty = 'NORMAL'
+
 export const GameLoop = async config => {
     window.game = {
         config: config,
-        state: {
-            seedsPlanted: 0,
-            seedsShown: false,
-            spidersKilled: 0,
-            spidersKilledTotal: 0,
-            level: -1,
-            currentLevel: -1,
-            gameOver: false,
-            levelUpdated: false,
-            score: 0,
-            streak: 0,
-            biggestStreak: 0
-        }
+        state: JSON.parse(JSON.stringify(defaultState)),
+        difficulty: defaultDifficulty,
+        levels: config.levels[defaultDifficulty]
     }
-    console.log('1')
 
-    const timer = new Timer()
+    let timer = new Timer()
     const character = await loadCharacter()
     const scene = await loadScene()
     const plantFactory = await loadPlantFactory()
@@ -36,11 +42,9 @@ export const GameLoop = async config => {
 
     audioPlayer.playMusic('music')
 
-    const plants = plantFactory.createPlants(config.settings.plants.numberOfPots)
-    const lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights)
+    let plants = plantFactory.createPlants(config.settings.plants.numberOfPots)
+    let lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights)
     let spiders = []
-
-    //character.epicEntrance().then(() => {})
 
     canvas.addEventListener('mousedown', e => {
         checkTarget(e, [...spiders], entity => {
@@ -64,7 +68,6 @@ export const GameLoop = async config => {
     }
 
     timer.start()
-    console.log('2')
 
     // forcing loading screen to see the amazingness
     //setTimeout(() => hideLoadingScreen(), 2000)
@@ -87,23 +90,24 @@ export const GameLoop = async config => {
             updateLevel()
         }
 
-        if (config.timing.showSeeds == timer.getTimeElapsed()) {
-            window.game.state.level = 0
-            updateLevel()
+        if (!window.game.state.seedsShown) {
+            if (config.timing.showSeeds <= timer.getTimeElapsed()) {
+                window.game.state.level = 0
+                window.game.state.seedsShown = true
+                updateLevel()
+                console.log('here')
+            }
         }
 
         if (window.game.state.level === 0 && window.game.state.currentLevel !== window.game.state.level) {
+            //console.log('gameLoop -> window.game.state.seedsPlanted', window.game.state.seedsPlanted)
+            //console.log('gameLoop -> plants.length', plants.length)
             if (window.game.state.seedsPlanted == plants.length) {
                 if (spiders.length == 0) {
-                    spiders = spiderFactory.createSpiders(
-                        window.game.config.levels[0].numberOfSpiders,
-                        character,
-                        plants
-                    )
+                    spiders = spiderFactory.createSpiders(window.game.levels[0].numberOfSpiders, character, plants)
                 }
             }
-            if (!window.game.state.seedsShown) {
-                window.game.state.seedsShown = true
+            if (window.game.state.seedsShown) {
                 plants.forEach(plant => {
                     if (plant.showSeed) {
                         plant.showSeedButton()
@@ -116,21 +120,21 @@ export const GameLoop = async config => {
             plants.forEach(plant => {
                 plant.grow()
             })
-            //window.game.state.gameOver = true
+            window.game.state.gameOver = true
             window.game.plants = plants
-            spiders = spiderFactory.createSpiders(window.game.config.levels[1].numberOfSpiders, character, plants)
+            spiders = spiderFactory.createSpiders(window.game.levels[1].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
             nextLevel()
             plants.forEach(plant => {
                 plant.grow()
             })
-            spiders = spiderFactory.createSpiders(window.game.config.levels[2].numberOfSpiders, character, plants)
+            spiders = spiderFactory.createSpiders(window.game.levels[2].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 3 && window.game.state.currentLevel !== window.game.state.level) {
             nextLevel()
             plants.forEach(plant => {
                 plant.grow()
             })
-            spiders = spiderFactory.createSpiders(window.game.config.levels[3].numberOfSpiders, character, plants)
+            spiders = spiderFactory.createSpiders(window.game.levels[3].numberOfSpiders, character, plants)
         } else if (window.game.state.level === 4 && window.game.state.currentLevel !== window.game.state.level) {
             nextLevel()
             window.game.state.gameOver = true
@@ -152,7 +156,7 @@ export const GameLoop = async config => {
         // adding "white" light onto the mask
         lamps.forEach(lamp => {
             if (!lamp.isShot) {
-                if (!lamp.turnedOn && lamp.turnOn == timer.getTimeElapsed()) {
+                if (!lamp.turnedOn && lamp.turnOn <= timer.getTimeElapsed()) {
                     lamp.turnedOn = true
                 }
                 lamp.drawBody(ctx)
@@ -167,10 +171,31 @@ export const GameLoop = async config => {
         ctx.drawImage(mask, 0, 0)
         timer.logTimeElapsed()
 
-        if (!window.game.state.gameOver) {
+        if (!window.game.state.gameOver && !window.game.state.shouldRestart) {
+            window.requestAnimationFrame(gameLoop)
+        } else if (window.game.state.shouldRestart) {
+            // restart level
+            window.game.state = JSON.parse(JSON.stringify(defaultState))
+            spiders = []
+            plants = plantFactory.createPlants(config.settings.plants.numberOfPots)
+            lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights)
+            window.game.levels = window.game.config.levels[window.game.difficulty]
+            console.log(window.game.difficulty)
+            console.log(window.game.levels)
+            window.game.state.streak = 0
+            updateStreak()
+            window.game.state.shouldRestart = false
+            timer = new Timer()
+            document.querySelectorAll('.seedButton').forEach(el => {
+                el.removeEventListener('click', ({ target }) => {
+                    plants[target.dataset.id].plantSeed()
+                })
+            })
             window.requestAnimationFrame(gameLoop)
         } else {
             showGameOver()
+            window.game.state.paused = true
+            window.requestAnimationFrame(gameLoop)
         }
     }
 

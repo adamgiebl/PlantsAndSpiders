@@ -2,11 +2,6 @@ import { audioPlayer } from '../AudioPlayer'
 
 // file for interaction between html elements and canvas
 export const addEventListeners = plants => {
-    document.querySelectorAll('.seedButton').forEach(el => {
-        el.addEventListener('click', ({ target }) => {
-            plants[target.dataset.id].plantSeed()
-        })
-    })
     document.querySelector('#settings-button').addEventListener('click', () => {
         document.querySelector('#settings').classList.remove('hidden')
         window.game.state.paused = true
@@ -22,23 +17,34 @@ export const addEventListeners = plants => {
         audioPlayer.changeVolume('FX', e.target.value)
     })
 
-    document.querySelector('#music-slider').addEventListener('change', e => {
+    document.querySelector('#music-slider').addEventListener('input', e => {
         audioPlayer.changeVolume('MUSIC', e.target.value)
+    })
+
+    document.querySelectorAll('#difficulty-setting .radio').forEach(input => {
+        input.addEventListener('click', e => {
+            window.game.difficulty = e.target.value
+            window.game.state.shouldRestart = true
+            window.game.state.paused = false
+        })
     })
 }
 
 export const showGameOver = () => {
+    const scorePlants = window.game.plants.reduce((acc, plant) => {
+        return acc + plant.size * 1000
+    }, 0)
     document.querySelector('#gameOverScreen').classList.remove('hidden')
-    document.querySelector('#gameOverScreen').innerHTML += `
-        <div>
-            <h2>Spiders killed: ${window.game.state.spidersKilledTotal}</h2>
-            <h2>Points from spiders: ${window.game.state.score}</h2>
-            <h2>Highest killstreak: ${window.game.state.biggestStreak}</h2>
-            <h2>Points from plants: ${window.game.plants.reduce((acc, plant) => {
-                return acc + plant.size * 1000
-            }, 0)}</h2>
-        </div>
-    `
+    document.querySelector('#gameOverScreen #score').innerText = window.game.state.score + scorePlants
+    document.querySelector('#gameOverScreen #score-spiders').innerText = window.game.state.score
+    document.querySelector('#gameOverScreen #score-plants').innerText = scorePlants
+    document.querySelector('#gameOverScreen #score-streak').innerText = window.game.state.biggestStreak
+
+    document.querySelector('#restart-button').addEventListener('click', () => {
+        document.querySelector('#gameOverScreen').classList.add('hidden')
+        window.game.state.shouldRestart = true
+        window.game.state.paused = false
+    })
 }
 
 export const updateLevel = () => {

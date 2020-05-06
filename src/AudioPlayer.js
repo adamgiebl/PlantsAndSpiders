@@ -31,7 +31,7 @@ export class AudioPlayer {
         source.connect(this.gainNodeMusic)
         this.gainNodeMusic.connect(this.audioContext.destination)
         source.buffer = this.audioBuffers.get(name)
-        source.start(0)
+        //source.start(0)
     }
     changeVolume(type, value) {
         if (type === 'MUSIC') {

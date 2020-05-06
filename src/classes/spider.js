@@ -5,7 +5,7 @@ import { loadImage, loadManifest } from './loaders'
 
 export class Spider {
     constructor(manifest) {
-        const { destination, position, width, height } = manifest
+        const { destination, position, width, height, speed } = manifest
         this.manifest = manifest
         this.height = width
         this.width = height
@@ -22,6 +22,7 @@ export class Spider {
         this.velocityY = Math.sin(this.angle) * 1.0
         this.direction = this.angle - Math.PI / 2
         this.distance = 0
+        this.speed = speed
         this.points = {
             shown: false,
             value: Math.floor(1000 / this.width),
@@ -68,10 +69,7 @@ export class Spider {
                 plant.shrink()
                 this.hasKilledAPlant = true
                 window.game.state.spidersKilled += 1
-                if (
-                    window.game.state.spidersKilled ===
-                    window.game.config.levels[window.game.state.level].numberOfSpiders
-                ) {
+                if (window.game.state.spidersKilled === window.game.levels[window.game.state.level].numberOfSpiders) {
                     window.game.state.level++
                 }
             }
@@ -96,8 +94,8 @@ export class Spider {
                 frame.y,
                 frame.width,
                 frame.height,
-                (this.x += this.velocityX * 1),
-                (this.y += this.velocityY * 1),
+                (this.x += this.velocityX * this.speed),
+                (this.y += this.velocityY * this.speed),
                 this.width,
                 this.height
             )
@@ -112,7 +110,7 @@ export class Spider {
         if (window.game.state.streak > window.game.state.biggestStreak) {
             window.game.state.biggestStreak = window.game.state.streak
         }
-        audioPlayer.playAudio('splash')
+        setTimeout(() => audioPlayer.playAudio('splash'), 100)
         this.isShot = true
         this.points.shown = true
         this.points.y = this.y
@@ -120,7 +118,7 @@ export class Spider {
         const deltaX = this.x - (this.killer.x + this.manifest.character.upperBody.width / 2)
         const deltaY = this.y - (this.killer.y + 100)
         this.splashAngle = Math.atan2(deltaX, deltaY)
-        if (window.game.state.spidersKilled === window.game.config.levels[window.game.state.level].numberOfSpiders) {
+        if (window.game.state.spidersKilled === window.game.levels[window.game.state.level].numberOfSpiders) {
             window.game.state.level++
         }
     }
@@ -133,6 +131,7 @@ export class SpiderFactory {
     createSpiders(numberOfSpiders, character, plants) {
         this.manifest.character = character
         this.manifest.plants = plants
+        this.manifest.speed = window.game.config.settings.spiders[window.game.difficulty].speed
         let spiders = []
         for (let i = 0; i < numberOfSpiders; i++) {
             this.manifest.position = {

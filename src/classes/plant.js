@@ -58,6 +58,7 @@ export class Plant {
             height: this.activePlant.height
         }
         this.createSeedButton()
+        console.log(this.id)
     }
     draw(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
@@ -106,22 +107,30 @@ export class Plant {
     plantSeed() {
         window.game.state.seedsPlanted += 1
         this.planted = true
-        document.querySelector(`.seedButton[data-id="${this.id}"]`).outerHTML = ''
+        console.log('plant', this.id)
+        console.log('plant', this)
+        document.querySelector(`.seedButton[data-id="${this.id}"]`).removeEventListener('click', () => this.plantSeed())
+        document.querySelector(`.seedButton[data-id="${this.id}"]`).classList.remove('active')
     }
     showSeedButton() {
+        console.log('show', this.id)
         document.querySelector(`.seedButton[data-id="${this.id}"]`).classList.add('active')
+        document.querySelector(`.seedButton[data-id="${this.id}"]`).addEventListener('click', () => this.plantSeed())
     }
     createSeedButton() {
-        overlay.innerHTML += `
-        <div 
-            class="seedButton"
-            data-id="${this.id}"
-            style="left: ${this.potCenter.x - 40}px; top: ${this.potCenter.y - 160}px;" 
-        >
-            <div class="seedButton__image" data-id="${this.id}">
-            </div>
-        </div>
-        `
+        console.log('create', this.id)
+        if (!document.querySelector(`.seedButton[data-id="${this.id}"]`)) {
+            overlay.innerHTML += `
+                <div 
+                    class="seedButton"
+                    data-id="${this.id}"
+                    style="left: ${this.potCenter.x - 40}px; top: ${this.potCenter.y - 160}px;" 
+                >
+                    <div class="seedButton__image" data-id="${this.id}">
+                    </div>
+                </div>
+            `
+        }
     }
 }
 
