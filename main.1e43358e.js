@@ -866,7 +866,7 @@ const addEventListeners = plants => {
   });
   document.querySelectorAll('#difficulty-setting .radio').forEach(input => {
     input.addEventListener('click', e => {
-      document.querySelector('#settings').classList.add('hidden');
+      document.querySelector('#settings').classList.add('gll');
       window.game.difficulty = e.target.value;
       window.game.state.shouldRestart = true;
       window.game.state.paused = false;
@@ -877,18 +877,14 @@ const addEventListeners = plants => {
 exports.addEventListeners = addEventListeners;
 
 const showGameOver = () => {
-  document.querySelector('#gameOverScreen').classList.remove('hidden');
-  document.querySelector('#gameOverScreen').innerHTML = `
-        <div>
-            <h2>Spiders killed: ${window.game.state.spidersKilledTotal}</h2>
-            <h2>Points from spiders: ${window.game.state.score}</h2>
-            <h2>Highest killstreak: ${window.game.state.biggestStreak}</h2>
-            <h2>Points from plants: ${window.game.plants.reduce((acc, plant) => {
+  const scorePlants = window.game.plants.reduce((acc, plant) => {
     return acc + plant.size * 1000;
-  }, 0)}</h2>
-            <button class="button" id="restart-button">Try again</button>
-        </div>
-    `;
+  }, 0);
+  document.querySelector('#gameOverScreen').classList.remove('hidden');
+  document.querySelector('#gameOverScreen #score').innerText = window.game.state.score + scorePlants;
+  document.querySelector('#gameOverScreen #score-spiders').innerText = window.game.state.score;
+  document.querySelector('#gameOverScreen #score-plants').innerText = scorePlants;
+  document.querySelector('#gameOverScreen #score-streak').innerText = window.game.state.biggestStreak;
   document.querySelector('#restart-button').addEventListener('click', () => {
     document.querySelector('#gameOverScreen').classList.add('hidden');
     window.game.state.shouldRestart = true;
@@ -1005,7 +1001,10 @@ class Plant {
       width: this.activePlant.width,
       height: this.activePlant.height
     };
-    this.createSeedButton();
+
+    if (document.querySelectorAll('.seedButton').length !== window.game.config.settings.plants.numberOfPots) {
+      this.createSeedButton();
+    }
   }
 
   draw(ctx) {
@@ -1476,6 +1475,7 @@ const GameLoop = async config => {
       plants.forEach(plant => {
         plant.grow();
       });
+      window.game.state.gameOver = true;
       window.game.plants = plants;
       spiders = spiderFactory.createSpiders(window.game.levels[1].numberOfSpiders, character, plants);
     } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
@@ -1683,7 +1683,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"C:\\Users\\adamg\\Projects\\plants\\static\\images\\Seed.svg":[["Seed.533b09c9.svg","static/images/Seed.svg"],"static/images/Seed.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\title-background.png":[["title-background.86b0a878.png","static/images/title-background.png"],"static/images/title-background.png"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\button.svg":[["button.66f80176.svg","static/images/button.svg"],"static/images/button.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\multiplier.svg":[["multiplier.988f6531.svg","static/images/multiplier.svg"],"static/images/multiplier.svg"],"_css_loader":"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/css-loader.js"}],"src/main.js":[function(require,module,exports) {
+},{"C:\\Users\\adamg\\Projects\\plants\\static\\images\\Seed.svg":[["Seed.533b09c9.svg","static/images/Seed.svg"],"static/images/Seed.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\title-background.png":[["title-background.86b0a878.png","static/images/title-background.png"],"static/images/title-background.png"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\button.svg":[["button.66f80176.svg","static/images/button.svg"],"static/images/button.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\multiplier.svg":[["multiplier.988f6531.svg","static/images/multiplier.svg"],"static/images/multiplier.svg"],"C:\\Users\\adamg\\Projects\\plants\\static\\images\\constbg.jpg":[["constbg.7950cbe7.jpg","static/images/constbg.jpg"],"static/images/constbg.jpg"],"_css_loader":"../../AppData/Roaming/npm/node_modules/parcel/src/builtins/css-loader.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _gameLoop = require("./gameLoop");
@@ -1753,7 +1753,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49230" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56079" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

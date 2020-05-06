@@ -131,6 +131,32 @@ body .hidden {
   place-content: center;
   color: white;
 }
+#gameOverScreen .score-container .final-score {
+  height: 45vh;
+}
+#gameOverScreen .score-container #score {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: black;
+  text-align: center;
+  line-height: 45vh;
+  font-size: 5vh;
+}
+#gameOverScreen .score-stats {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 2.5vh;
+  margin-top: -20vh;
+  color: #00a400;
+}
+#gameOverScreen .score-stats small {
+  color: white;
+}
+#gameOverScreen .button {
+  margin-top: 5vh;
+}
 
 .level-display {
   position: absolute;
@@ -396,6 +422,24 @@ body .hidden {
 .controls img {
   max-width: 30vw;
   max-height: 20vh;
+}
+
+#construction {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  background-image: url(/constbg.7950cbe7.jpg);
+  background-size: cover;
+  filter: grayscale(1);
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  place-items: center;
+}
+#construction img {
+  width: 30vh;
 }
 
 /*# sourceMappingURL=/main.1e43358e.css.map */
