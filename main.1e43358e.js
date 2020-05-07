@@ -1505,18 +1505,22 @@ const GameLoop = async config => {
         });
       }
     } else if (window.game.state.level === 1 && window.game.state.currentLevel !== window.game.state.level) {
+      setTimeout(() => {
+        spiders = spiderFactory.createSpiders(window.game.levels[1].numberOfSpiders, character, plants);
+      }, 3000);
       nextLevel();
       plants.forEach(plant => {
         plant.grow();
       });
       window.game.plants = plants;
-      spiders = spiderFactory.createSpiders(window.game.levels[1].numberOfSpiders, character, plants);
     } else if (window.game.state.level === 2 && window.game.state.currentLevel !== window.game.state.level) {
+      setTimeout(() => {
+        spiders = spiderFactory.createSpiders(window.game.levels[2].numberOfSpiders, character, plants);
+      }, 3000);
       nextLevel();
       plants.forEach(plant => {
         plant.grow();
       });
-      spiders = spiderFactory.createSpiders(window.game.levels[2].numberOfSpiders, character, plants);
     } else if (window.game.state.level === 3 && window.game.state.currentLevel !== window.game.state.level) {
       nextLevel();
       plants.forEach(plant => {
@@ -1567,6 +1571,8 @@ const GameLoop = async config => {
       document.querySelectorAll(`.seedButton[data-id]`).forEach(el => {
         el.outerHTML = '';
       });
+      document.querySelector('#gameOverScreen .win').classList.add('hidden');
+      document.querySelector('#gameOverScreen .lost').classList.add('hidden');
       plants = plantFactory.createPlants(config.settings.plants.numberOfPots);
       lamps = lightFactory.createLights(config.settings.lights.numberOfLights, config.timing.startLights);
       window.game.levels = window.game.config.levels[window.game.difficulty];
@@ -1788,7 +1794,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59189" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49844" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
