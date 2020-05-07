@@ -15,11 +15,12 @@ export const groundHeight = 15
 export let groundY = canvas.height - groundHeight
 
 const resizeCanvas = () => {
-    canvas.width = innerWidth
+    window.location.reload()
+    /*canvas.width = innerWidth
     canvas.height = innerHeight
     mask.width = innerWidth
     mask.height = innerHeight
-    groundY = canvas.height - groundHeight
+    groundY = canvas.height - groundHeight*/
 }
 
 export const canvasCenter = { x: canvas.width / 2, y: canvas.height / 2 }

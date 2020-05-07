@@ -21,6 +21,7 @@ body {
     overflow: hidden;
     height: 100%;
     font-family: 'Anton', sans-serif;
+    cursor: crosshair;
 
     .hidden {
         display: none !important;
@@ -91,9 +92,6 @@ body {
     
 
     .score-container {
-        .final-score {
-            height: 45vh;
-        }
         #score {
             position: absolute;
             left: 50%;
@@ -105,19 +103,53 @@ body {
         }
         
     }
+
+    .image {
+        height: 45vh;
+    }
     .score-stats {
         display: flex;
         flex-direction: column;
-        text-align: center;
+        align-items: center;
         font-size: 2.5vh;
-        margin-top: -20vh;
+        margin-top: -13vh;
         color: #00a400;
-        small {
+        .key {
             color: white;
+            text-align: left;
+            font-size: 2vh;
+        }
+        .value {
+            text-align: right;
+            padding-left: 1.5vw;
+
+            &[data-diff="EASY"] {
+                color: green;
+            }
+    
+            &[data-diff="NORMAL"] {
+                color: orange;
+            }
+    
+            &[data-diff="HARD"] {
+                color: red;
+            }
+            &[data-diff] {
+                text-transform: capitalize;
+            }
         }
     }
     .button {
         margin-top: 5vh;
+    }
+
+    .promo {
+        position: absolute;
+        bottom: 2vh;
+        right: 2vw;
+        a {
+            color: #00a400;
+        }
     }
 }
 

@@ -67,10 +67,17 @@ export class Spider {
                 plant.plantBoundingRect.y + plant.plantBoundingRect.height > this.y
             ) {
                 plant.shrink()
+                audioPlayer.playAudio('spiderBite')
                 this.hasKilledAPlant = true
                 window.game.state.spidersKilled += 1
                 if (window.game.state.spidersKilled === window.game.levels[window.game.state.level].numberOfSpiders) {
                     window.game.state.level++
+                }
+                const res = this.manifest.plants.reduce((acc, plant) => {
+                    return acc + plant.size
+                }, 0)
+                if (res === this.manifest.plants.length * -1) {
+                    window.game.state.gameOver = true
                 }
             }
         })

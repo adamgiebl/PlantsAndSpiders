@@ -31,14 +31,21 @@ export const addEventListeners = plants => {
 }
 
 export const showGameOver = () => {
+    document.querySelector('#gameOverScreen').classList.remove('hidden')
     const scorePlants = window.game.plants.reduce((acc, plant) => {
         return acc + plant.size * 1000
     }, 0)
-    document.querySelector('#gameOverScreen').classList.remove('hidden')
-    document.querySelector('#gameOverScreen #score').innerText = window.game.state.score + scorePlants
-    document.querySelector('#gameOverScreen #score-spiders').innerText = window.game.state.score
-    document.querySelector('#gameOverScreen #score-plants').innerText = scorePlants
-    document.querySelector('#gameOverScreen #score-streak').innerText = window.game.state.biggestStreak
+    if (scorePlants === -3000) {
+        document.querySelector('#gameOverScreen .lost').classList.remove('hidden')
+    } else {
+        document.querySelector('#gameOverScreen .win').classList.remove('hidden')
+        document.querySelector('#gameOverScreen #score').innerText = window.game.state.score + scorePlants
+        document.querySelector('#gameOverScreen #score-spiders').innerText = window.game.state.score
+        document.querySelector('#gameOverScreen #score-plants').innerText = scorePlants
+        document.querySelector('#gameOverScreen #score-streak').innerText = window.game.state.biggestStreak
+        document.querySelector('#gameOverScreen #score-difficulty').innerText = window.game.difficulty.toLowerCase()
+        document.querySelector('#gameOverScreen #score-difficulty').dataset.diff = window.game.difficulty
+    }
 
     document.querySelector('#restart-button').addEventListener('click', () => {
         document.querySelector('#gameOverScreen').classList.add('hidden')
@@ -50,7 +57,7 @@ export const showGameOver = () => {
 export const updateLevel = () => {
     if (window.game.state.level >= 0) {
         document.querySelector('#level').innerText = window.game.state.level + 1
-        document.querySelector('#level').classList.remove('hidden')
+        //document.querySelector('#level').classList.remove('hidden')
     }
 }
 
