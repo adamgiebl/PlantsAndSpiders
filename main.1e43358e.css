@@ -131,9 +131,6 @@ body .hidden {
   place-content: center;
   color: white;
 }
-#gameOverScreen .score-container .final-score {
-  height: 45vh;
-}
 #gameOverScreen .score-container #score {
   position: absolute;
   left: 50%;
@@ -143,19 +140,48 @@ body .hidden {
   line-height: 45vh;
   font-size: 5vh;
 }
+#gameOverScreen .image {
+  height: 45vh;
+}
 #gameOverScreen .score-stats {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  align-items: center;
   font-size: 2.5vh;
-  margin-top: -20vh;
+  margin-top: -13vh;
   color: #00a400;
 }
-#gameOverScreen .score-stats small {
+#gameOverScreen .score-stats .key {
   color: white;
+  text-align: left;
+  font-size: 2vh;
+}
+#gameOverScreen .score-stats .value {
+  text-align: right;
+  padding-left: 1.5vw;
+}
+#gameOverScreen .score-stats .value[data-diff=EASY] {
+  color: green;
+}
+#gameOverScreen .score-stats .value[data-diff=NORMAL] {
+  color: orange;
+}
+#gameOverScreen .score-stats .value[data-diff=HARD] {
+  color: red;
+}
+#gameOverScreen .score-stats .value[data-diff] {
+  text-transform: capitalize;
 }
 #gameOverScreen .button {
   margin-top: 5vh;
+}
+#gameOverScreen .promo {
+  position: absolute;
+  bottom: 2vh;
+  right: 2vw;
+}
+#gameOverScreen .promo a {
+  color: #00a400;
 }
 
 .level-display {
@@ -422,24 +448,6 @@ body .hidden {
 .controls img {
   max-width: 30vw;
   max-height: 20vh;
-}
-
-#construction {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100000;
-  background-image: url(/constbgs.2f26a479.jpg);
-  background-size: cover;
-  filter: grayscale(1);
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  place-content: center;
-  place-items: center;
-}
-#construction img {
-  width: 30vh;
 }
 
 /*# sourceMappingURL=/main.1e43358e.css.map */
