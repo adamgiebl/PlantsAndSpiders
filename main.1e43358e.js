@@ -1635,11 +1635,11 @@ module.exports = {
     "NORMAL": [{
       "numberOfSpiders": 15
     }, {
+      "numberOfSpiders": 18
+    }, {
       "numberOfSpiders": 20
     }, {
-      "numberOfSpiders": 22
-    }, {
-      "numberOfSpiders": 25
+      "numberOfSpiders": 23
     }],
     "HARD": [{
       "numberOfSpiders": 20
