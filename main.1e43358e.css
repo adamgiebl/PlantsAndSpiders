@@ -69,6 +69,7 @@ body {
   overflow: hidden;
   height: 100%;
   font-family: "Anton", sans-serif;
+  cursor: crosshair;
 }
 body .hidden {
   display: none !important;

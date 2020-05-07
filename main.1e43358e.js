@@ -323,6 +323,7 @@ class AudioPlayer {
     source.connect(this.gainNodeMusic);
     this.gainNodeMusic.connect(this.audioContext.destination);
     source.buffer = this.audioBuffers.get(name);
+    source.loop = true;
     source.start(0);
   }
 
@@ -1794,7 +1795,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49844" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52123" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
